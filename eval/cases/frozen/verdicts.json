@@ -1,0 +1,2095 @@
+{
+ "cases": {
+  "adjusted-food-away": {
+   "answered": [
+    "6e32cd085fc3"
+   ],
+   "kind": "block",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "adjusted_calendar_pair"
+     ],
+     "verdict": "block",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "block"
+  },
+  "adjusted-rent": {
+   "answered": [
+    "352406abbd94"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_monthly_rows_mean",
+     "rules": [
+      "unverified_fact",
+      "topcoded_variance",
+      "adjusted_monthly_rows"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "aggregate-income": {
+   "answered": [
+    "0161108c9ed2"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_annual_value_total",
+     "rules": [
+      "topcoded_variance",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "all-items-mtbi": {
+   "answered": [
+    "ff41cb23a490"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_monthly_rows_mean",
+     "rules": [
+      "topcoded_variance",
+      "gap_2025_as_released",
+      "item_code_unfiltered"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "average-education": {
+   "answered": [
+    "f4b78c1b231d"
+   ],
+   "kind": "block",
+   "nodes": {
+    "n1": {
+     "method": null,
+     "rules": [
+      "measure_role",
+      "measure_kind_unresolved",
+      "nominal_mean",
+      "gap_2025_as_released"
+     ],
+     "verdict": "block",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "block"
+  },
+  "average-household-size": {
+   "answered": [
+    "eac50b861e43"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_interview_value_mean",
+     "rules": [
+      "unverified_fact",
+      "annual_value_reading",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "average-vehicles-owned": {
+   "answered": [
+    "64f46378a7a5"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_interview_value_mean",
+     "rules": [
+      "annual_value_reading",
+      "gap_2025_as_released",
+      "statistic_term_differs"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "compare-2025-with-2022": {
+   "answered": [
+    "c3185a6a0f62"
+   ],
+   "kind": "block",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n2": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "period_not_loaded",
+      "unverified_fact"
+     ],
+     "verdict": "block",
+     "weighted": true
+    },
+    "n3": {
+     "method": "difference",
+     "rules": [
+      "input_blocked",
+      "carried",
+      "difference_break"
+     ],
+     "verdict": "block",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "block"
+  },
+  "confidence-interval": {
+   "answered": [
+    "b042a8e5fbfa"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "conv-health": {
+   "answered": [
+    "294b676fe809"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "region_code_c",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "conv-income-as-released": {
+   "answered": [
+    "c88f5cf9a933"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_annual_value_mean",
+     "rules": [
+      "topcoded_subgroup",
+      "annual_value_reading",
+      "topcoded_variance",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "conv-income-no-choice": {
+   "kind": "question",
+   "questions": [
+    "As released, or adjusted to match the published figures?"
+   ],
+   "status": "needs_clarification"
+  },
+  "conv-people-means-households": {
+   "answered": [
+    "8eced5d737bd"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_weighted_count",
+     "rules": [
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "conv-renters-count": {
+   "answered": [
+    "15ee01665ec0"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_weighted_count",
+     "rules": [
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "conv-spending": {
+   "answered": [
+    "b042a8e5fbfa"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "conv-spending-by-region": {
+   "answered": [
+    "b41b28e33061"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "region_code_c",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "conv-spending-renters": {
+   "answered": [
+    "1c172c7696cc"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "region_code_c",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "conv-transport": {
+   "answered": [
+    "e5838a43c6b2"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "conv-transport-2024": {
+   "answered": [
+    "3c7f16533743"
+   ],
+   "kind": "block",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "period_not_loaded"
+     ],
+     "verdict": "block",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "block"
+  },
+  "conv-wrong-column": {
+   "kind": "none",
+   "status": "check_failed"
+  },
+  "conv-wrong-column-corrected": {
+   "answered": [
+    "b042a8e5fbfa"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "credit-score": {
+   "kind": "question",
+   "questions": [
+    "I could not match 'credit score': No column holds a credit score. Can you say it another way?"
+   ],
+   "status": "needs_clarification"
+  },
+  "eggs-per-week": {
+   "kind": "decline",
+   "status": "not_captured"
+  },
+  "first-imputed-income": {
+   "answered": [
+    "bec6c886c53c"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_annual_value_mean",
+     "rules": [
+      "annual_value_reading",
+      "one_imputed_version",
+      "topcoded_variance",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "first-quarter-2025": {
+   "answered": [
+    "0d998964178e"
+   ],
+   "kind": "block",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "part_year_not_built",
+      "unverified_fact",
+      "gap_2025_as_released",
+      "flag"
+     ],
+     "verdict": "block",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "block"
+  },
+  "food-away-average": {
+   "answered": [
+    "35646d1f0e19"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "food-in-total": {
+   "kind": "question",
+   "questions": [
+    "I could not match 'food': No single column holds all food spending: food at home and food away from home are separate, and the item-code hierarchy is not in the project. Can you say it another way?"
+   ],
+   "status": "needs_clarification"
+  },
+  "forecast-2027": {
+   "kind": "decline",
+   "status": "not_captured"
+  },
+  "gap-not-stated-count": {
+   "kind": "question",
+   "questions": [
+    "As released, or adjusted to match the published figures?"
+   ],
+   "status": "needs_clarification"
+  },
+  "gap-not-stated-income": {
+   "kind": "question",
+   "questions": [
+    "As released, or adjusted to match the published figures?"
+   ],
+   "status": "needs_clarification"
+  },
+  "gasoline-item-by-region": {
+   "answered": [
+    "86137860a72a"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_monthly_rows_mean",
+     "rules": [
+      "unverified_fact",
+      "topcoded_subgroup",
+      "topcoded_variance",
+      "region_code_c",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "households-in-sample": {
+   "answered": [
+    "9fe687554f8f"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_distinct_count",
+     "rules": [
+      "unweighted_count"
+     ],
+     "verdict": "warn",
+     "weighted": false
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "households-with-a-student": {
+   "answered": [
+    "bd106d5b7afc"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_weighted_count",
+     "rules": [
+      "unverified_fact",
+      "gap_2025_as_released",
+      "interview_filter"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "households-with-older-members": {
+   "answered": [
+    "cc1b1c56bf41"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_weighted_count",
+     "rules": [
+      "unverified_fact",
+      "gap_2025_as_released",
+      "interview_filter"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "housing-to-total-ratio": {
+   "answered": [
+    "5f911d8b7a74"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n2": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n3": {
+     "method": "ratio",
+     "rules": [
+      "carried"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "ignore-the-rules": {
+   "answered": [
+    "30727f05e15b"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_total",
+     "rules": [
+      "unverified_fact",
+      "unweighted_total"
+     ],
+     "verdict": "warn",
+     "weighted": false
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "income-by-region": {
+   "answered": [
+    "d94bd8c95a99"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_annual_value_mean",
+     "rules": [
+      "topcoded_subgroup",
+      "annual_value_reading",
+      "topcoded_variance",
+      "region_code_c",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "income-by-tenure": {
+   "answered": [
+    "c88f5cf9a933"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_annual_value_mean",
+     "rules": [
+      "topcoded_subgroup",
+      "annual_value_reading",
+      "topcoded_variance",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "interviews-conducted": {
+   "answered": [
+    "af926164c1af"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_row_count",
+     "rules": [
+      "unweighted_count"
+     ],
+     "verdict": "warn",
+     "weighted": false
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "interviews-in-2025": {
+   "answered": [
+    "b042a8e5fbfa"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "median-income": {
+   "kind": "decline",
+   "status": "not_captured"
+  },
+  "ninetieth-percentile": {
+   "kind": "decline",
+   "status": "not_captured"
+  },
+  "no-2025-choice": {
+   "kind": "question",
+   "questions": [
+    "As released, or adjusted to match the published figures?"
+   ],
+   "status": "needs_clarification"
+  },
+  "no-2025-choice-answered": {
+   "answered": [
+    "b62806453f89"
+   ],
+   "kind": "block",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "adjusted_calendar_pair",
+      "unverified_fact"
+     ],
+     "verdict": "block",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "block"
+  },
+  "no-caveats-please": {
+   "answered": [
+    "b41b28e33061"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "region_code_c",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "no-period": {
+   "kind": "question",
+   "questions": [
+    "As released, or adjusted to match the published figures?"
+   ],
+   "status": "needs_clarification"
+  },
+  "no-standard-errors": {
+   "answered": [
+    "a71de4c2467c"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "northeast-minus-south": {
+   "answered": [
+    "316c0a19b0bf"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n2": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n3": {
+     "method": "difference",
+     "rules": [
+      "carried"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "not-a-statistics-request": {
+   "kind": "decline",
+   "status": "not_captured"
+  },
+  "nothing-matches": {
+   "kind": "question",
+   "questions": [
+    "I could not match 'spending on space tourism': No column or item code holds space tourism. Can you say it another way?"
+   ],
+   "status": "needs_clarification"
+  },
+  "older-members-long": {
+   "answered": [
+    "cc1b1c56bf41"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_weighted_count",
+     "rules": [
+      "unverified_fact",
+      "gap_2025_as_released",
+      "interview_filter"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "older-members-terse": {
+   "answered": [
+    "cc1b1c56bf41"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_weighted_count",
+     "rules": [
+      "unverified_fact",
+      "gap_2025_as_released",
+      "interview_filter"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "older-members-typos": {
+   "answered": [
+    "cc1b1c56bf41"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_weighted_count",
+     "rules": [
+      "unverified_fact",
+      "gap_2025_as_released",
+      "interview_filter"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "people-ambiguous": {
+   "kind": "question",
+   "questions": [
+    "Do you mean the number of persons, or the number of households?"
+   ],
+   "status": "needs_clarification"
+  },
+  "people-by-sex-long": {
+   "answered": [
+    "348aeaae7fb0"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_distinct_member_count",
+     "rules": [
+      "member_count",
+      "unweighted_count"
+     ],
+     "verdict": "warn",
+     "weighted": false
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "people-by-sex-terse": {
+   "answered": [
+    "348aeaae7fb0"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_distinct_member_count",
+     "rules": [
+      "member_count",
+      "unweighted_count"
+     ],
+     "verdict": "warn",
+     "weighted": false
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "people-by-sex-typos": {
+   "answered": [
+    "348aeaae7fb0"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_distinct_member_count",
+     "rules": [
+      "member_count",
+      "unweighted_count"
+     ],
+     "verdict": "warn",
+     "weighted": false
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "people-counted-by-sex": {
+   "answered": [
+    "348aeaae7fb0"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_distinct_member_count",
+     "rules": [
+      "member_count",
+      "unweighted_count"
+     ],
+     "verdict": "warn",
+     "weighted": false
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "plain-average-no-weights": {
+   "answered": [
+    "a339fbf94d90"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "unweighted_mean"
+     ],
+     "verdict": "warn",
+     "weighted": false
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "population-of-northeast": {
+   "answered": [
+    "7259ca03779c"
+   ],
+   "kind": "block",
+   "nodes": {
+    "n1": {
+     "method": "do_weighted_count",
+     "rules": [
+      "member_weighted_count",
+      "member_count",
+      "gap_2025_as_released"
+     ],
+     "verdict": "block",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "block"
+  },
+  "quarterly-rent-long": {
+   "answered": [
+    "d2014c71d1f7"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_monthly_rows_mean",
+     "rules": [
+      "unverified_fact",
+      "unweighted_mean"
+     ],
+     "verdict": "warn",
+     "weighted": false
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "quarterly-rent-terse": {
+   "answered": [
+    "d2014c71d1f7"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_monthly_rows_mean",
+     "rules": [
+      "unverified_fact",
+      "unweighted_mean"
+     ],
+     "verdict": "warn",
+     "weighted": false
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "quarterly-rent-typos": {
+   "answered": [
+    "d2014c71d1f7"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_monthly_rows_mean",
+     "rules": [
+      "unverified_fact",
+      "unweighted_mean"
+     ],
+     "verdict": "warn",
+     "weighted": false
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "quarterly-rent-unweighted": {
+   "answered": [
+    "d2014c71d1f7"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_monthly_rows_mean",
+     "rules": [
+      "unverified_fact",
+      "unweighted_mean"
+     ],
+     "verdict": "warn",
+     "weighted": false
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "quarterly-spending-to-annual-income": {
+   "answered": [
+    "2a81ce035e24"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n2": {
+     "method": "do_annual_value_mean",
+     "rules": [
+      "annual_value_reading",
+      "topcoded_variance",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n3": {
+     "method": "ratio",
+     "rules": [
+      "carried",
+      "converted"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "region-trio-long": {
+   "answered": [
+    "b41b28e33061",
+    "eb793135a1c9",
+    "fdf16a239bf5"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "region_code_c",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n2": {
+     "method": "do_annual_value_mean",
+     "rules": [
+      "topcoded_subgroup",
+      "annual_value_reading",
+      "topcoded_variance",
+      "region_code_c",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n3": {
+     "method": "ratio",
+     "rules": [
+      "carried"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n4": {
+     "method": "do_distinct_count",
+     "rules": [
+      "unweighted_count",
+      "region_code_c"
+     ],
+     "verdict": "warn",
+     "weighted": false
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "region-trio-terse": {
+   "answered": [
+    "b41b28e33061",
+    "eb793135a1c9",
+    "fdf16a239bf5"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "region_code_c",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n2": {
+     "method": "do_annual_value_mean",
+     "rules": [
+      "topcoded_subgroup",
+      "annual_value_reading",
+      "topcoded_variance",
+      "region_code_c",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n3": {
+     "method": "ratio",
+     "rules": [
+      "carried"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n4": {
+     "method": "do_distinct_count",
+     "rules": [
+      "unweighted_count",
+      "region_code_c"
+     ],
+     "verdict": "warn",
+     "weighted": false
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "region-trio-typos": {
+   "answered": [
+    "b41b28e33061",
+    "eb793135a1c9",
+    "fdf16a239bf5"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "region_code_c",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n2": {
+     "method": "do_annual_value_mean",
+     "rules": [
+      "topcoded_subgroup",
+      "annual_value_reading",
+      "topcoded_variance",
+      "region_code_c",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n3": {
+     "method": "ratio",
+     "rules": [
+      "carried"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n4": {
+     "method": "do_distinct_count",
+     "rules": [
+      "unweighted_count",
+      "region_code_c"
+     ],
+     "verdict": "warn",
+     "weighted": false
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "rent-by-region": {
+   "answered": [
+    "eb69161deb93"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_monthly_rows_mean",
+     "rules": [
+      "unverified_fact",
+      "topcoded_subgroup",
+      "topcoded_variance",
+      "region_code_c",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "rent-paid-detailed-table": {
+   "answered": [
+    "854386cb6167"
+   ],
+   "kind": "block",
+   "nodes": {
+    "n1": {
+     "method": null,
+     "rules": [
+      "unverified_core",
+      "measure_kind_unresolved",
+      "expn_measure",
+      "unverified_fact",
+      "gap_2025_as_released"
+     ],
+     "verdict": "block",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "block"
+  },
+  "rent-region-long": {
+   "answered": [
+    "eb69161deb93"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_monthly_rows_mean",
+     "rules": [
+      "unverified_fact",
+      "topcoded_subgroup",
+      "topcoded_variance",
+      "region_code_c",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "rent-region-terse": {
+   "answered": [
+    "eb69161deb93"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_monthly_rows_mean",
+     "rules": [
+      "unverified_fact",
+      "topcoded_subgroup",
+      "topcoded_variance",
+      "region_code_c",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "rent-region-typos": {
+   "answered": [
+    "eb69161deb93"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_monthly_rows_mean",
+     "rules": [
+      "unverified_fact",
+      "topcoded_subgroup",
+      "topcoded_variance",
+      "region_code_c",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "renting-households": {
+   "answered": [
+    "15ee01665ec0"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_weighted_count",
+     "rules": [
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "richest-household": {
+   "kind": "decline",
+   "status": "not_captured"
+  },
+  "same-by-state": {
+   "answered": [
+    "290b05a9b3a8",
+    "60cfce8be5a3",
+    "8561cf37accf"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "geography_limited",
+      "recoded_grouping",
+      "suppressed_partial",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n2": {
+     "method": "do_annual_value_mean",
+     "rules": [
+      "topcoded_subgroup",
+      "annual_value_reading",
+      "topcoded_variance",
+      "geography_limited",
+      "recoded_grouping",
+      "suppressed_partial",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n3": {
+     "method": "ratio",
+     "rules": [
+      "carried"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n4": {
+     "method": "do_distinct_count",
+     "rules": [
+      "unweighted_count",
+      "geography_limited",
+      "recoded_grouping",
+      "suppressed_partial"
+     ],
+     "verdict": "warn",
+     "weighted": false
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "share-of-income-spent": {
+   "answered": [
+    "e24bfe0da692"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n2": {
+     "method": "do_annual_value_mean",
+     "rules": [
+      "annual_value_reading",
+      "topcoded_variance",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n3": {
+     "method": "ratio",
+     "rules": [
+      "carried"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "share-of-renters": {
+   "answered": [
+    "6547dd69f89f"
+   ],
+   "kind": "block",
+   "nodes": {
+    "n1": {
+     "method": null,
+     "rules": [
+      "share_not_built",
+      "gap_2025_as_released"
+     ],
+     "verdict": "block",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "block"
+  },
+  "social-security-items": {
+   "answered": [
+    "1abb79816844"
+   ],
+   "kind": "block",
+   "nodes": {
+    "n1": {
+     "method": null,
+     "rules": [
+      "unverified_core",
+      "measure_kind_unresolved",
+      "unverified_fact",
+      "unverified_fact",
+      "topcoded_variance",
+      "gap_2025_as_released"
+     ],
+     "verdict": "block",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "block"
+  },
+  "spending-2023": {
+   "answered": [
+    "38f789aa3895"
+   ],
+   "kind": "block",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "period_not_loaded",
+      "unverified_fact"
+     ],
+     "verdict": "block",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "block"
+  },
+  "spending-and-income-by-region": {
+   "answered": [
+    "b41b28e33061",
+    "eb793135a1c9",
+    "fdf16a239bf5"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "region_code_c",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n2": {
+     "method": "do_annual_value_mean",
+     "rules": [
+      "topcoded_subgroup",
+      "annual_value_reading",
+      "topcoded_variance",
+      "region_code_c",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n3": {
+     "method": "ratio",
+     "rules": [
+      "carried"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n4": {
+     "method": "do_distinct_count",
+     "rules": [
+      "unweighted_count",
+      "region_code_c"
+     ],
+     "verdict": "warn",
+     "weighted": false
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "spending-by-metro": {
+   "answered": [
+    "bc7ab084a880"
+   ],
+   "kind": "block",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "geography_unsupported",
+      "unverified_fact",
+      "unverified_fact",
+      "gap_2025_as_released"
+     ],
+     "verdict": "block",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "block"
+  },
+  "spending-by-state": {
+   "answered": [
+    "8561cf37accf"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "geography_limited",
+      "recoded_grouping",
+      "suppressed_partial",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "spending-change-2024-to-2025": {
+   "answered": [
+    "5c9369425d88"
+   ],
+   "kind": "block",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "period_not_loaded",
+      "unverified_fact"
+     ],
+     "verdict": "block",
+     "weighted": true
+    },
+    "n2": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n3": {
+     "method": "difference",
+     "rules": [
+      "input_blocked",
+      "carried",
+      "difference_break"
+     ],
+     "verdict": "block",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "block"
+  },
+  "spending-in-texas": {
+   "answered": [
+    "dc81faa43be1"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "geography_limited",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "spending-in-the-west": {
+   "answered": [
+    "e379f05655ce"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "summer-gasoline": {
+   "answered": [
+    "617055541812"
+   ],
+   "kind": "block",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "part_year_not_built",
+      "gap_2025_as_released",
+      "flag"
+     ],
+     "verdict": "block",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "block"
+  },
+  "three-statistics": {
+   "answered": [
+    "b042a8e5fbfa",
+    "de84ea09190b",
+    "f909327c7859"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unverified_fact",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n2": {
+     "method": "do_annual_value_mean",
+     "rules": [
+      "annual_value_reading",
+      "topcoded_variance",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    },
+    "n3": {
+     "method": "do_weighted_count",
+     "rules": [
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "total-health-spending": {
+   "answered": [
+    "9a027063ea51"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_total",
+     "rules": [
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "total-income-per-household": {
+   "answered": [
+    "f909327c7859"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_annual_value_mean",
+     "rules": [
+      "annual_value_reading",
+      "topcoded_variance",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "toyota-bought": {
+   "kind": "question",
+   "questions": [
+    "The vehicle file lists vehicles owned, not purchases. Do you want households that own a Toyota, or only those that bought one in 2025?"
+   ],
+   "status": "needs_clarification"
+  },
+  "toyota-owners": {
+   "answered": [
+    "f6a928588a88"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_weighted_count",
+     "rules": [
+      "unverified_fact",
+      "region_code_c",
+      "gap_2025_as_released",
+      "interview_filter"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "two-years-pooled": {
+   "answered": [
+    "54c628409575"
+   ],
+   "kind": "block",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "period_not_loaded",
+      "unverified_fact",
+      "gap_2025_as_released",
+      "break_spanned"
+     ],
+     "verdict": "block",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "block"
+  },
+  "unadjusted-housing": {
+   "answered": [
+    "0c0aa8f0d87f"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "unemployment-rate": {
+   "kind": "decline",
+   "status": "not_captured"
+  },
+  "unweighted-with-standard-error": {
+   "answered": [
+    "64689fe2756a"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "unweighted_with_standard_error",
+      "unverified_fact",
+      "gap_2025_as_released"
+     ],
+     "verdict": "substitute",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "substitute"
+  },
+  "vehicle-item-codes": {
+   "kind": "question",
+   "questions": [
+    "I could not match 'all vehicle-related item codes': A group of item codes needs the item-code hierarchy, which is not in the project. Can you say it another way?"
+   ],
+   "status": "needs_clarification"
+  },
+  "vehicle-purchase-price": {
+   "answered": [
+    "d61733a7688a"
+   ],
+   "kind": "block",
+   "nodes": {
+    "n1": {
+     "method": null,
+     "rules": [
+      "unverified_core",
+      "measure_kind_unresolved",
+      "expn_measure",
+      "unverified_fact",
+      "gap_2025_as_released"
+     ],
+     "verdict": "block",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "block"
+  },
+  "version-one-income": {
+   "answered": [
+    "f909327c7859"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_annual_value_mean",
+     "rules": [
+      "annual_value_reading",
+      "topcoded_variance",
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "wage-per-person": {
+   "answered": [
+    "7de2fd510b8c"
+   ],
+   "kind": "block",
+   "nodes": {
+    "n1": {
+     "method": "do_annual_value_mean",
+     "rules": [
+      "member_level",
+      "unverified_fact",
+      "annual_value_reading",
+      "gap_2025_as_released"
+     ],
+     "verdict": "block",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "block"
+  },
+  "wages-from-fmli": {
+   "answered": [
+    "8f7c7dfbaa5d"
+   ],
+   "kind": "block",
+   "nodes": {
+    "n1": {
+     "method": null,
+     "rules": [
+      "unverified_core",
+      "measure_kind_unresolved",
+      "unverified_fact",
+      "gap_2025_as_released"
+     ],
+     "verdict": "block",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "block"
+  },
+  "wages-from-the-income-table": {
+   "answered": [
+    "f652f82ff68e"
+   ],
+   "kind": "block",
+   "nodes": {
+    "n1": {
+     "method": null,
+     "rules": [
+      "unverified_core",
+      "measure_kind_unresolved",
+      "unverified_fact",
+      "unverified_fact",
+      "topcoded_variance",
+      "gap_2025_as_released"
+     ],
+     "verdict": "block",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "block"
+  },
+  "weighted-said": {
+   "answered": [
+    "adc513c3b0f1"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "weights-not-mentioned": {
+   "answered": [
+    "88b1f81ab61a"
+   ],
+   "kind": "figures",
+   "nodes": {
+    "n1": {
+     "method": "do_calendar_pair_mean",
+     "rules": [
+      "gap_2025_as_released"
+     ],
+     "verdict": "warn",
+     "weighted": true
+    }
+   },
+   "status": "captured",
+   "verdict": "warn"
+  },
+  "what-is-a-consumer-unit": {
+   "kind": "decline",
+   "status": "not_captured"
+  },
+  "why-no-match": {
+   "kind": "decline",
+   "status": "not_captured"
+  }
+ },
+ "versions": {
+  "master": "0.1.0",
+  "rules_version": "1.1",
+  "vocabulary": "0.1.3"
+ }
+}

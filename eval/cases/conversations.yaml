@@ -1,0 +1,244 @@
+# Set 4, conversations (Plan 6). Each conversation is a chain of cases: a case
+# with `follows`, `answers` or `corrects` continues the case it names, and one
+# with `after` is a new request later in the same conversation.
+
+version: "1.0"
+set: conversations
+loaded_years: [2025]
+
+cases:
+  # ── two follow-ups in a row ───────────────────────────────────────────────
+  - id: conv-spending
+    nuance: [follow_up]
+    message: "What was average total spending per household in 2025, as released?"
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: fmli, column: totexpcq}
+          period: {text: "in 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+      answers:
+        - {asks: "What was average total spending per household", node: n1}
+    expect:
+      status: captured
+      outcome:
+        n1: {verdict: warn, method: do_calendar_pair_mean}
+
+  - id: conv-spending-by-region
+    follows: conv-spending
+    nuance: [follow_up, region_c]
+    mistake: "Writing the request again and dropping the 2025 choice the user gave earlier."
+    message: "And by region?"
+    gold:
+      patch:
+        - {op: set_group_by, node: "*", group_by: [{table: fmli, column: region}]}
+      answers: []
+    expect:
+      status: captured
+      resolved:
+        n1: {geography_level: region, gap_2025: as_released}
+      outcome:
+        n1: {verdict: warn, method: do_calendar_pair_mean, rules: [region_code_c]}
+
+  - id: conv-spending-renters
+    follows: conv-spending-by-region
+    nuance: [follow_up]
+    mistake: "Dropping the regional grouping when adding the filter."
+    message: "Only for households that rent."
+    gold:
+      patch:
+        - {op: add_filter, node: "*", filter: {table: fmli, column: cutenure, comparison: eq, value: "4"}}
+      answers: []
+    expect:
+      status: captured
+      resolved:
+        n1: {geography_level: region}
+      outcome:
+        n1: {verdict: warn, method: do_calendar_pair_mean, rules: [region_code_c]}
+
+  # ── a clarification answered ──────────────────────────────────────────────
+  - id: conv-income-no-choice
+    nuance: [gap_2025, clarification]
+    message: "What was average income before taxes per household in 2025, by housing tenure?"
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: fmli, column: fincbtxm}
+          group_by: [{table: fmli, column: cutenure}]
+          period: {text: "in 2025", kind: year, values: [2025]}
+      answers:
+        - {asks: "What was average income before taxes per household in 2025, by housing tenure", node: n1}
+    expect:
+      status: needs_clarification
+      questions: ["As released, or adjusted to match the published figures?"]
+
+  - id: conv-income-as-released
+    answers: conv-income-no-choice
+    nuance: [clarification, topcoding]
+    mistake: "Treating the answer as a new request, and losing the measure and the grouping."
+    message: "As released, please."
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: fmli, column: fincbtxm}
+          group_by: [{table: fmli, column: cutenure}]
+          period: {text: "in 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "As released"}
+      answers:
+        - {asks: "What was average income before taxes per household in 2025, by housing tenure", node: n1}
+    expect:
+      status: captured
+      outcome:
+        n1: {verdict: warn, method: do_annual_value_mean, rules: [topcoded_subgroup, gap_2025_as_released]}
+
+  # ── an ambiguity answered ─────────────────────────────────────────────────
+  - id: conv-people-means-households
+    answers: people-ambiguous
+    nuance: [clarification, people, household_unit]
+    mistake: "Keeping the count of members after the user said households."
+    message: "I mean households."
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: count
+          filters: [{table: fmli, column: region, comparison: eq, value: West}]
+          period: {text: "in 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+            count_unit: {value: consumer_unit, evidence: "households"}
+      answers:
+        - {asks: "How many people lived in the West", node: n1}
+    expect:
+      status: captured
+      resolved:
+        n1: {count_unit: consumer_unit, count_method: weighted_population}
+      outcome:
+        n1: {verdict: warn, method: do_weighted_count}
+
+  # ── a new request in the same conversation ────────────────────────────────
+  - id: conv-health
+    nuance: [topic_change]
+    message: "Average health care spending per household by region in 2025, as released."
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: fmli, column: healthcq}
+          group_by: [{table: fmli, column: region}]
+          period: {text: "in 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+      answers:
+        - {asks: "Average health care spending per household by region", node: n1}
+    expect:
+      status: captured
+      outcome:
+        n1: {verdict: warn, method: do_calendar_pair_mean}
+
+  - id: conv-renters-count
+    after: conv-health
+    nuance: [topic_change, household_unit]
+    mistake: "Sending it as a follow-up, which would keep the health measure and the regional grouping."
+    message: "Different question: how many households rented their home in 2025, as released?"
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: count
+          filters: [{table: fmli, column: cutenure, comparison: eq, value: "4"}]
+          period: {text: "in 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+      answers:
+        - {asks: "how many households rented their home", node: n1}
+    expect:
+      status: captured
+      outcome:
+        n1: {verdict: warn, method: do_weighted_count, not_rules: [region_code_c]}
+
+  # ── a follow-up that moves to a year not loaded ───────────────────────────
+  - id: conv-transport
+    nuance: [follow_up]
+    message: "Average transportation spending per household in 2025, as released?"
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: fmli, column: transcq}
+          period: {text: "in 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+      answers:
+        - {asks: "Average transportation spending per household", node: n1}
+    expect:
+      status: captured
+      outcome:
+        n1: {verdict: warn, method: do_calendar_pair_mean}
+
+  - id: conv-transport-2024
+    follows: conv-transport
+    nuance: [follow_up, period_not_loaded]
+    mistake: "Answering 2024 from memory once the server says the year is not loaded."
+    message: "Same thing for 2024."
+    gold:
+      patch:
+        - {op: set_period, node: "*", period: {text: "for 2024", kind: year, values: [2024]}}
+        - {op: remove_stated, node: "*", field: gap_2025}
+      answers: []
+    expect:
+      status: captured
+      accept_status: [captured, not_captured]
+      flags: [period_not_loaded]
+      outcome:
+        n1: {verdict: block, rules: [period_not_loaded]}
+
+  # ── a failed check, corrected (server mechanics: not put to a model) ──────
+  - id: conv-wrong-column
+    offline_only: true
+    nuance: [correction]
+    message: "Average total spending per household in 2025, as released."
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: fmli, column: total_spending}
+          period: {text: "in 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+      answers:
+        - {asks: "Average total spending per household", node: n1}
+    expect:
+      status: check_failed
+
+  - id: conv-wrong-column-corrected
+    offline_only: true
+    corrects: conv-wrong-column
+    nuance: [correction]
+    message: "Average total spending per household in 2025, as released."
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: fmli, column: totexpcq}
+          period: {text: "in 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+      answers:
+        - {asks: "Average total spending per household", node: n1}
+    expect:
+      status: captured
+      outcome:
+        n1: {verdict: warn, method: do_calendar_pair_mean}

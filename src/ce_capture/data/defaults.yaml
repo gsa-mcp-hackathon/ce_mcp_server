@@ -1,0 +1,29 @@
+# The default set (D10): what derivation fills when the user did not state a
+# choice. Each default names the passage of the ce-pumd-methodology skill (or
+# the plan decision) it comes from. Changing a default raises the version, and
+# every resolved record names the version it used.
+
+version: "1.1"
+
+defaults:
+  weight:
+    value: from_master  # the master sidecar's ce:weight column (finlwt21)
+    source: "SKILL.md, Processing a request, step 5: apply the weight unless the user said not to."
+  time_basis:
+    value: year
+    source: "references/estimation.md, The formulas: the mean is per consumer unit per year."
+  missing_codes:
+    value: removed
+    source: "references/limits.md, Flags: nonresponse blanks are removed before a statistic, and the share removed is reported."
+  imputation:
+    value: five_versions_averaged
+    source: "references/limits.md, Top-coding and imputation: estimates average across the five versions."
+  standard_error:
+    value: when_weighted
+    source: "Plan 4, D10: standard errors are returned for weighted estimates; SKILL.md: none unless computed from the replicate weights."
+  count_unit:
+    value: consumer_unit
+    source: "SKILL.md, point 5: an interview is not a household; a household is a consumer unit."
+  period:
+    value: latest_loaded_release
+    source: "Plan 4 build: a request that names no period is read as the latest survey year loaded, marked defaulted."

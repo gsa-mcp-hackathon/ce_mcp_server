@@ -1,0 +1,415 @@
+# Set 1, the core cases (Plan 4, build step 10; Plan 6, set 1).
+#
+# Each case is a user message with the record a careful model should write
+# (`gold`) and what code must make of it (`expect`): the capture status, flags
+# and resolved choices, and under `outcome` the verdicts and rules of
+# processing (Plan 5). `nuance` names what the case tests (nuances.yaml).
+#
+# - `ce-eval gold` submits every gold record, processes it and checks the
+#   expectations and the frozen outcomes, with no model at all.
+# - `ce-eval run` puts the messages to a model and scores what it does.
+#
+# Names, codes and statuses are those of the 2025 release, with survey year
+# 2025 loaded. A case with `follows` or `answers` links to the case it names.
+
+version: "1.1"
+set: core
+loaded_years: [2025]
+
+cases:
+  - id: spending-and-income-by-region
+    nuance: [calendar_pair, annual_value, ratio, region_c, household_unit, multi_part]
+    tables: [fmli]
+    message: "For 2025, as released, what's average annual spending per household by region, and what is that as a share of average annual income before taxes? Also, how many households did you interview in each region? Skip the weights for that count."
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: fmli, column: totexpcq}
+          group_by: [{table: fmli, column: region}]
+          period: {text: "For 2025", kind: year, values: [2025]}
+          stated:
+            time_basis: {value: year, evidence: "average annual spending"}
+            gap_2025: {value: as_released, evidence: "as released"}
+        - id: n2
+          kind: estimate
+          statistic: mean
+          measure: {table: fmli, column: fincbtxm}
+          group_by: [{table: fmli, column: region}]
+          period: {text: "For 2025", kind: year, values: [2025]}
+          stated:
+            time_basis: {value: year, evidence: "average annual income before taxes"}
+            gap_2025: {value: as_released, evidence: "as released"}
+        - id: n3
+          kind: combine
+          statistic: ratio
+          inputs: {numerator: n1, denominator: n2}
+        - id: n4
+          kind: estimate
+          statistic: count
+          group_by: [{table: fmli, column: region}]
+          period: {text: "For 2025", kind: year, values: [2025]}
+          stated:
+            weighted: {value: false, evidence: "Skip the weights for that count."}
+            count_unit: {value: consumer_unit, evidence: "how many households"}
+            gap_2025: {value: as_released, evidence: "as released"}
+      answers:
+        - {asks: "what's average annual spending per household by region", node: n1}
+        - {asks: "what is that as a share of average annual income before taxes", node: n3}
+        - {asks: "how many households did you interview in each region", node: n4}
+    expect:
+      status: captured
+      resolved:
+        n1: {measure_kind: calendar_pair, weight: finlwt21, time_basis: year}
+        n2: {measure_kind: annual_value, imputation: five_versions_averaged}
+        n3: {conversion: none}
+        n4: {count_method: distinct_cuid, weight: null, standard_error: false}
+      flags: [needs_review]
+      resolved_flags: [annual_value_mean]
+      outcome:
+        verdict: warn
+        n1: {verdict: warn, method: do_calendar_pair_mean, rules: [region_code_c, gap_2025_as_released]}
+        n2: {verdict: warn, method: do_annual_value_mean, rules: [topcoded_subgroup, annual_value_reading]}
+        n3: {verdict: warn, method: ratio, rules: [carried]}
+        n4: {verdict: warn, method: do_distinct_count, weighted: false, rules: [unweighted_count], not_rules: [gap_2025_as_released]}
+
+  - id: same-by-state
+    nuance: [follow_up, state]
+    tables: [fmli]
+    follows: spending-and-income-by-region
+    message: "Now do the same by state."
+    gold:
+      patch:
+        - {op: set_group_by, node: "*", group_by: [{table: fmli, column: state}]}
+      answers: []
+    expect:
+      status: captured
+      resolved:
+        n1: {geography_level: state}
+        n4: {geography_level: state, count_method: distinct_cuid}
+      outcome:
+        n1: {verdict: warn, rules: [geography_limited, recoded_grouping, suppressed_partial], not_rules: [region_code_c]}
+
+  - id: rent-by-region
+    nuance: [item_mix, region_c]
+    tables: [mtbi, fmli]
+    message: "In 2025, as released, what did households spend on rent on average, by region?"
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: mtbi, column: cost}
+          group_by: [{table: fmli, column: region}]
+          filters: [{table: mtbi, column: ucc, comparison: in, value: ["210110"]}]
+          period: {text: "In 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+      answers:
+        - {asks: "what did households spend on rent on average, by region", node: n1}
+    also:
+      - {node: n1, measure: {table: fmli, column: rendwecq}, filters: []}
+      - {node: n1, measure: {table: fmli, column: rntxrpcq}, filters: []}
+    expect:
+      status: captured
+      resolved:
+        n1: {measure_kind: monthly_rows, time_basis: year}
+      outcome:
+        n1: {verdict: warn, method: do_monthly_rows_mean, rules: [topcoded_subgroup, region_code_c], not_rules: [item_code_unfiltered]}
+
+  - id: quarterly-rent-unweighted
+    nuance: [weights, item_mix]
+    tables: [mtbi]
+    message: "What is average quarterly rent in 2025 as released, unweighted?"
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: mtbi, column: cost}
+          filters: [{table: mtbi, column: ucc, comparison: eq, value: "210110"}]
+          period: {text: "in 2025", kind: year, values: [2025]}
+          stated:
+            time_basis: {value: quarter, evidence: "quarterly"}
+            gap_2025: {value: as_released, evidence: "as released"}
+            weighted: {value: false, evidence: "unweighted"}
+      answers:
+        - {asks: "What is average quarterly rent", node: n1}
+    also:
+      - {node: n1, measure: {table: fmli, column: rendwecq}, filters: []}
+      - {node: n1, measure: {table: fmli, column: rntxrpcq}, filters: []}
+    expect:
+      status: captured
+      resolved:
+        n1: {measure_kind: monthly_rows, time_basis: quarter, weight: null, standard_error: false}
+      outcome:
+        n1: {verdict: warn, method: do_monthly_rows_mean, weighted: false, rules: [unweighted_mean]}
+
+  - id: households-with-older-members
+    nuance: [member_filter, household_unit]
+    tables: [memi, fmli]
+    message: "How many households had someone 65 or older in 2025, as released?"
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: count
+          filters: [{table: memi, column: age, comparison: ge, value: 65}]
+          period: {text: "in 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+      answers:
+        - {asks: "How many households had someone 65 or older", node: n1}
+    also:
+      - {node: n1, filters: [{table: fmli, column: persot64, comparison: ge, value: 1}]}
+      - {node: n1, filters: [{table: fmli, column: persot64, comparison: gt, value: 0}]}
+    expect:
+      status: captured
+      resolved:
+        n1: {count_method: weighted_population, count_unit: consumer_unit}
+      flags: [needs_review]
+      outcome:
+        n1: {verdict: warn, method: do_weighted_count, rules: [interview_filter]}
+
+  - id: people-counted-by-sex
+    nuance: [people]
+    tables: [memi]
+    message: "How many people did you interview in 2025, by sex? As released, and skip the weights."
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: count
+          group_by: [{table: memi, column: sex}]
+          period: {text: "in 2025", kind: year, values: [2025]}
+          stated:
+            count_unit: {value: member, evidence: "How many people"}
+            weighted: {value: false, evidence: "skip the weights"}
+            gap_2025: {value: as_released, evidence: "As released"}
+      answers:
+        - {asks: "How many people did you interview in 2025, by sex", node: n1}
+    expect:
+      status: captured
+      resolved:
+        n1: {count_method: distinct_member, count_unit: member}
+      outcome:
+        n1: {verdict: warn, method: do_distinct_member_count, weighted: false, rules: [member_count, unweighted_count]}
+
+  - id: wages-from-the-income-table
+    nuance: [income_items]
+    tables: [itbi]
+    message: "What was average wage and salary income in 2025, as released, from the income item table?"
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: itbi, column: value}
+          filters: [{table: itbi, column: ucc, comparison: eq, value: "900000"}]
+          period: {text: "in 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+      answers:
+        - {asks: "What was average wage and salary income", node: n1}
+    expect:
+      status: captured
+      resolved:
+        n1: {measure_kind: unresolved}
+      flags: [needs_review]
+      resolved_flags: [measure_kind_unresolved]
+      outcome:
+        n1: {verdict: block, rules: [unverified_core, measure_kind_unresolved]}
+
+  - id: rent-paid-detailed-table
+    nuance: [expn_tables]
+    tables: [expn_rnt]
+    message: "Average total rent paid in the reference period for 2025, as released, from the rented living quarters section."
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: expn_rnt, column: qrt3mcmx}
+          period: {text: "for 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+      answers:
+        - {asks: "Average total rent paid in the reference period", node: n1}
+    expect:
+      status: captured
+      resolved:
+        n1: {measure_kind: unresolved}
+      resolved_flags: [measure_kind_unresolved]
+      outcome:
+        n1: {verdict: block, rules: [expn_measure]}
+
+  - id: toyota-owners
+    nuance: [owned_vehicles, expn_tables, member_filter]
+    tables: [expn_ovb, fmli]
+    message: "How many households owned a Toyota in 2025, as released, by region?"
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: count
+          group_by: [{table: fmli, column: region}]
+          filters: [{table: expn_ovb, column: make, comparison: eq, value: TOYOTA}]
+          period: {text: "in 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+      answers:
+        - {asks: "How many households owned a Toyota", node: n1}
+    expect:
+      status: captured
+      fixes: [filter_label]
+      resolved:
+        n1: {count_method: weighted_population}
+      outcome:
+        n1: {verdict: warn, method: do_weighted_count, rules: [interview_filter, region_code_c]}
+
+  - id: version-one-income
+    nuance: [imputed_versions, annual_value]
+    tables: [fmli]
+    message: "Average income before taxes for 2025 as released, using fincbtx1."
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: fmli, column: fincbtx1}
+          period: {text: "for 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+      answers:
+        - {asks: "Average income before taxes", node: n1}
+    also:
+      - {node: n1, stated: {imputation: {value: version_1, evidence: "using fincbtx1"}}}
+    expect:
+      status: captured
+      resolved:
+        n1: {imputation: five_versions_averaged}
+      resolved_flags: [imputed_version_averaged, annual_value_mean]
+      outcome:
+        n1: {verdict: warn, method: do_annual_value_mean, not_rules: [one_imputed_version]}
+
+  - id: spending-change-2024-to-2025
+    nuance: [period_not_loaded, breaks, ratio]
+    tables: [fmli]
+    message: "How did average spending change from 2024 to 2025, as released?"
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: fmli, column: totexpcq}
+          period: {text: "2024", kind: year, values: [2024]}
+        - id: n2
+          kind: estimate
+          statistic: mean
+          measure: {table: fmli, column: totexpcq}
+          period: {text: "2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+        - id: n3
+          kind: combine
+          statistic: difference
+          inputs: {first: n2, second: n1}
+      answers:
+        - {asks: "How did average spending change from 2024 to 2025", node: n3}
+    expect:
+      status: captured
+      flags: [period_not_loaded]
+      outcome:
+        verdict: block
+        n1: {verdict: block, rules: [period_not_loaded]}
+        n2: {verdict: warn}
+        n3: {verdict: block, method: difference, rules: [input_blocked, difference_break]}
+
+  - id: no-2025-choice
+    nuance: [gap_2025]
+    tables: [fmli]
+    message: "What was average spending per household in 2025?"
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: fmli, column: totexpcq}
+          period: {text: "in 2025", kind: year, values: [2025]}
+      answers:
+        - {asks: "What was average spending per household", node: n1}
+    expect:
+      status: needs_clarification
+      questions: ["As released, or adjusted to match the published figures?"]
+
+  - id: no-2025-choice-answered
+    nuance: [gap_2025, adjusted_pair, clarification]
+    tables: [fmli]
+    answers: no-2025-choice
+    message: "Adjusted to match the published figures, please."
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: fmli, column: totexpcq}
+          period: {text: "in 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: adjusted, evidence: "Adjusted to match the published figures"}
+      answers:
+        - {asks: "What was average spending per household", node: n1}
+    expect:
+      status: captured
+      resolved_flags: [adjusted_calendar_pair]
+      outcome:
+        n1: {verdict: block, rules: [adjusted_calendar_pair]}
+
+  - id: people-ambiguous
+    nuance: [people]
+    tables: [fmli]
+    message: "How many people lived in the West in 2025, as released?"
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: count
+          filters: [{table: fmli, column: region, comparison: eq, value: West}]
+          period: {text: "in 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+            count_unit: {value: member, evidence: "How many people"}
+      answers:
+        - {asks: "How many people lived in the West", node: n1}
+      ambiguities:
+        - phrase: "How many people"
+          options: [persons in the population, consumer units]
+          chosen: persons in the population
+          ask_user: true
+          question: "Do you mean the number of persons, or the number of households?"
+    expect:
+      status: needs_clarification
+      fixes: [filter_label]
+
+  - id: nothing-matches
+    nuance: [item_hierarchy]
+    tables: []
+    message: "What was average spending on space tourism in 2025, as released?"
+    gold:
+      nodes: []
+      unresolved:
+        - {phrase: "spending on space tourism", reason: "No column or item code holds space tourism."}
+    expect:
+      status: needs_clarification
+      accept_status: [needs_clarification, not_captured]
+
+  - id: not-a-statistics-request
+    nuance: [not_statistical]
+    tables: []
+    message: "Who runs the Consumer Expenditure Survey?"
+    gold:
+      nodes: []
+      reason_code: not_statistical
+      reason: "The question is about the survey, not a statistic from its data."
+    expect:
+      status: not_captured

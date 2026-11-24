@@ -1,0 +1,277 @@
+# MASTER sidecar for the CE Interview Survey, written against the Open Data
+# Contract Standard (ODCS) v3.2.0.
+#
+# Status: draft, version 0.1.0. Not yet validated against the ODCS JSON Schema.
+#
+# Scope: the facts shared by every Interview table (survey design, weight,
+# replicate weights, variance method, reference period, breaks, geography
+# levels), the list of table sidecars, and the relationships between them.
+# It describes no columns; each table sidecar does that and points here
+# through ce:master. The meaning of each "ce:" property is in the vocabulary
+# named by ce:vocabulary (vocabulary.yaml).
+#
+# Tables listed: the five core tables of the 2025 release, written by hand, and
+# its 43 detailed expenditure (expn_*) tables. The expn entries in ce:tables and
+# ce:relationships sit between marker lines and are written by
+# `ce-sidecars sync-master` from the stored tables: do not edit them by hand.
+
+apiVersion: v3.2.0
+kind: DataContract
+id: ce-interview-master
+name: ce_interview_master
+version: 0.1.0
+status: draft
+domain: consumer-expenditure
+dataProduct: ce-interview-survey
+tenant: TBD
+
+description:
+  purpose: >
+    The survey design and the table set of the BLS Consumer Expenditure
+    Interview Survey public-use microdata, as loaded: what every table shares,
+    which tables exist, and how they join.
+  limitations: >
+    Describes the 2025 release. Facts that change between releases (variance
+    method, breaks) are recorded by release.
+  usage: >
+    Read this file before any table sidecar. It names the weight, how
+    standard errors are computed, and how each table reaches the weight.
+
+authoritativeDefinitions:
+  - type: businessDefinition
+    url: https://www.bls.gov/cex/pumd-getting-started-guide.htm
+    description: BLS public-use microdata getting started guide.
+  - type: businessDefinition
+    url: https://www.bls.gov/cex/ce-standarderrors.htm
+    description: BLS guidance on standard errors for CE estimates.
+  - type: businessDefinition
+    url: https://www.bls.gov/cex/ce-pumd-2025-shutdown-impact.htm
+    description: BLS note on the 2025 collection gap and the microdata.
+  - type: glossary
+    url: vocabulary.yaml#properties
+    description: "Definitions of the ce: custom properties used in this contract."
+
+context:
+  instructions: >
+    This is the master sidecar for the CE Interview Survey. Use ce:weight for
+    every population estimate and ce:variance for standard errors. A table
+    other than the one that carries the weight reaches it only through a
+    ce:relationships entry with weightFrom parent: sum its rows to the
+    parent's key first, then apply the parent's weight. Links with
+    weightFrom self group rows of one unit and never route a weight.
+  constraints:
+    - id: c-weight-route
+      constraint: >
+        Never add weights across a same_unit link: one consumer unit has up to
+        four interviews, each carrying its own weight.
+      tags: [ 'weights' ]
+    - id: c-2025-gap-unadjusted
+      constraint: >
+        The 2025 microdata is not adjusted for the collection gap
+        (BRK_2025_COLLECTION_GAP). BLS adjusted its published 2025 estimates
+        but not the microdata: fourth-quarter 2025 interviews (December only)
+        represent one third of the usual number of consumer units. State
+        whether a 2025 estimate is as released or adjusted to mimic the
+        published figures. The adjustment is applied at estimation time: BLS
+        gives replacement months-in-scope values (3.5 and 5.5 for some
+        interview months) and factors on monthly amounts for July to October.
+        The stored mo_scope stays the standard value.
+      tags: [ 'breaks', 'weights' ]
+    - id: c-state-weights
+      constraint: >
+        No state estimate for the 2025 release has a supporting weight. BLS
+        research state weights covered California, Florida, New York and
+        Texas for 2017 to 2023 and New Jersey for 2017 to 2020; none exist
+        after 2023. A state estimate rests on the national weight alone and
+        needs that caveat.
+      tags: [ 'geography', 'weights' ]
+
+customProperties:
+  # ── Pointer and release ──────────────────────────────────────────────────
+  - property: ce:vocabulary
+    value: {id: ce-vocabulary, version: 0.1.3}
+  - property: ce:sourceRelease
+    value: 2025
+
+  # ── Survey design ────────────────────────────────────────────────────────
+  - property: ce:targetPopulation
+    value: US civilian noninstitutional population, as consumer units
+  - property: ce:design
+    value: {type: rotating_panel, maxInterviews: 4, panelId: cuid}
+  - property: ce:weight
+    value: {table: ce-interview-fmli, column: finlwt21}
+  - property: ce:replicateWeights
+    value: {table: ce-interview-fmli, prefix: wtrep, count: 44}
+  - property: ce:variance
+    value:
+      formula: "sum((theta_r - theta)^2) / (R * (1 - k)^2)"
+      byRelease:
+        - {releases: "<=2024", method: brr, R: 44, k: 0}
+        # Fay-adjusted: all 44 replicate weights are positive on every 2025
+        # fmli row. Method, R and k confirmed against the BLS standard errors
+        # page (ce-standarderrors.htm) on 2026-11-20.
+        - {releases: ">=2025", method: fay, R: 44, k: 0.5}
+  - property: ce:referencePeriod
+    value: three months before the interview month
+  - property: ce:breaks
+    value:
+      - {id: BRK_2023_QUESTIONNAIRE, from: 2023, kind: question_or_coding, affects: TBD}
+      - {id: BRK_2025_SAMPLE_REDESIGN, from: 2025, kind: sample_or_weighting, affects: all}
+      - {id: BRK_2025_COLLECTION_GAP, from: 2025-10-01, to: 2025-11-12, kind: disruption, affects: all}
+  - property: ce:geographyLevels
+    value: {region: reliable, division: reliable, state: limited, belowState: unsupported}
+
+  # ── Table list ───────────────────────────────────────────────────────────
+  - property: ce:tables
+    value:
+      - {sidecar: ce-interview-fmli, version: 0.4.0, rowRepresents: consumer_unit_interview, carriesWeight: true}
+      - {sidecar: ce-interview-memi, version: 0.1.0, rowRepresents: member_interview, carriesWeight: false}
+      - {sidecar: ce-interview-mtbi, version: 0.1.0, rowRepresents: expenditure_item_month, carriesWeight: false}
+      - {sidecar: ce-interview-itbi, version: 0.1.0, rowRepresents: income_item_month, carriesWeight: false}
+      - {sidecar: ce-interview-itii, version: 0.1.0, rowRepresents: imputed_income_item_month, carriesWeight: false}
+      # >>> expn tables: written by `ce-sidecars sync-master`; do not edit
+      - {sidecar: ce-interview-expn_apa, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_apb, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_cld, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_cle, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_cnt, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_cra, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_crb, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_eqb, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_exp, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_fce, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_fra, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_frb, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_hel, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_hhm, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_hhp, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_him, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_hsv, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_inb, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_lsd, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_mdb, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_mis, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_mor, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_opb, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_opd, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_oph, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_opi, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_ovb, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_ovc, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_pbt, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_rnt, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_rtv, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_sub, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_trd, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_tre, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_trf, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_trv, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_uta, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_utc, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_utp, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_vot, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_vqb, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_vtr, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      - {sidecar: ce-interview-expn_xpb, version: 0.1.0, rowRepresents: expn_record, carriesWeight: false}
+      # <<< expn tables
+
+  # ── Relationships ────────────────────────────────────────────────────────
+  # Parent -> child on newid: the child takes the interview's weight.
+  # Same unit on cuid: groups one unit's rows; never a weight route.
+  - property: ce:relationships
+    value:
+      - parent: ce-interview-fmli
+        child: ce-interview-memi
+        keys: {parent: [newid], child: [newid]}
+        cardinality: one_to_many
+        childRowsOptional: false
+        weightFrom: parent
+        note: Every interview has at least one member row.
+      - parent: ce-interview-fmli
+        child: ce-interview-mtbi
+        keys: {parent: [newid], child: [newid]}
+        cardinality: one_to_many
+        childRowsOptional: true
+        weightFrom: parent
+        note: A consumer unit with no reported spending has no child rows.
+      - parent: ce-interview-fmli
+        child: ce-interview-itbi
+        keys: {parent: [newid], child: [newid]}
+        cardinality: one_to_many
+        childRowsOptional: true
+        weightFrom: parent
+        note: No income item rows means zero, not missing.
+      - parent: ce-interview-fmli
+        child: ce-interview-itii
+        keys: {parent: [newid], child: [newid]}
+        cardinality: one_to_many
+        childRowsOptional: true
+        weightFrom: parent
+        note: >
+          Five imputed versions (impnum 1-5) per income item and month; average
+          estimates across versions. 54 of the 2025 interviews have no rows.
+      - parent: ce-interview-fmli
+        child: ce-interview-fmli
+        keys: {parent: [cuid], child: [cuid]}
+        cardinality: same_unit
+        weightFrom: self
+        note: >
+          The interviews of one consumer unit: up to four, at most one per
+          quarter. Each keeps its own weight; weights are never added across them.
+      - parent: ce-interview-memi
+        child: ce-interview-memi
+        keys: {parent: [cuid, membno], child: [cuid, membno]}
+        cardinality: same_unit
+        weightFrom: self
+        note: >
+          One member across the consumer unit's interviews: up to four rows, at
+          most one per quarter. Each row takes its weight through its own
+          interview's fmli row.
+      # >>> expn relationships: written by `ce-sidecars sync-master`; do not edit
+      - {parent: ce-interview-fmli, child: ce-interview-expn_apa, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_apb, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_cld, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_cle, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_cnt, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_cra, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_crb, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_eqb, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_exp, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_fce, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_fra, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_frb, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_hel, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_hhm, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_hhp, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_him, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_hsv, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_inb, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_lsd, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_mdb, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_mis, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_mor, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_opb, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_opd, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_oph, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_opi, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_ovb, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_ovc, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_pbt, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_rnt, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_rtv, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_sub, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_trd, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_tre, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_trf, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_trv, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_uta, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_utc, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_utp, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_vot, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_vqb, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_vtr, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      - {parent: ce-interview-fmli, child: ce-interview-expn_xpb, keys: {parent: [newid], child: [newid]}, cardinality: one_to_many, childRowsOptional: true, weightFrom: parent, note: No rows when the section did not apply.}
+      # <<< expn relationships
+
+tags: [ 'bls', 'consumer-expenditure', 'survey', 'master-sidecar' ]
+contractCreatedTs: 2026-11-18T00:00:00Z

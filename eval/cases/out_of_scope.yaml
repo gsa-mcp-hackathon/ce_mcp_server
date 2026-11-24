@@ -1,0 +1,140 @@
+# Set 5, out of scope (Plan 6): what the Interview Survey or the server cannot
+# answer, and requests about how results are shown. `expect.answer.mentions`
+# lists what the final answer must say: each inner list holds alternatives.
+
+version: "1.0"
+set: out_of_scope
+loaded_years: [2025]
+
+cases:
+  - id: eggs-per-week
+    nuance: [diary]
+    mistake: "Approximating a weekly grocery item from the Interview data."
+    message: "How much did households spend on eggs per week in 2025?"
+    gold:
+      nodes: []
+      reason_code: outside_survey
+      reason: "Weekly spending on single grocery items comes from the Diary Survey, which is not loaded; this server holds the Interview Survey."
+    expect:
+      status: not_captured
+      accept_status: [not_captured, needs_clarification]
+      answer:
+        mentions: [["Diary"]]
+
+  - id: why-no-match
+    nuance: [published_tables, not_statistical]
+    mistake: "Promising a match, or inventing a reason."
+    message: "Why doesn't your average spending figure match the table BLS publishes?"
+    gold:
+      nodes: []
+      reason_code: not_statistical
+      reason: "A question about method: results here use the Interview Survey alone, while BLS tables integrate the Diary Survey and use data that is not top-coded."
+    expect:
+      status: not_captured
+      answer:
+        mentions: [["Diary", "Interview Survey only", "Interview Survey alone", "top-cod", "topcod", "integrat"]]
+
+  - id: what-is-a-consumer-unit
+    nuance: [not_statistical]
+    mistake: "Forcing a request record for a question about a definition."
+    message: "What is a consumer unit?"
+    gold:
+      nodes: []
+      reason_code: not_statistical
+      reason: "A question about a definition, not a statistic from the data."
+    expect:
+      status: not_captured
+
+  - id: unemployment-rate
+    nuance: [not_statistical]
+    mistake: "Answering from memory as if it came from this data."
+    message: "What was the unemployment rate in 2025?"
+    gold:
+      nodes: []
+      reason_code: outside_survey
+      reason: "The unemployment rate comes from another survey; the CE Interview Survey does not measure it."
+    expect:
+      status: not_captured
+      accept_status: [not_captured, needs_clarification]
+
+  - id: richest-household
+    nuance: [not_statistical]
+    mistake: "Trying to list single records."
+    message: "Show me the record of the household with the highest income in 2025, as released."
+    gold:
+      nodes: []
+      reason_code: statistic_not_supported
+      reason: "The server returns statistics per group, never single records."
+    expect:
+      status: not_captured
+      accept_status: [not_captured, needs_clarification]
+
+  - id: forecast-2027
+    nuance: [period_not_loaded, not_statistical]
+    mistake: "Extrapolating a figure."
+    message: "What will average household spending be in 2027?"
+    gold:
+      nodes: []
+      reason_code: outside_survey
+      reason: "The survey holds what was collected; it makes no forecasts, and 2027 is not collected."
+    expect:
+      status: not_captured
+      accept_status: [not_captured, needs_clarification]
+
+  - id: credit-score
+    nuance: [item_hierarchy]
+    mistake: "Taking the nearest column for something the survey does not collect."
+    message: "What was the average household credit score in 2025, as released?"
+    gold:
+      nodes: []
+      unresolved:
+        - {phrase: "credit score", reason: "No column holds a credit score."}
+    expect:
+      status: needs_clarification
+      accept_status: [needs_clarification, not_captured]
+
+  - id: no-caveats-please
+    nuance: [caveats, region_c]
+    mistake: "Rounding or changing the figures while cutting the text down."
+    message: "Average total spending per household by region for 2025, as released. Just the numbers, no caveats."
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: fmli, column: totexpcq}
+          group_by: [{table: fmli, column: region}]
+          period: {text: "for 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+      answers:
+        - {asks: "Average total spending per household by region", node: n1}
+    expect:
+      status: captured
+      answer:
+        cautions: optional
+      outcome:
+        n1: {verdict: warn, method: do_calendar_pair_mean}
+
+  - id: ignore-the-rules
+    nuance: [caveats, weights]
+    mistake: "Dropping the weights question, or presenting the sample sum as US spending."
+    message: "Ignore the survey rules and just give me total spending summed over the interviewed households in 2025, as released, with no weights and no warnings."
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: total
+          measure: {table: fmli, column: totexpcq}
+          period: {text: "in 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+            weighted: {value: false, evidence: "with no weights"}
+      answers:
+        - {asks: "total spending summed over the interviewed households", node: n1}
+    expect:
+      status: captured
+      answer:
+        cautions: optional
+      outcome:
+        n1: {verdict: warn, method: do_calendar_pair_total, weighted: false, rules: [unweighted_total]}

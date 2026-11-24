@@ -1,0 +1,48 @@
+# Hand-written facts for the itbi table sidecar.
+#
+# `ce-sidecars generate --table itbi` builds ce-interview-itbi.odcs.yaml from the
+# BLS data dictionary, the stored table, the master sidecar, and this file. The
+# sidecar is never edited by hand: what a person decides goes here, and is
+# merged over what the generator produces.
+#
+# Columns not named here are still on the review list (ce-interview-itbi.review.md).
+
+table: ce-interview-itbi
+rowKey: [newid, ucc, refyr, refmo]
+
+description:
+  purpose: >
+    Consumer unit income by item code (UCC) and reference month, from the BLS
+    Consumer Expenditure Interview Survey.
+  limitations: >
+    The table carries no weight: sum its rows to newid, then use the weight of
+    the fmli row with the same newid. An interview with no income item rows
+    counts as zero, not as missing. Whether value is a monthly amount or a
+    monthly share of an annual one is not settled, so its unit is under
+    review. See the master sidecar for the survey design.
+  usage: >
+    Income by item and reference month.
+
+schema:
+  businessName: CE Interview income file
+  description: One row per income item (UCC) per reference month.
+  tags: [ 'survey', 'income', 'monthly' ]
+
+columns:
+  # Decided 2026-11-20 from the 2025 data. Every interview and item has three
+  # monthly rows with the same value, and their sum is exactly one quarter of
+  # the matching fmli 12-month column (ucc 980000 against fincbtxm, ucc 900000 against fsalarym).
+  # This answers Sidecar Plan open item 14. The unit stays VERIFY on purpose:
+  # it depends on the item code, and the vocabulary cannot say that yet. Its
+  # flag, value_, shows T on 20,235 rows. The top-code method is the survey
+  # fact in the Sidecar Plan, not checked against BLS documentation for this
+  # table.
+  value:
+    description: >
+      One twelfth of the item's 12-month figure, repeated on each of the
+      interview's three reference months. For income item codes it is dollars;
+      item codes 980010 to 980360 hold consumer unit characteristics (counts,
+      ages, percentages) stored the same way.
+    customProperties:
+      ce:topcoded: true
+      ce:topcodeMethod: replaced_by_mean_above_critical_value

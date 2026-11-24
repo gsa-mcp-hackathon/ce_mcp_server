@@ -1,0 +1,343 @@
+{
+ "headline": "after the fixes, no silent wrong answers",
+ "notes_results": "Grey: baseline, Nov 21, three runs, 312 turns. Teal: rerun after the fixes, Nov 23, one run, 104 turns. Silent wrong answers went from 3 of 312 to 0 of 104; on one run that is encouraging rather than proof. Ambiguities raised rose from 67% to 83% and core-set outcomes from 78% to 88%, both still under their marks. Consistency needs three runs, so the rerun does not measure it.",
+ "notes_scorecard": "Green met, red not met. The rerun met 11 of the 15 marks it measured, up from 8 of 16. Consistency is not measured on a single run. No mark was lowered.",
+ "callouts": [
+  {
+   "big": "0%",
+   "label": "silent wrong answers (0 of 104 turns)",
+   "kind": "pass"
+  },
+  {
+   "big": "100%",
+   "label": "blocks passed on with their reason",
+   "kind": "pass"
+  },
+  {
+   "big": "100%",
+   "label": "cautions kept in the answer",
+   "kind": "pass"
+  },
+  {
+   "big": "98%",
+   "label": "trap-set outcomes right (from 94%)",
+   "kind": "pass"
+  },
+  {
+   "big": "83%",
+   "label": "ambiguities raised (from 67%)",
+   "kind": "warn"
+  },
+  {
+   "big": "11 / 15",
+   "label": "pass marks met (from 8 / 16)",
+   "kind": "warn"
+  }
+ ],
+ "chart_keys": [
+  "status",
+  "outcome_core",
+  "outcome_traps",
+  "asked",
+  "cautions",
+  "numbers",
+  "blocks"
+ ],
+ "baseline": {
+  "name": "Baseline, Nov 21",
+  "measures": {
+   "status": {
+    "label": "Status accuracy",
+    "value": 96
+   },
+   "outcome_core": {
+    "label": "Outcome, core set",
+    "value": 78
+   },
+   "outcome_traps": {
+    "label": "Outcome, trap set",
+    "value": 94
+   },
+   "asked": {
+    "label": "Ambiguities raised",
+    "value": 67
+   },
+   "cautions": {
+    "label": "Cautions kept",
+    "value": 98
+   },
+   "numbers": {
+    "label": "Number fidelity",
+    "value": 95
+   },
+   "blocks": {
+    "label": "Block honesty",
+    "value": 100
+   },
+   "consistency": {
+    "label": "Same outcome, 3 runs",
+    "value": 86
+   }
+  }
+ },
+ "rerun": {
+  "name": "Rerun after fixes, Nov 23",
+  "measures": {
+   "status": {
+    "label": "Status accuracy",
+    "value": 97
+   },
+   "outcome_core": {
+    "label": "Outcome, core set",
+    "value": 88
+   },
+   "outcome_traps": {
+    "label": "Outcome, trap set",
+    "value": 98
+   },
+   "asked": {
+    "label": "Ambiguities raised",
+    "value": 83
+   },
+   "cautions": {
+    "label": "Cautions kept",
+    "value": 100
+   },
+   "numbers": {
+    "label": "Number fidelity",
+    "value": 99
+   },
+   "blocks": {
+    "label": "Block honesty",
+    "value": 100
+   }
+  }
+ },
+ "scorecard": [
+  {
+   "label": "Silent wrong answers, trap set",
+   "mark": "0",
+   "baseline": "1%",
+   "baseline_met": false,
+   "rerun": "0%",
+   "rerun_met": true
+  },
+  {
+   "label": "Silent wrong answers, all",
+   "mark": "≤ 2%",
+   "baseline": "1%",
+   "baseline_met": true,
+   "rerun": "0%",
+   "rerun_met": true
+  },
+  {
+   "label": "Status accuracy",
+   "mark": "≥ 95%",
+   "baseline": "96%",
+   "baseline_met": true,
+   "rerun": "97%",
+   "rerun_met": true
+  },
+  {
+   "label": "Outcome equivalence, core set",
+   "mark": "≥ 90%",
+   "baseline": "78%",
+   "baseline_met": false,
+   "rerun": "88%",
+   "rerun_met": false
+  },
+  {
+   "label": "Outcome equivalence, trap set",
+   "mark": "≥ 90%",
+   "baseline": "94%",
+   "baseline_met": true,
+   "rerun": "98%",
+   "rerun_met": true
+  },
+  {
+   "label": "Stated choices the user never made",
+   "mark": "0",
+   "baseline": "6",
+   "baseline_met": false,
+   "rerun": "2",
+   "rerun_met": false
+  },
+  {
+   "label": "Ambiguities and unresolved phrases raised",
+   "mark": "≥ 90%",
+   "baseline": "67%",
+   "baseline_met": false,
+   "rerun": "83%",
+   "rerun_met": false
+  },
+  {
+   "label": "Records passing the check first time",
+   "mark": "≥ 95%",
+   "baseline": "99%",
+   "baseline_met": true,
+   "rerun": "100%",
+   "rerun_met": true
+  },
+  {
+   "label": "Cautions kept",
+   "mark": "≥ 98%",
+   "baseline": "98%",
+   "baseline_met": true,
+   "rerun": "100%",
+   "rerun_met": true
+  },
+  {
+   "label": "Number fidelity",
+   "mark": "100%",
+   "baseline": "95%",
+   "baseline_met": false,
+   "rerun": "99%",
+   "rerun_met": false
+  },
+  {
+   "label": "Block honesty",
+   "mark": "100%",
+   "baseline": "100%",
+   "baseline_met": true,
+   "rerun": "100%",
+   "rerun_met": true
+  },
+  {
+   "label": "Tool order",
+   "mark": "≥ 95%",
+   "baseline": "100%",
+   "baseline_met": true,
+   "rerun": "100%",
+   "rerun_met": true
+  },
+  {
+   "label": "Answers withheld that should hold figures",
+   "mark": "≤ 2%",
+   "baseline": "2.2%",
+   "baseline_met": false,
+   "rerun": "0%",
+   "rerun_met": true
+  },
+  {
+   "label": "Figures not what was asked, said openly",
+   "mark": "≤ 5%",
+   "baseline": "5.8%",
+   "baseline_met": false,
+   "rerun": "1%",
+   "rerun_met": true
+  },
+  {
+   "label": "Same outcome in all three runs",
+   "mark": "≥ 90%",
+   "baseline": "86%",
+   "baseline_met": false,
+   "rerun": "not measured"
+  },
+  {
+   "label": "Lookups per turn (median)",
+   "mark": "≤ 6",
+   "baseline": "3",
+   "baseline_met": true,
+   "rerun": "3",
+   "rerun_met": true
+  }
+ ],
+ "scorecard_foot": "Sonnet via headless claude -p; judge Haiku; pass marks v1.1. Baseline: 3 runs, 312 turns. Rerun: 1 run, 104 turns, so consistency is not measured.",
+ "triage_foot": "Rerun after the fixes: 6 failed turns in 6 cases, down from 25 cases with a failed turn in the baseline.",
+ "doc_dataset": "104 cases in five sets. Baseline: three runs each, 312 scored turns. Rerun after the fixes: one run each, 104 scored turns.",
+ "doc_dates": "Baseline run Nov 21, 2026. Rerun after the fixes Nov 23, 2026.",
+ "doc_results_intro": "The baseline run (Sonnet, Nov 21, 2026, three runs) met 8 of the 16 pass marks, with 3 silent wrong answers in 312 turns (1%). After the fixes in the table below, the rerun (Nov 23, 2026, one run) met 11 of the 15 marks it measured, with no silent wrong answer in 104 turns. Every block reached the user with its reason in both runs. Consistency needs repeated runs, so the single-run rerun does not measure it.",
+ "doc_rerun_by_set": [
+  [
+   "Set",
+   "Turns",
+   "Silent wrong",
+   "Status",
+   "Outcome",
+   "Numbers",
+   "Cautions"
+  ],
+  [
+   "core",
+   "16",
+   "0%",
+   "88%",
+   "88%",
+   "100%",
+   "100%"
+  ],
+  [
+   "traps",
+   "54",
+   "0%",
+   "98%",
+   "98%",
+   "100%",
+   "100%"
+  ],
+  [
+   "rewordings",
+   "15",
+   "0%",
+   "100%",
+   "100%",
+   "100%",
+   "100%"
+  ],
+  [
+   "conversations",
+   "10",
+   "0%",
+   "100%",
+   "100%",
+   "100%",
+   "100%"
+  ],
+  [
+   "out_of_scope",
+   "9",
+   "0%",
+   "100%",
+   "100%",
+   "89%",
+   "n/a"
+  ],
+  [
+   "all",
+   "104",
+   "0%",
+   "97%",
+   "97%",
+   "99%",
+   "100%"
+  ]
+ ],
+ "doc_rerun_ops": "Rerun by set. It cost about $6.47 for 104 turns (about $0.06 a turn), took about 14 seconds a turn and used a median of 3 lookups a turn.",
+ "doc_rerun_failures": [
+  [
+   "Case",
+   "What failed",
+   "Likely fix"
+  ],
+  [
+   "spending-change-2024-to-2025, compare-2025-with-2022",
+   "A comparison with a year not loaded was declined by the model instead of captured and blocked by the server; the user still got no figure and a reason",
+   "capture instructions"
+  ],
+  [
+   "people-ambiguous",
+   "“How many people” captured as members, which the server blocks, instead of asked about",
+   "capture instructions"
+  ],
+  [
+   "region-trio-terse, region-trio-typos",
+   "A choice the user never stated was recorded (2 records); figures were still right",
+   "capture instructions"
+  ],
+  [
+   "richest-household",
+   "A threshold offered as a suggestion counted as a figure (the checker limit seen in the baseline)",
+   "tool description, or the checker"
+  ]
+ ]
+}

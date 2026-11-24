@@ -1,0 +1,1080 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ce-capture/ModelOutput/1.0",
+  "$defs": {
+    "AddFilter": {
+      "additionalProperties": false,
+      "properties": {
+        "op": {
+          "const": "add_filter",
+          "title": "Op",
+          "type": "string"
+        },
+        "node": {
+          "title": "Node",
+          "type": "string"
+        },
+        "filter": {
+          "$ref": "#/$defs/Filter"
+        }
+      },
+      "required": [
+        "op",
+        "node",
+        "filter"
+      ],
+      "title": "AddFilter",
+      "type": "object"
+    },
+    "AddNode": {
+      "additionalProperties": false,
+      "properties": {
+        "op": {
+          "const": "add_node",
+          "title": "Op",
+          "type": "string"
+        },
+        "add": {
+          "discriminator": {
+            "mapping": {
+              "combine": "#/$defs/CombineNode",
+              "estimate": "#/$defs/EstimateNode"
+            },
+            "propertyName": "kind"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/EstimateNode"
+            },
+            {
+              "$ref": "#/$defs/CombineNode"
+            }
+          ],
+          "title": "Add"
+        }
+      },
+      "required": [
+        "op",
+        "add"
+      ],
+      "title": "AddNode",
+      "type": "object"
+    },
+    "Ambiguity": {
+      "additionalProperties": false,
+      "properties": {
+        "phrase": {
+          "description": "The user's words that can be read more ways.",
+          "title": "Phrase",
+          "type": "string"
+        },
+        "options": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Options",
+          "type": "array"
+        },
+        "chosen": {
+          "title": "Chosen",
+          "type": "string"
+        },
+        "ask_user": {
+          "default": false,
+          "description": "True only when the readings give materially different numbers or change whether the request can be answered.",
+          "title": "Ask User",
+          "type": "boolean"
+        },
+        "question": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The question to put to the user.",
+          "title": "Question"
+        }
+      },
+      "required": [
+        "phrase",
+        "options",
+        "chosen"
+      ],
+      "title": "Ambiguity",
+      "type": "object"
+    },
+    "Answer": {
+      "additionalProperties": false,
+      "properties": {
+        "asks": {
+          "description": "A phrase of the user's message, copied exactly.",
+          "title": "Asks",
+          "type": "string"
+        },
+        "node": {
+          "description": "The ID of the node that answers it.",
+          "title": "Node",
+          "type": "string"
+        }
+      },
+      "required": [
+        "asks",
+        "node"
+      ],
+      "title": "Answer",
+      "type": "object"
+    },
+    "ColumnRef": {
+      "additionalProperties": false,
+      "properties": {
+        "table": {
+          "description": "Stored table name, as a lookup tool gave it.",
+          "title": "Table",
+          "type": "string"
+        },
+        "column": {
+          "description": "Stored column name, as a lookup tool gave it.",
+          "title": "Column",
+          "type": "string"
+        }
+      },
+      "required": [
+        "table",
+        "column"
+      ],
+      "title": "ColumnRef",
+      "type": "object"
+    },
+    "CombineInputs": {
+      "additionalProperties": false,
+      "properties": {
+        "numerator": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "For a ratio: a node ID.",
+          "title": "Numerator"
+        },
+        "denominator": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "For a ratio: a node ID.",
+          "title": "Denominator"
+        },
+        "first": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "For a difference: a node ID.",
+          "title": "First"
+        },
+        "second": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "For a difference: the node subtracted.",
+          "title": "Second"
+        }
+      },
+      "title": "CombineInputs",
+      "type": "object"
+    },
+    "CombineNode": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "combine",
+          "title": "Kind",
+          "type": "string"
+        },
+        "statistic": {
+          "enum": [
+            "ratio",
+            "difference"
+          ],
+          "title": "Statistic",
+          "type": "string"
+        },
+        "inputs": {
+          "$ref": "#/$defs/CombineInputs"
+        },
+        "stated": {
+          "$ref": "#/$defs/Stated"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "statistic",
+        "inputs"
+      ],
+      "title": "CombineNode",
+      "type": "object"
+    },
+    "CountUnitChoice": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "description": "The user's words that state the choice.",
+          "title": "Evidence",
+          "type": "string"
+        },
+        "value": {
+          "enum": [
+            "consumer_unit",
+            "interview",
+            "member"
+          ],
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence",
+        "value"
+      ],
+      "title": "CountUnitChoice",
+      "type": "object"
+    },
+    "EstimateNode": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "description": "Unique within the request, such as n1.",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "estimate",
+          "title": "Kind",
+          "type": "string"
+        },
+        "statistic": {
+          "enum": [
+            "mean",
+            "total",
+            "count",
+            "share"
+          ],
+          "title": "Statistic",
+          "type": "string"
+        },
+        "measure": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ColumnRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The column summarized; null for a count or a share."
+        },
+        "group_by": {
+          "description": "Columns that define subgroups: on the measure's table or fmli.",
+          "items": {
+            "$ref": "#/$defs/ColumnRef"
+          },
+          "title": "Group By",
+          "type": "array"
+        },
+        "filters": {
+          "items": {
+            "$ref": "#/$defs/Filter"
+          },
+          "title": "Filters",
+          "type": "array"
+        },
+        "period": {
+          "$ref": "#/$defs/Period"
+        },
+        "stated": {
+          "$ref": "#/$defs/Stated"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "statistic",
+        "period"
+      ],
+      "title": "EstimateNode",
+      "type": "object"
+    },
+    "Filter": {
+      "additionalProperties": false,
+      "properties": {
+        "table": {
+          "description": "Stored table name, as a lookup tool gave it.",
+          "title": "Table",
+          "type": "string"
+        },
+        "column": {
+          "description": "Stored column name, as a lookup tool gave it.",
+          "title": "Column",
+          "type": "string"
+        },
+        "comparison": {
+          "enum": [
+            "eq",
+            "ne",
+            "in",
+            "not_in",
+            "lt",
+            "le",
+            "gt",
+            "ge",
+            "between"
+          ],
+          "title": "Comparison",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
+              "type": "array"
+            }
+          ],
+          "description": "A code or a number; a list for in, not_in and between. Codes come from describe_variable.",
+          "title": "Value"
+        }
+      },
+      "required": [
+        "table",
+        "column",
+        "comparison",
+        "value"
+      ],
+      "title": "Filter",
+      "type": "object"
+    },
+    "GapChoice": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "description": "The user's words that state the choice.",
+          "title": "Evidence",
+          "type": "string"
+        },
+        "value": {
+          "enum": [
+            "as_released",
+            "adjusted"
+          ],
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence",
+        "value"
+      ],
+      "title": "GapChoice",
+      "type": "object"
+    },
+    "ImputationChoice": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "description": "The user's words that state the choice.",
+          "title": "Evidence",
+          "type": "string"
+        },
+        "value": {
+          "enum": [
+            "five_versions_averaged",
+            "version_1",
+            "version_2",
+            "version_3",
+            "version_4",
+            "version_5"
+          ],
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence",
+        "value"
+      ],
+      "title": "ImputationChoice",
+      "type": "object"
+    },
+    "MissingCodesChoice": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "description": "The user's words that state the choice.",
+          "title": "Evidence",
+          "type": "string"
+        },
+        "value": {
+          "enum": [
+            "removed",
+            "kept"
+          ],
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence",
+        "value"
+      ],
+      "title": "MissingCodesChoice",
+      "type": "object"
+    },
+    "Period": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The user's words for the period, copied exactly; null when the user named none.",
+          "title": "Text"
+        },
+        "kind": {
+          "enum": [
+            "year",
+            "quarter",
+            "month_range",
+            "not_stated"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "values": {
+          "description": "Years (2025), quarters ('2025Q2') or the first and last month of a range ('2025-07', '2025-09'). Empty when not stated.",
+          "items": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "title": "Values",
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "Period",
+      "type": "object"
+    },
+    "RemoveFilter": {
+      "additionalProperties": false,
+      "properties": {
+        "op": {
+          "const": "remove_filter",
+          "title": "Op",
+          "type": "string"
+        },
+        "node": {
+          "title": "Node",
+          "type": "string"
+        },
+        "table": {
+          "title": "Table",
+          "type": "string"
+        },
+        "column": {
+          "title": "Column",
+          "type": "string"
+        }
+      },
+      "required": [
+        "op",
+        "node",
+        "table",
+        "column"
+      ],
+      "title": "RemoveFilter",
+      "type": "object"
+    },
+    "RemoveNode": {
+      "additionalProperties": false,
+      "properties": {
+        "op": {
+          "const": "remove_node",
+          "title": "Op",
+          "type": "string"
+        },
+        "node": {
+          "title": "Node",
+          "type": "string"
+        }
+      },
+      "required": [
+        "op",
+        "node"
+      ],
+      "title": "RemoveNode",
+      "type": "object"
+    },
+    "RemoveStated": {
+      "additionalProperties": false,
+      "properties": {
+        "op": {
+          "const": "remove_stated",
+          "title": "Op",
+          "type": "string"
+        },
+        "node": {
+          "title": "Node",
+          "type": "string"
+        },
+        "field": {
+          "title": "Field",
+          "type": "string"
+        }
+      },
+      "required": [
+        "op",
+        "node",
+        "field"
+      ],
+      "title": "RemoveStated",
+      "type": "object"
+    },
+    "SetGroupBy": {
+      "additionalProperties": false,
+      "properties": {
+        "op": {
+          "const": "set_group_by",
+          "title": "Op",
+          "type": "string"
+        },
+        "node": {
+          "title": "Node",
+          "type": "string"
+        },
+        "group_by": {
+          "items": {
+            "$ref": "#/$defs/ColumnRef"
+          },
+          "title": "Group By",
+          "type": "array"
+        }
+      },
+      "required": [
+        "op",
+        "node",
+        "group_by"
+      ],
+      "title": "SetGroupBy",
+      "type": "object"
+    },
+    "SetMeasure": {
+      "additionalProperties": false,
+      "properties": {
+        "op": {
+          "const": "set_measure",
+          "title": "Op",
+          "type": "string"
+        },
+        "node": {
+          "title": "Node",
+          "type": "string"
+        },
+        "measure": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ColumnRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "op",
+        "node",
+        "measure"
+      ],
+      "title": "SetMeasure",
+      "type": "object"
+    },
+    "SetPeriod": {
+      "additionalProperties": false,
+      "properties": {
+        "op": {
+          "const": "set_period",
+          "title": "Op",
+          "type": "string"
+        },
+        "node": {
+          "title": "Node",
+          "type": "string"
+        },
+        "period": {
+          "$ref": "#/$defs/Period"
+        }
+      },
+      "required": [
+        "op",
+        "node",
+        "period"
+      ],
+      "title": "SetPeriod",
+      "type": "object"
+    },
+    "SetStated": {
+      "additionalProperties": false,
+      "properties": {
+        "op": {
+          "const": "set_stated",
+          "title": "Op",
+          "type": "string"
+        },
+        "node": {
+          "title": "Node",
+          "type": "string"
+        },
+        "field": {
+          "enum": [
+            "weighted",
+            "time_basis",
+            "gap_2025",
+            "missing_codes",
+            "imputation",
+            "count_unit",
+            "standard_error"
+          ],
+          "title": "Field",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value"
+        },
+        "evidence": {
+          "title": "Evidence",
+          "type": "string"
+        }
+      },
+      "required": [
+        "op",
+        "node",
+        "field",
+        "value",
+        "evidence"
+      ],
+      "title": "SetStated",
+      "type": "object"
+    },
+    "SetStatistic": {
+      "additionalProperties": false,
+      "properties": {
+        "op": {
+          "const": "set_statistic",
+          "title": "Op",
+          "type": "string"
+        },
+        "node": {
+          "title": "Node",
+          "type": "string"
+        },
+        "statistic": {
+          "enum": [
+            "mean",
+            "total",
+            "count",
+            "share",
+            "ratio",
+            "difference"
+          ],
+          "title": "Statistic",
+          "type": "string"
+        }
+      },
+      "required": [
+        "op",
+        "node",
+        "statistic"
+      ],
+      "title": "SetStatistic",
+      "type": "object"
+    },
+    "StandardErrorChoice": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "description": "The user's words that state the choice.",
+          "title": "Evidence",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "evidence",
+        "value"
+      ],
+      "title": "StandardErrorChoice",
+      "type": "object"
+    },
+    "Stated": {
+      "additionalProperties": false,
+      "description": "Choices the user's words reveal. A choice not stated is left out.",
+      "properties": {
+        "weighted": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/WeightedChoice"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "time_basis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TimeBasisChoice"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "gap_2025": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GapChoice"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "missing_codes": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MissingCodesChoice"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "imputation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ImputationChoice"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "count_unit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CountUnitChoice"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "standard_error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StandardErrorChoice"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "Stated",
+      "type": "object"
+    },
+    "TimeBasisChoice": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "description": "The user's words that state the choice.",
+          "title": "Evidence",
+          "type": "string"
+        },
+        "value": {
+          "enum": [
+            "year",
+            "quarter",
+            "month"
+          ],
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence",
+        "value"
+      ],
+      "title": "TimeBasisChoice",
+      "type": "object"
+    },
+    "Unresolved": {
+      "additionalProperties": false,
+      "properties": {
+        "phrase": {
+          "description": "The user's words that matched nothing.",
+          "title": "Phrase",
+          "type": "string"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "phrase",
+        "reason"
+      ],
+      "title": "Unresolved",
+      "type": "object"
+    },
+    "WeightedChoice": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "description": "The user's words that state the choice.",
+          "title": "Evidence",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "evidence",
+        "value"
+      ],
+      "title": "WeightedChoice",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "What a model writes. Code fills every other field of the record.",
+  "properties": {
+    "nodes": {
+      "description": "The statistics asked for. Leave empty for a follow-up written as a patch, or for a message that is not a statistics request.",
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "combine": "#/$defs/CombineNode",
+            "estimate": "#/$defs/EstimateNode"
+          },
+          "propertyName": "kind"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/EstimateNode"
+          },
+          {
+            "$ref": "#/$defs/CombineNode"
+          }
+        ]
+      },
+      "title": "Nodes",
+      "type": "array"
+    },
+    "patch": {
+      "anyOf": [
+        {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "add_filter": "#/$defs/AddFilter",
+                "add_node": "#/$defs/AddNode",
+                "remove_filter": "#/$defs/RemoveFilter",
+                "remove_node": "#/$defs/RemoveNode",
+                "remove_stated": "#/$defs/RemoveStated",
+                "set_group_by": "#/$defs/SetGroupBy",
+                "set_measure": "#/$defs/SetMeasure",
+                "set_period": "#/$defs/SetPeriod",
+                "set_stated": "#/$defs/SetStated",
+                "set_statistic": "#/$defs/SetStatistic"
+              },
+              "propertyName": "op"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/SetGroupBy"
+              },
+              {
+                "$ref": "#/$defs/AddFilter"
+              },
+              {
+                "$ref": "#/$defs/RemoveFilter"
+              },
+              {
+                "$ref": "#/$defs/SetPeriod"
+              },
+              {
+                "$ref": "#/$defs/SetStatistic"
+              },
+              {
+                "$ref": "#/$defs/SetMeasure"
+              },
+              {
+                "$ref": "#/$defs/SetStated"
+              },
+              {
+                "$ref": "#/$defs/RemoveStated"
+              },
+              {
+                "$ref": "#/$defs/AddNode"
+              },
+              {
+                "$ref": "#/$defs/RemoveNode"
+              }
+            ]
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "For a follow-up only: changes to the earlier record's nodes.",
+      "title": "Patch"
+    },
+    "answers": {
+      "items": {
+        "$ref": "#/$defs/Answer"
+      },
+      "title": "Answers",
+      "type": "array"
+    },
+    "ambiguities": {
+      "items": {
+        "$ref": "#/$defs/Ambiguity"
+      },
+      "title": "Ambiguities",
+      "type": "array"
+    },
+    "unresolved": {
+      "items": {
+        "$ref": "#/$defs/Unresolved"
+      },
+      "title": "Unresolved",
+      "type": "array"
+    },
+    "reason_code": {
+      "anyOf": [
+        {
+          "enum": [
+            "not_statistical",
+            "table_not_covered",
+            "column_not_found",
+            "statistic_not_supported",
+            "outside_survey",
+            "other"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Only when the message cannot be captured; with no nodes.",
+      "title": "Reason Code"
+    },
+    "reason": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reason"
+    }
+  },
+  "title": "ModelOutput",
+  "type": "object"
+}

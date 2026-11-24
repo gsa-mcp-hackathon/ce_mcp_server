@@ -1,0 +1,432 @@
+{
+  "$defs": {
+    "FailedCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "check": {
+          "title": "Check",
+          "type": "string"
+        },
+        "detail": {
+          "title": "Detail",
+          "type": "string"
+        },
+        "scope": {
+          "enum": [
+            "set",
+            "table"
+          ],
+          "title": "Scope",
+          "type": "string"
+        },
+        "table": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Table"
+        }
+      },
+      "required": [
+        "check",
+        "scope",
+        "detail"
+      ],
+      "title": "FailedCheck",
+      "type": "object"
+    },
+    "OutcomeGroup": {
+      "additionalProperties": false,
+      "properties": {
+        "group": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Group",
+          "type": "object"
+        },
+        "interviews": {
+          "title": "Interviews",
+          "type": "integer"
+        },
+        "standard_error": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Standard Error"
+        },
+        "units": {
+          "title": "Units",
+          "type": "integer"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "group",
+        "value",
+        "interviews",
+        "units"
+      ],
+      "title": "OutcomeGroup",
+      "type": "object"
+    },
+    "OutcomeMessage": {
+      "additionalProperties": false,
+      "properties": {
+        "column": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Column"
+        },
+        "from": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "From"
+        },
+        "level": {
+          "enum": [
+            "pass",
+            "warn",
+            "substitute",
+            "block"
+          ],
+          "title": "Level",
+          "type": "string"
+        },
+        "property": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Property"
+        },
+        "rule": {
+          "title": "Rule",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "level",
+        "rule",
+        "text"
+      ],
+      "title": "OutcomeMessage",
+      "type": "object"
+    },
+    "OutcomeNode": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "messages": {
+          "items": {
+            "$ref": "#/$defs/OutcomeMessage"
+          },
+          "title": "Messages",
+          "type": "array"
+        },
+        "method": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Method"
+        },
+        "notes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Notes",
+          "type": "array"
+        },
+        "result": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/OutcomeResult"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "substituted_from": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Substituted From"
+        },
+        "verdict": {
+          "enum": [
+            "pass",
+            "warn",
+            "substitute",
+            "block"
+          ],
+          "title": "Verdict",
+          "type": "string"
+        },
+        "weighted": {
+          "title": "Weighted",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "verdict",
+        "method",
+        "weighted",
+        "messages",
+        "notes"
+      ],
+      "title": "OutcomeNode",
+      "type": "object"
+    },
+    "OutcomeResult": {
+      "additionalProperties": false,
+      "properties": {
+        "dropped_no_rows": {
+          "default": 0,
+          "title": "Dropped No Rows",
+          "type": "integer"
+        },
+        "groups": {
+          "items": {
+            "$ref": "#/$defs/OutcomeGroup"
+          },
+          "title": "Groups",
+          "type": "array"
+        },
+        "notes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Notes",
+          "type": "array"
+        },
+        "removed_missing": {
+          "default": 0,
+          "title": "Removed Missing",
+          "type": "integer"
+        },
+        "removed_null_mo_scope": {
+          "default": 0,
+          "title": "Removed Null Mo Scope",
+          "type": "integer"
+        },
+        "removed_null_value": {
+          "default": 0,
+          "title": "Removed Null Value",
+          "type": "integer"
+        },
+        "standard_error_method": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Standard Error Method"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        }
+      },
+      "required": [
+        "groups",
+        "unit"
+      ],
+      "title": "OutcomeResult",
+      "type": "object"
+    },
+    "SidecarReport": {
+      "additionalProperties": false,
+      "properties": {
+        "failures": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/FailedCheck"
+          },
+          "title": "Failures",
+          "type": "array"
+        },
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "passed"
+      ],
+      "title": "SidecarReport",
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "evaluated_at": {
+      "title": "Evaluated At",
+      "type": "string"
+    },
+    "mode": {
+      "enum": [
+        "evaluate",
+        "run"
+      ],
+      "title": "Mode",
+      "type": "string"
+    },
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/OutcomeNode"
+      },
+      "title": "Nodes",
+      "type": "array"
+    },
+    "outcome_id": {
+      "title": "Outcome Id",
+      "type": "string"
+    },
+    "reply": {
+      "default": "",
+      "title": "Reply",
+      "type": "string"
+    },
+    "request_id": {
+      "title": "Request Id",
+      "type": "string"
+    },
+    "resolved_id": {
+      "title": "Resolved Id",
+      "type": "string"
+    },
+    "rules_version": {
+      "title": "Rules Version",
+      "type": "string"
+    },
+    "says": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Says",
+      "type": "array"
+    },
+    "schema_version": {
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "sidecar_report": {
+      "$ref": "#/$defs/SidecarReport"
+    },
+    "sidecars": {
+      "additionalProperties": true,
+      "title": "Sidecars",
+      "type": "object"
+    },
+    "verdict": {
+      "enum": [
+        "pass",
+        "warn",
+        "substitute",
+        "block"
+      ],
+      "title": "Verdict",
+      "type": "string"
+    }
+  },
+  "required": [
+    "outcome_id",
+    "request_id",
+    "resolved_id",
+    "evaluated_at",
+    "mode",
+    "rules_version",
+    "verdict",
+    "sidecars",
+    "sidecar_report",
+    "nodes",
+    "says"
+  ],
+  "title": "CE outcome record",
+  "type": "object"
+}

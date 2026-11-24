@@ -1,0 +1,1520 @@
+{
+ "versions": {
+  "rules_version": "1.1",
+  "master": "0.1.0",
+  "vocabulary": "0.1.3"
+ },
+ "rows": [
+  {
+   "case_id": "spending-and-income-by-region",
+   "set": "core",
+   "kind": "figures",
+   "inputs": {
+    "request": "For 2025, as released, what's average annual spending per household by region, and what is that as a share of average annual income before taxes? Also, how many households did you interview in each region? Skip the weights for that count."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"what's average annual spending per household by region\", region Northeast: $88,010.",
+     "For \"what's average annual spending per household by region\", region Midwest: $83,296.",
+     "For \"what's average annual spending per household by region\", region South: $74,526.",
+     "For \"what's average annual spending per household by region\", region West: $92,550.",
+     "For \"what's average annual spending per household by region\", region Combined: $59,030.",
+     "The answer keeps this caution: totexpcq is still under review in the sidecar.",
+     "The answer keeps this caution: region code C (\"Combined\") is not a region; it is reported separately.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population.",
+     "For \"what is that as a share of average annual income before taxes\", region Northeast: 0.702.",
+     "For \"what is that as a share of average annual income before taxes\", region Midwest: 0.757.",
+     "For \"what is that as a share of average annual income before taxes\", region South: 0.718.",
+     "For \"what is that as a share of average annual income before taxes\", region West: 0.744.",
+     "For \"what is that as a share of average annual income before taxes\", region Combined: 0.784.",
+     "The answer keeps this caution: the cautions on both inputs apply.",
+     "For \"how many households did you interview in each region\", region Northeast: 1,720.",
+     "For \"how many households did you interview in each region\", region Midwest: 1,513.",
+     "For \"how many households did you interview in each region\", region South: 3,222.",
+     "For \"how many households did you interview in each region\", region West: 3,027.",
+     "For \"how many households did you interview in each region\", region Combined: 443.",
+     "The answer keeps this caution: a count of the interviewed sample, not of US households.",
+     "The answer keeps this caution: region code C (\"Combined\") is not a region; it is reported separately."
+    ]
+   }
+  },
+  {
+   "case_id": "rent-by-region",
+   "set": "core",
+   "kind": "figures",
+   "inputs": {
+    "request": "In 2025, as released, what did households spend on rent on average, by region?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"what did households spend on rent on average, by region\", region Northeast: $7,266.",
+     "For \"what did households spend on rent on average, by region\", region Midwest: $4,649.",
+     "For \"what did households spend on rent on average, by region\", region South: $5,364.",
+     "For \"what did households spend on rent on average, by region\", region West: $8,315.",
+     "For \"what did households spend on rent on average, by region\", region Combined: $2,663.",
+     "The answer keeps this caution: ucc is still under review in the sidecar.",
+     "The answer keeps this caution: cost is top-coded; subgroup means are not preserved under top-coding.",
+     "The answer keeps this caution: cost is top-coded; its variance is not preserved, so the standard error is approximate.",
+     "The answer keeps this caution: region code C (\"Combined\") is not a region; it is reported separately.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "quarterly-rent-unweighted",
+   "set": "core",
+   "kind": "figures",
+   "inputs": {
+    "request": "What is average quarterly rent in 2025 as released, unweighted?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"What is average quarterly rent\": $1,516.",
+     "The answer keeps this caution: ucc is still under review in the sidecar.",
+     "The answer keeps this caution: not weighted, so it describes the interviewed sample, not US consumer units."
+    ]
+   }
+  },
+  {
+   "case_id": "households-with-older-members",
+   "set": "core",
+   "kind": "figures",
+   "inputs": {
+    "request": "How many households had someone 65 or older in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"How many households had someone 65 or older\": 38,511,404.",
+     "The answer keeps this caution: age is still under review in the sidecar.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population.",
+     "The answer keeps this caution: An interview is kept when at least one row of memi matches."
+    ]
+   }
+  },
+  {
+   "case_id": "people-counted-by-sex",
+   "set": "core",
+   "kind": "figures",
+   "inputs": {
+    "request": "How many people did you interview in 2025, by sex? As released, and skip the weights."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"How many people did you interview in 2025, by sex\", sex Male: 11,224.",
+     "For \"How many people did you interview in 2025, by sex\", sex Female: 11,989.",
+     "The answer keeps this caution: a member is counted once if any of their interviews matches.",
+     "The answer keeps this caution: a count of the interviewed sample, not of the US population."
+    ]
+   }
+  },
+  {
+   "case_id": "wages-from-the-income-table",
+   "set": "core",
+   "kind": "block",
+   "inputs": {
+    "request": "What was average wage and salary income in 2025, as released, from the income item table?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "No figure is given for \"What was average wage and salary income\": it cannot be computed.",
+     "The reason given: value: ce:unit is still VERIFY in the sidecar, so the method cannot be chosen until it is reviewed.",
+     "The reason given: The method cannot be chosen: its ce:unit is VERIFY."
+    ]
+   }
+  },
+  {
+   "case_id": "rent-paid-detailed-table",
+   "set": "core",
+   "kind": "block",
+   "inputs": {
+    "request": "Average total rent paid in the reference period for 2025, as released, from the rented living quarters section."
+   },
+   "expectations": {
+    "expected_facts": [
+     "No figure is given for \"Average total rent paid in the reference period\": it cannot be computed.",
+     "The reason given: qrt3mcmx: ce:unit is still VERIFY in the sidecar, so the method cannot be chosen until it is reviewed.",
+     "The reason given: The method cannot be chosen: no estimation method is defined for detailed expenditure tables yet.",
+     "The reason given: No estimation method is defined for the detailed expenditure tables yet; they can still be used as filters."
+    ]
+   }
+  },
+  {
+   "case_id": "toyota-owners",
+   "set": "core",
+   "kind": "figures",
+   "inputs": {
+    "request": "How many households owned a Toyota in 2025, as released, by region?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"How many households owned a Toyota\", region Northeast: 3,133,166.",
+     "For \"How many households owned a Toyota\", region Midwest: 2,963,180.",
+     "For \"How many households owned a Toyota\", region South: 8,229,193.",
+     "For \"How many households owned a Toyota\", region West: 6,478,483.",
+     "For \"How many households owned a Toyota\", region Combined: 1,208,592.",
+     "The answer keeps this caution: make is still under review in the sidecar.",
+     "The answer keeps this caution: region code C (\"Combined\") is not a region; it is reported separately.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population.",
+     "The answer keeps this caution: An interview is kept when at least one row of expn_ovb matches."
+    ]
+   }
+  },
+  {
+   "case_id": "version-one-income",
+   "set": "core",
+   "kind": "figures",
+   "inputs": {
+    "request": "Average income before taxes for 2025 as released, using fincbtx1."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"Average income before taxes\": $111,337.",
+     "The answer keeps this caution: the months-in-scope average is this project's reading of the BLS guide.",
+     "The answer keeps this caution: fincbtx1 is top-coded; its variance is not preserved, so the standard error is approximate.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "spending-change-2024-to-2025",
+   "set": "core",
+   "kind": "block",
+   "inputs": {
+    "request": "How did average spending change from 2024 to 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "No figure is given for \"How did average spending change from 2024 to 2025\": it cannot be computed.",
+     "The reason given: An input is blocked, so it cannot be combined. n1: No data is loaded for that period; the request can be replayed once the release is loaded."
+    ]
+   }
+  },
+  {
+   "case_id": "no-2025-choice",
+   "set": "core",
+   "kind": "question",
+   "inputs": {
+    "request": "What was average spending per household in 2025?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "The answer gives no figure yet.",
+     "The answer asks the user: As released, or adjusted to match the published figures?"
+    ]
+   }
+  },
+  {
+   "case_id": "people-ambiguous",
+   "set": "core",
+   "kind": "question",
+   "inputs": {
+    "request": "How many people lived in the West in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "The answer gives no figure yet.",
+     "The answer asks the user: Do you mean the number of persons, or the number of households?"
+    ]
+   }
+  },
+  {
+   "case_id": "nothing-matches",
+   "set": "core",
+   "kind": "question",
+   "inputs": {
+    "request": "What was average spending on space tourism in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "The answer gives no figure yet.",
+     "The answer asks the user: I could not match 'spending on space tourism': No column or item code holds space tourism. Can you say it another way?"
+    ]
+   }
+  },
+  {
+   "case_id": "not-a-statistics-request",
+   "set": "core",
+   "kind": "decline",
+   "inputs": {
+    "request": "Who runs the Consumer Expenditure Survey?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "The answer gives no figure computed from the survey data.",
+     "The answer explains: The question is about the survey, not a statistic from its data."
+    ]
+   }
+  },
+  {
+   "case_id": "interviews-in-2025",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "What was average total spending per household for interviews in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"What was average total spending per household\": $81,370.",
+     "The answer keeps this caution: totexpcq is still under review in the sidecar.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "gap-not-stated-income",
+   "set": "traps",
+   "kind": "question",
+   "inputs": {
+    "request": "What was average income before taxes per household in 2025?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "The answer gives no figure yet.",
+     "The answer asks the user: As released, or adjusted to match the published figures?"
+    ]
+   }
+  },
+  {
+   "case_id": "gap-not-stated-count",
+   "set": "traps",
+   "kind": "question",
+   "inputs": {
+    "request": "How many households were there in 2025?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "The answer gives no figure yet.",
+     "The answer asks the user: As released, or adjusted to match the published figures?"
+    ]
+   }
+  },
+  {
+   "case_id": "adjusted-rent",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "In 2025, adjusted to match the published figures, what did households spend on rent on average?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"what did households spend on rent on average\": $6,027.",
+     "The answer keeps this caution: ucc is still under review in the sidecar.",
+     "The answer keeps this caution: cost is top-coded; its variance is not preserved, so the standard error is approximate.",
+     "The answer keeps this caution: BLS notes that differences from its published tables caused by top-coding and suppression are magnified by the adjustment."
+    ]
+   }
+  },
+  {
+   "case_id": "adjusted-food-away",
+   "set": "traps",
+   "kind": "block",
+   "inputs": {
+    "request": "Average spending on food away from home per household in 2025, adjusted for the collection gap."
+   },
+   "expectations": {
+    "expected_facts": [
+     "No figure is given for \"Average spending on food away from home per household\": it cannot be computed.",
+     "The reason given: The 2025 adjustment cannot be applied to the fmli summary columns; ask for the spending from mtbi."
+    ]
+   }
+  },
+  {
+   "case_id": "unadjusted-housing",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "Unadjusted average housing spending per household for 2025, please."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"average housing spending per household\": $26,108.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "spending-2023",
+   "set": "traps",
+   "kind": "block",
+   "inputs": {
+    "request": "What was average total spending per household in 2023?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "No figure is given for \"What was average total spending per household\": it cannot be computed.",
+     "The reason given: No data is loaded for that period; the request can be replayed once the release is loaded."
+    ]
+   }
+  },
+  {
+   "case_id": "compare-2025-with-2022",
+   "set": "traps",
+   "kind": "block",
+   "inputs": {
+    "request": "Compare average total spending per household in 2025, as released, with 2022."
+   },
+   "expectations": {
+    "expected_facts": [
+     "No figure is given for \"Compare average total spending per household in 2025, as released, with 2022\": it cannot be computed.",
+     "The reason given: An input is blocked, so it cannot be combined. n2: No data is loaded for that period; the request can be replayed once the release is loaded."
+    ]
+   }
+  },
+  {
+   "case_id": "two-years-pooled",
+   "set": "traps",
+   "kind": "block",
+   "inputs": {
+    "request": "What was average total spending per household over 2024 and 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "No figure is given for \"What was average total spending per household\": it cannot be computed.",
+     "The reason given: No data is loaded for that period; the request can be replayed once the release is loaded."
+    ]
+   }
+  },
+  {
+   "case_id": "first-quarter-2025",
+   "set": "traps",
+   "kind": "block",
+   "inputs": {
+    "request": "What was average total spending per household in the first quarter of 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "No figure is given for \"What was average total spending per household\": it cannot be computed.",
+     "The reason given: Estimates for part of a survey year are not built yet."
+    ]
+   }
+  },
+  {
+   "case_id": "summer-gasoline",
+   "set": "traps",
+   "kind": "block",
+   "inputs": {
+    "request": "Average gasoline spending per household from June to August 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "No figure is given for \"Average gasoline spending per household\": it cannot be computed.",
+     "The reason given: Estimates for part of a survey year are not built yet."
+    ]
+   }
+  },
+  {
+   "case_id": "no-period",
+   "set": "traps",
+   "kind": "question",
+   "inputs": {
+    "request": "What's average total spending per household?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "The answer gives no figure yet.",
+     "The answer asks the user: As released, or adjusted to match the published figures?"
+    ]
+   }
+  },
+  {
+   "case_id": "total-income-per-household",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "What was the total income before taxes per household in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"What was the total income before taxes per household\": $111,337.",
+     "The answer keeps this caution: the months-in-scope average is this project's reading of the BLS guide.",
+     "The answer keeps this caution: fincbtxm is top-coded; its variance is not preserved, so the standard error is approximate.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "aggregate-income",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "What was the aggregate income before taxes of all households in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"What was the aggregate income before taxes of all households\": $12,797,053,456,311.",
+     "The answer keeps this caution: fincbtxm is top-coded; its variance is not preserved, so the standard error is approximate.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "food-away-average",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "How much did households spend on food away from home in 2025, as released, on average?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"How much did households spend on food away from home\": $5,080.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "total-health-spending",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "What was total spending on health care by all households in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"What was total spending on health care by all households\": $709,683,667,515.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "average-vehicles-owned",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "On average, what number of vehicles did a household own in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"what number of vehicles did a household own\": 1.88.",
+     "The answer keeps this caution: the months-in-scope average is this project's reading of the BLS guide.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population.",
+     "The answer keeps this caution: n1 is mean; the words say 'number of'"
+    ]
+   }
+  },
+  {
+   "case_id": "first-imputed-income",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "Average income before taxes per household for 2025, as released, using the first imputed version only."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"Average income before taxes per household\": $111,392.",
+     "The answer keeps this caution: the months-in-scope average is this project's reading of the BLS guide.",
+     "The answer keeps this caution: one imputed version understates the uncertainty.",
+     "The answer keeps this caution: fincbtx1 is top-coded; its variance is not preserved, so the standard error is approximate.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "all-items-mtbi",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "What did households spend on average across all rows of the mtbi file in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"What did households spend on average across all rows of the mtbi file\": $437,181.",
+     "The answer keeps this caution: cost is top-coded; its variance is not preserved, so the standard error is approximate.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population.",
+     "The answer keeps this caution: The rows of mtbi mix different items. In mtbi they include asset values and loan amounts, so the sum is not total spending."
+    ]
+   }
+  },
+  {
+   "case_id": "gasoline-item-by-region",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "From the item-level expenditure file, average spending on gasoline (item code 470111) per household by region in 2025, as released."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"average spending on gasoline (item code 470111) per household by region\", region Northeast: $1,858.",
+     "For \"average spending on gasoline (item code 470111) per household by region\", region Midwest: $2,217.",
+     "For \"average spending on gasoline (item code 470111) per household by region\", region South: $2,282.",
+     "For \"average spending on gasoline (item code 470111) per household by region\", region West: $2,612.",
+     "For \"average spending on gasoline (item code 470111) per household by region\", region Combined: $2,235.",
+     "The answer keeps this caution: ucc is still under review in the sidecar.",
+     "The answer keeps this caution: cost is top-coded; subgroup means are not preserved under top-coding.",
+     "The answer keeps this caution: cost is top-coded; its variance is not preserved, so the standard error is approximate.",
+     "The answer keeps this caution: region code C (\"Combined\") is not a region; it is reported separately.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "food-in-total",
+   "set": "traps",
+   "kind": "question",
+   "inputs": {
+    "request": "What did households spend on food on average in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "The answer gives no figure yet.",
+     "The answer asks the user: I could not match 'food': No single column holds all food spending: food at home and food away from home are separate, and the item-code hierarchy is not in the project. Can you say it another way?"
+    ]
+   }
+  },
+  {
+   "case_id": "vehicle-item-codes",
+   "set": "traps",
+   "kind": "question",
+   "inputs": {
+    "request": "Using the item-level expenditure file, what was average spending on all vehicle-related item codes in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "The answer gives no figure yet.",
+     "The answer asks the user: I could not match 'all vehicle-related item codes': A group of item codes needs the item-code hierarchy, which is not in the project. Can you say it another way?"
+    ]
+   }
+  },
+  {
+   "case_id": "social-security-items",
+   "set": "traps",
+   "kind": "block",
+   "inputs": {
+    "request": "What was average Social Security income per household in 2025, as released, from the income item file?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "No figure is given for \"What was average Social Security income per household\": it cannot be computed.",
+     "The reason given: value: ce:unit is still VERIFY in the sidecar, so the method cannot be chosen until it is reviewed.",
+     "The reason given: The method cannot be chosen: its ce:unit is VERIFY."
+    ]
+   }
+  },
+  {
+   "case_id": "wages-from-fmli",
+   "set": "traps",
+   "kind": "block",
+   "inputs": {
+    "request": "What was average wage and salary income per household in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "No figure is given for \"What was average wage and salary income per household\": it cannot be computed.",
+     "The reason given: fsalarym: ce:unit is still VERIFY in the sidecar, so the method cannot be chosen until it is reviewed.",
+     "The reason given: The method cannot be chosen: its ce:unit is VERIFY."
+    ]
+   }
+  },
+  {
+   "case_id": "vehicle-purchase-price",
+   "set": "traps",
+   "kind": "block",
+   "inputs": {
+    "request": "What was the average net purchase price of the vehicles households owned in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "No figure is given for \"What was the average net purchase price of the vehicles households owned\": it cannot be computed.",
+     "The reason given: netpurx: ce:unit is still VERIFY in the sidecar, so the method cannot be chosen until it is reviewed.",
+     "The reason given: The method cannot be chosen: no estimation method is defined for detailed expenditure tables yet.",
+     "The reason given: No estimation method is defined for the detailed expenditure tables yet; they can still be used as filters."
+    ]
+   }
+  },
+  {
+   "case_id": "toyota-bought",
+   "set": "traps",
+   "kind": "question",
+   "inputs": {
+    "request": "How many households bought a Toyota in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "The answer gives no figure yet.",
+     "The answer asks the user: The vehicle file lists vehicles owned, not purchases. Do you want households that own a Toyota, or only those that bought one in 2025?"
+    ]
+   }
+  },
+  {
+   "case_id": "renting-households",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "How many households rented their home in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"How many households rented their home\": 38,233,461.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "interviews-conducted",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "How many interviews were conducted in 2025, as released? No weights."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"How many interviews were conducted\": 16,754.",
+     "The answer keeps this caution: a count of the interviewed sample, not of US households."
+    ]
+   }
+  },
+  {
+   "case_id": "households-in-sample",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "How many households are in the 2025 sample, as released, unweighted?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"How many households are in the 2025 sample\": 9,925.",
+     "The answer keeps this caution: a count of the interviewed sample, not of US households."
+    ]
+   }
+  },
+  {
+   "case_id": "population-of-northeast",
+   "set": "traps",
+   "kind": "block",
+   "inputs": {
+    "request": "How many people lived in the Northeast in 2025, as released? I mean persons, weighted to the population."
+   },
+   "expectations": {
+    "expected_facts": [
+     "No figure is given for \"How many people lived in the Northeast\": it cannot be computed.",
+     "The reason given: The consumer-unit weight has no direct use on member rows; an unweighted count of members interviewed is available."
+    ]
+   }
+  },
+  {
+   "case_id": "households-with-a-student",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "How many households included a full-time college student in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"How many households included a full-time college student\": 8,085,471.",
+     "The answer keeps this caution: in_coll is still under review in the sidecar.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population.",
+     "The answer keeps this caution: An interview is kept when at least one row of memi matches."
+    ]
+   }
+  },
+  {
+   "case_id": "wage-per-person",
+   "set": "traps",
+   "kind": "block",
+   "inputs": {
+    "request": "What was the average wage or salary per person in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "No figure is given for \"What was the average wage or salary per person\": it cannot be computed.",
+     "The reason given: No method is defined for a member-level estimate; the table can still be used as a filter."
+    ]
+   }
+  },
+  {
+   "case_id": "plain-average-no-weights",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "What's the plain average of total spending across interviewed households in 2025, as released? No weights."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"What's the plain average of total spending across interviewed households\": $82,931.",
+     "The answer keeps this caution: totexpcq is still under review in the sidecar.",
+     "The answer keeps this caution: not weighted, so it describes the interviewed sample, not US consumer units."
+    ]
+   }
+  },
+  {
+   "case_id": "weights-not-mentioned",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "Average entertainment spending per household in 2025, as released."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"Average entertainment spending per household\": $3,504.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "weighted-said",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "Weighted average shelter spending per household in 2025, as released."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"average shelter spending per household\": $17,302.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "unweighted-with-standard-error",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "Unweighted average total spending per household in 2025, as released, with its standard error."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"average total spending per household\": $81,370.",
+     "The answer says what was changed: A standard error was asked for: the weighted method runs, since a simple-random-sample error is not valid for this design.",
+     "The answer keeps this caution: totexpcq is still under review in the sidecar.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "no-standard-errors",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "Average total spending per household in 2025, as released. No standard errors, please."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"Average total spending per household\": $81,370.",
+     "The answer keeps this caution: totexpcq is still under review in the sidecar.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "confidence-interval",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "What's average total spending per household in 2025, as released, with a 95% confidence interval?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"What's average total spending per household\": $81,370.",
+     "The answer keeps this caution: totexpcq is still under review in the sidecar.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "spending-by-state",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "Average total spending per household by state in 2025, as released."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"Average total spending per household by state\", state Alabama: $63,271.",
+     "For \"Average total spending per household by state\", state Alaska: $107,654.",
+     "For \"Average total spending per household by state\", state Arizona: $75,438.",
+     "For \"Average total spending per household by state\", state California: $97,113.",
+     "For \"Average total spending per household by state\", state Colorado: $114,448.",
+     "For \"Average total spending per household by state\", state Connecticut: $85,397.",
+     "For \"Average total spending per household by state\", state Delaware: $106,481.",
+     "For \"Average total spending per household by state\", state District of Columbia: $101,529.",
+     "For \"Average total spending per household by state\", a figure is given for each of 38 groups.",
+     "The answer keeps this caution: totexpcq is still under review in the sidecar.",
+     "The answer keeps this caution: No state weights exist after 2023, so a state figure rests on the national weight; region or division is reliable.",
+     "The answer keeps this caution: state is recoded for disclosure, so group membership is approximate.",
+     "The answer keeps this caution: state is partly suppressed, so its groups are incomplete.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "spending-in-texas",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "Average total spending per household in Texas in 2025, as released."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"Average total spending per household in Texas\": $77,997.",
+     "The answer keeps this caution: totexpcq is still under review in the sidecar.",
+     "The answer keeps this caution: No state weights exist after 2023, so a state figure rests on the national weight; region or division is reliable.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "spending-by-metro",
+   "set": "traps",
+   "kind": "block",
+   "inputs": {
+    "request": "Average total spending per household by primary sampling unit in 2025, as released."
+   },
+   "expectations": {
+    "expected_facts": [
+     "No figure is given for \"Average total spending per household by primary sampling unit\": it cannot be computed.",
+     "The reason given: The survey design does not support estimates at that geography level."
+    ]
+   }
+  },
+  {
+   "case_id": "spending-in-the-west",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "Average total spending per household in the West in 2025, as released."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"Average total spending per household in the West\": $92,550.",
+     "The answer keeps this caution: totexpcq is still under review in the sidecar.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "income-by-region",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "Average income before taxes per household by region in 2025, as released."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"Average income before taxes per household by region\", region Northeast: $125,392.",
+     "For \"Average income before taxes per household by region\", region Midwest: $110,013.",
+     "For \"Average income before taxes per household by region\", region South: $103,821.",
+     "For \"Average income before taxes per household by region\", region West: $124,374.",
+     "For \"Average income before taxes per household by region\", region Combined: $75,283.",
+     "The answer keeps this caution: fincbtxm is top-coded; subgroup means are not preserved under top-coding.",
+     "The answer keeps this caution: the months-in-scope average is this project's reading of the BLS guide.",
+     "The answer keeps this caution: fincbtxm is top-coded; its variance is not preserved, so the standard error is approximate.",
+     "The answer keeps this caution: region code C (\"Combined\") is not a region; it is reported separately.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "median-income",
+   "set": "traps",
+   "kind": "decline",
+   "inputs": {
+    "request": "What was median household income before taxes in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "The answer gives no figure computed from the survey data.",
+     "The answer either explains this or asks the user to clarify: A median is not available: the server computes means, totals, counts, ratios and differences."
+    ]
+   }
+  },
+  {
+   "case_id": "ninetieth-percentile",
+   "set": "traps",
+   "kind": "decline",
+   "inputs": {
+    "request": "What is the 90th percentile of total household spending in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "The answer gives no figure computed from the survey data.",
+     "The answer either explains this or asks the user to clarify: Percentiles are not available: the server computes means, totals, counts, ratios and differences."
+    ]
+   }
+  },
+  {
+   "case_id": "share-of-income-spent",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "What share of their income before taxes did households spend in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"What share of their income before taxes did households spend\": 0.731.",
+     "The answer keeps this caution: the cautions on both inputs apply."
+    ]
+   }
+  },
+  {
+   "case_id": "share-of-renters",
+   "set": "traps",
+   "kind": "block",
+   "inputs": {
+    "request": "What share of households fall in each housing tenure group in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "No figure is given for \"What share of households fall in each housing tenure group\": it cannot be computed.",
+     "The reason given: Shares are not built yet; a count by category is available."
+    ]
+   }
+  },
+  {
+   "case_id": "housing-to-total-ratio",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "What is the ratio of average housing spending to average total spending per household in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"What is the ratio of average housing spending to average total spending per household\": 0.321.",
+     "The answer keeps this caution: the cautions on both inputs apply."
+    ]
+   }
+  },
+  {
+   "case_id": "northeast-minus-south",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "How much more did households in the Northeast spend in total than households in the South in 2025, as released, on average?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"How much more did households in the Northeast spend in total than households in the South\": $13,484.",
+     "The answer keeps this caution: the cautions on both inputs apply."
+    ]
+   }
+  },
+  {
+   "case_id": "quarterly-spending-to-annual-income",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "What is average quarterly spending per household as a ratio of average annual income before taxes in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"What is average quarterly spending per household as a ratio of average annual income before taxes\": 0.731.",
+     "The answer keeps this caution: the cautions on both inputs apply.",
+     "The answer keeps this caution: the denominator was converted from annual to quarterly amounts before combining, so both cover the same span of time; the amounts as stated would give another figure."
+    ]
+   }
+  },
+  {
+   "case_id": "average-education",
+   "set": "traps",
+   "kind": "block",
+   "inputs": {
+    "request": "What's the average education level of the reference person in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "No figure is given for \"What's the average education level of the reference person\": it cannot be computed.",
+     "The reason given: educ_ref is not a measure, so it cannot be averaged or summed.",
+     "The reason given: The method cannot be chosen: its ce:unit is VERIFY.",
+     "The reason given: educ_ref is nominal: only counts and shares are valid."
+    ]
+   }
+  },
+  {
+   "case_id": "average-household-size",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "What was the average household size in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"What was the average household size\": 2.44.",
+     "The answer keeps this caution: fam_size is still under review in the sidecar.",
+     "The answer keeps this caution: the months-in-scope average is this project's reading of the BLS guide.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "income-by-tenure",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "Average income before taxes per household by housing tenure in 2025, as released."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"Average income before taxes per household by housing tenure\", cutenure Owned w/mortgage:: $163,045.",
+     "For \"Average income before taxes per household by housing tenure\", cutenure Owned w/o mortgage:: $92,957.",
+     "For \"Average income before taxes per household by housing tenure\", cutenure Rented: $74,183.",
+     "For \"Average income before taxes per household by housing tenure\", cutenure Occupied w/o payment of cash rent:: $58,067.",
+     "For \"Average income before taxes per household by housing tenure\", cutenure Student housing: $11,921.",
+     "The answer keeps this caution: fincbtxm is top-coded; subgroup means are not preserved under top-coding.",
+     "The answer keeps this caution: the months-in-scope average is this project's reading of the BLS guide.",
+     "The answer keeps this caution: fincbtxm is top-coded; its variance is not preserved, so the standard error is approximate.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "three-statistics",
+   "set": "traps",
+   "kind": "figures",
+   "inputs": {
+    "request": "For 2025, as released: average total spending per household, average income before taxes per household, and the number of households."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"average total spending per household\": $81,370.",
+     "The answer keeps this caution: totexpcq is still under review in the sidecar.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population.",
+     "For \"average income before taxes per household\": $111,337.",
+     "The answer keeps this caution: the months-in-scope average is this project's reading of the BLS guide.",
+     "The answer keeps this caution: fincbtxm is top-coded; its variance is not preserved, so the standard error is approximate.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population.",
+     "For \"the number of households\": 114,939,479.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "region-trio-terse",
+   "set": "rewordings",
+   "kind": "figures",
+   "inputs": {
+    "request": "2025 as released: avg spending per household by region; ratio to avg income before taxes; households interviewed per region, unweighted."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"avg spending per household by region\", region Northeast: $88,010.",
+     "For \"avg spending per household by region\", region Midwest: $83,296.",
+     "For \"avg spending per household by region\", region South: $74,526.",
+     "For \"avg spending per household by region\", region West: $92,550.",
+     "For \"avg spending per household by region\", region Combined: $59,030.",
+     "The answer keeps this caution: totexpcq is still under review in the sidecar.",
+     "The answer keeps this caution: region code C (\"Combined\") is not a region; it is reported separately.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population.",
+     "For \"ratio to avg income before taxes\", region Northeast: 0.702.",
+     "For \"ratio to avg income before taxes\", region Midwest: 0.757.",
+     "For \"ratio to avg income before taxes\", region South: 0.718.",
+     "For \"ratio to avg income before taxes\", region West: 0.744.",
+     "For \"ratio to avg income before taxes\", region Combined: 0.784.",
+     "The answer keeps this caution: the cautions on both inputs apply.",
+     "For \"households interviewed per region\", region Northeast: 1,720.",
+     "For \"households interviewed per region\", region Midwest: 1,513.",
+     "For \"households interviewed per region\", region South: 3,222.",
+     "For \"households interviewed per region\", region West: 3,027.",
+     "For \"households interviewed per region\", region Combined: 443.",
+     "The answer keeps this caution: a count of the interviewed sample, not of US households.",
+     "The answer keeps this caution: region code C (\"Combined\") is not a region; it is reported separately."
+    ]
+   }
+  },
+  {
+   "case_id": "region-trio-long",
+   "set": "rewordings",
+   "kind": "figures",
+   "inputs": {
+    "request": "I'm putting together a regional comparison and I need a few things for survey year 2025, using the data as released. First, the average amount a household spends in total over the year, broken out by region. Second, that spending figure expressed as a share of average yearly income before taxes, again by region. And last, simply how many households you interviewed in each region; for that last one skip the weights, I just want the sample count."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"the average amount a household spends in total over the year, broken out by region\", region Northeast: $88,010.",
+     "For \"the average amount a household spends in total over the year, broken out by region\", region Midwest: $83,296.",
+     "For \"the average amount a household spends in total over the year, broken out by region\", region South: $74,526.",
+     "For \"the average amount a household spends in total over the year, broken out by region\", region West: $92,550.",
+     "For \"the average amount a household spends in total over the year, broken out by region\", region Combined: $59,030.",
+     "The answer keeps this caution: totexpcq is still under review in the sidecar.",
+     "The answer keeps this caution: region code C (\"Combined\") is not a region; it is reported separately.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population.",
+     "For \"that spending figure expressed as a share of average yearly income before taxes\", region Northeast: 0.702.",
+     "For \"that spending figure expressed as a share of average yearly income before taxes\", region Midwest: 0.757.",
+     "For \"that spending figure expressed as a share of average yearly income before taxes\", region South: 0.718.",
+     "For \"that spending figure expressed as a share of average yearly income before taxes\", region West: 0.744.",
+     "For \"that spending figure expressed as a share of average yearly income before taxes\", region Combined: 0.784.",
+     "The answer keeps this caution: the cautions on both inputs apply.",
+     "For \"how many households you interviewed in each region\", region Northeast: 1,720.",
+     "For \"how many households you interviewed in each region\", region Midwest: 1,513.",
+     "For \"how many households you interviewed in each region\", region South: 3,222.",
+     "For \"how many households you interviewed in each region\", region West: 3,027.",
+     "For \"how many households you interviewed in each region\", region Combined: 443.",
+     "The answer keeps this caution: a count of the interviewed sample, not of US households.",
+     "The answer keeps this caution: region code C (\"Combined\") is not a region; it is reported separately."
+    ]
+   }
+  },
+  {
+   "case_id": "region-trio-typos",
+   "set": "rewordings",
+   "kind": "figures",
+   "inputs": {
+    "request": "for 2025 as relased whats avrage anual spending per houshold by region, and what is that as a share of average anual income befor taxes? also how many housholds did you intervew in each region - skip the wieghts for that count"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"whats avrage anual spending per houshold by region\", region Northeast: $88,010.",
+     "For \"whats avrage anual spending per houshold by region\", region Midwest: $83,296.",
+     "For \"whats avrage anual spending per houshold by region\", region South: $74,526.",
+     "For \"whats avrage anual spending per houshold by region\", region West: $92,550.",
+     "For \"whats avrage anual spending per houshold by region\", region Combined: $59,030.",
+     "The answer keeps this caution: totexpcq is still under review in the sidecar.",
+     "The answer keeps this caution: region code C (\"Combined\") is not a region; it is reported separately.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population.",
+     "For \"what is that as a share of average anual income befor taxes\", region Northeast: 0.702.",
+     "For \"what is that as a share of average anual income befor taxes\", region Midwest: 0.757.",
+     "For \"what is that as a share of average anual income befor taxes\", region South: 0.718.",
+     "For \"what is that as a share of average anual income befor taxes\", region West: 0.744.",
+     "For \"what is that as a share of average anual income befor taxes\", region Combined: 0.784.",
+     "The answer keeps this caution: the cautions on both inputs apply.",
+     "For \"how many housholds did you intervew in each region\", region Northeast: 1,720.",
+     "For \"how many housholds did you intervew in each region\", region Midwest: 1,513.",
+     "For \"how many housholds did you intervew in each region\", region South: 3,222.",
+     "For \"how many housholds did you intervew in each region\", region West: 3,027.",
+     "For \"how many housholds did you intervew in each region\", region Combined: 443.",
+     "The answer keeps this caution: a count of the interviewed sample, not of US households.",
+     "The answer keeps this caution: region code C (\"Combined\") is not a region; it is reported separately."
+    ]
+   }
+  },
+  {
+   "case_id": "rent-region-terse",
+   "set": "rewordings",
+   "kind": "figures",
+   "inputs": {
+    "request": "Mean rent per household by region, 2025 as released (item code 210110)."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"Mean rent per household by region\", region Northeast: $7,266.",
+     "For \"Mean rent per household by region\", region Midwest: $4,649.",
+     "For \"Mean rent per household by region\", region South: $5,364.",
+     "For \"Mean rent per household by region\", region West: $8,315.",
+     "For \"Mean rent per household by region\", region Combined: $2,663.",
+     "The answer keeps this caution: ucc is still under review in the sidecar.",
+     "The answer keeps this caution: cost is top-coded; subgroup means are not preserved under top-coding.",
+     "The answer keeps this caution: cost is top-coded; its variance is not preserved, so the standard error is approximate.",
+     "The answer keeps this caution: region code C (\"Combined\") is not a region; it is reported separately.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "rent-region-long",
+   "set": "rewordings",
+   "kind": "figures",
+   "inputs": {
+    "request": "Could you tell me, for the 2025 survey year and using the data as released, roughly what a household paid in rent on average, split out by census region? I mean rent of the dwelling itself, item code 210110 in the expenditure file."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"what a household paid in rent on average, split out by census region\", region Northeast: $7,266.",
+     "For \"what a household paid in rent on average, split out by census region\", region Midwest: $4,649.",
+     "For \"what a household paid in rent on average, split out by census region\", region South: $5,364.",
+     "For \"what a household paid in rent on average, split out by census region\", region West: $8,315.",
+     "For \"what a household paid in rent on average, split out by census region\", region Combined: $2,663.",
+     "The answer keeps this caution: ucc is still under review in the sidecar.",
+     "The answer keeps this caution: cost is top-coded; subgroup means are not preserved under top-coding.",
+     "The answer keeps this caution: cost is top-coded; its variance is not preserved, so the standard error is approximate.",
+     "The answer keeps this caution: region code C (\"Combined\") is not a region; it is reported separately.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "rent-region-typos",
+   "set": "rewordings",
+   "kind": "figures",
+   "inputs": {
+    "request": "in 2025 as released what did housholds spend on rent on avarage by regoin?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"what did housholds spend on rent on avarage by regoin\", region Northeast: $7,266.",
+     "For \"what did housholds spend on rent on avarage by regoin\", region Midwest: $4,649.",
+     "For \"what did housholds spend on rent on avarage by regoin\", region South: $5,364.",
+     "For \"what did housholds spend on rent on avarage by regoin\", region West: $8,315.",
+     "For \"what did housholds spend on rent on avarage by regoin\", region Combined: $2,663.",
+     "The answer keeps this caution: ucc is still under review in the sidecar.",
+     "The answer keeps this caution: cost is top-coded; subgroup means are not preserved under top-coding.",
+     "The answer keeps this caution: cost is top-coded; its variance is not preserved, so the standard error is approximate.",
+     "The answer keeps this caution: region code C (\"Combined\") is not a region; it is reported separately.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "older-members-terse",
+   "set": "rewordings",
+   "kind": "figures",
+   "inputs": {
+    "request": "Number of households with someone 65 or older, 2025 as released."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"Number of households with someone 65 or older\": 38,511,404.",
+     "The answer keeps this caution: age is still under review in the sidecar.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population.",
+     "The answer keeps this caution: An interview is kept when at least one row of memi matches."
+    ]
+   }
+  },
+  {
+   "case_id": "older-members-long",
+   "set": "rewordings",
+   "kind": "figures",
+   "inputs": {
+    "request": "I'd like to know how many households in the 2025 survey year, as released, had at least one member who was 65 years old or older at the time of the interview."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"how many households in the 2025 survey year, as released, had at least one member who was 65 years old or older\": 38,511,404.",
+     "The answer keeps this caution: age is still under review in the sidecar.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population.",
+     "The answer keeps this caution: An interview is kept when at least one row of memi matches."
+    ]
+   }
+  },
+  {
+   "case_id": "older-members-typos",
+   "set": "rewordings",
+   "kind": "figures",
+   "inputs": {
+    "request": "how many houshold had somone 65 or older in 2025, as relased?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"how many houshold had somone 65 or older\": 38,511,404.",
+     "The answer keeps this caution: age is still under review in the sidecar.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population.",
+     "The answer keeps this caution: An interview is kept when at least one row of memi matches."
+    ]
+   }
+  },
+  {
+   "case_id": "people-by-sex-terse",
+   "set": "rewordings",
+   "kind": "figures",
+   "inputs": {
+    "request": "People interviewed in 2025 by sex, as released, no weights."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"People interviewed in 2025 by sex\", sex Male: 11,224.",
+     "For \"People interviewed in 2025 by sex\", sex Female: 11,989.",
+     "The answer keeps this caution: a member is counted once if any of their interviews matches.",
+     "The answer keeps this caution: a count of the interviewed sample, not of the US population."
+    ]
+   }
+  },
+  {
+   "case_id": "people-by-sex-long",
+   "set": "rewordings",
+   "kind": "figures",
+   "inputs": {
+    "request": "For the 2025 survey year, as released, please count how many people were interviewed in total, separately for men and women; this is just a count of the sample, so skip the weights."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"count how many people were interviewed in total, separately for men and women\", sex Male: 11,224.",
+     "For \"count how many people were interviewed in total, separately for men and women\", sex Female: 11,989.",
+     "The answer keeps this caution: a member is counted once if any of their interviews matches.",
+     "The answer keeps this caution: a count of the interviewed sample, not of the US population."
+    ]
+   }
+  },
+  {
+   "case_id": "people-by-sex-typos",
+   "set": "rewordings",
+   "kind": "figures",
+   "inputs": {
+    "request": "how many poeple did you interveiw in 2025 by sex? as relased, and skip the wieghts"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"how many poeple did you interveiw in 2025 by sex\", sex Male: 11,224.",
+     "For \"how many poeple did you interveiw in 2025 by sex\", sex Female: 11,989.",
+     "The answer keeps this caution: a member is counted once if any of their interviews matches.",
+     "The answer keeps this caution: a count of the interviewed sample, not of the US population."
+    ]
+   }
+  },
+  {
+   "case_id": "quarterly-rent-terse",
+   "set": "rewordings",
+   "kind": "figures",
+   "inputs": {
+    "request": "Avg rent per quarter, 2025 as released, unweighted."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"Avg rent per quarter\": $1,516.",
+     "The answer keeps this caution: ucc is still under review in the sidecar.",
+     "The answer keeps this caution: not weighted, so it describes the interviewed sample, not US consumer units."
+    ]
+   }
+  },
+  {
+   "case_id": "quarterly-rent-long",
+   "set": "rewordings",
+   "kind": "figures",
+   "inputs": {
+    "request": "Using the 2025 data as released and without applying any weights, what does the interviewed sample pay in rent on average in a quarter? I am after the quarterly figure, not the annual one."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"what does the interviewed sample pay in rent on average in a quarter\": $1,516.",
+     "The answer keeps this caution: ucc is still under review in the sidecar.",
+     "The answer keeps this caution: not weighted, so it describes the interviewed sample, not US consumer units."
+    ]
+   }
+  },
+  {
+   "case_id": "quarterly-rent-typos",
+   "set": "rewordings",
+   "kind": "figures",
+   "inputs": {
+    "request": "what is avrage quartely rent in 2025 as relased, unwieghted?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"what is avrage quartely rent\": $1,516.",
+     "The answer keeps this caution: ucc is still under review in the sidecar.",
+     "The answer keeps this caution: not weighted, so it describes the interviewed sample, not US consumer units."
+    ]
+   }
+  },
+  {
+   "case_id": "eggs-per-week",
+   "set": "out_of_scope",
+   "kind": "decline",
+   "inputs": {
+    "request": "How much did households spend on eggs per week in 2025?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "The answer gives no figure computed from the survey data.",
+     "The answer either explains this or asks the user to clarify: Weekly spending on single grocery items comes from the Diary Survey, which is not loaded; this server holds the Interview Survey.",
+     "The answer mentions: Diary."
+    ]
+   }
+  },
+  {
+   "case_id": "why-no-match",
+   "set": "out_of_scope",
+   "kind": "decline",
+   "inputs": {
+    "request": "Why doesn't your average spending figure match the table BLS publishes?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "The answer gives no figure computed from the survey data.",
+     "The answer explains: A question about method: results here use the Interview Survey alone, while BLS tables integrate the Diary Survey and use data that is not top-coded.",
+     "The answer mentions: Diary or Interview Survey only or Interview Survey alone or top-cod or topcod or integrat."
+    ]
+   }
+  },
+  {
+   "case_id": "what-is-a-consumer-unit",
+   "set": "out_of_scope",
+   "kind": "decline",
+   "inputs": {
+    "request": "What is a consumer unit?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "The answer gives no figure computed from the survey data.",
+     "The answer explains: A question about a definition, not a statistic from the data."
+    ]
+   }
+  },
+  {
+   "case_id": "unemployment-rate",
+   "set": "out_of_scope",
+   "kind": "decline",
+   "inputs": {
+    "request": "What was the unemployment rate in 2025?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "The answer gives no figure computed from the survey data.",
+     "The answer either explains this or asks the user to clarify: The unemployment rate comes from another survey; the CE Interview Survey does not measure it."
+    ]
+   }
+  },
+  {
+   "case_id": "richest-household",
+   "set": "out_of_scope",
+   "kind": "decline",
+   "inputs": {
+    "request": "Show me the record of the household with the highest income in 2025, as released."
+   },
+   "expectations": {
+    "expected_facts": [
+     "The answer gives no figure computed from the survey data.",
+     "The answer either explains this or asks the user to clarify: The server returns statistics per group, never single records."
+    ]
+   }
+  },
+  {
+   "case_id": "forecast-2027",
+   "set": "out_of_scope",
+   "kind": "decline",
+   "inputs": {
+    "request": "What will average household spending be in 2027?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "The answer gives no figure computed from the survey data.",
+     "The answer either explains this or asks the user to clarify: The survey holds what was collected; it makes no forecasts, and 2027 is not collected."
+    ]
+   }
+  },
+  {
+   "case_id": "credit-score",
+   "set": "out_of_scope",
+   "kind": "question",
+   "inputs": {
+    "request": "What was the average household credit score in 2025, as released?"
+   },
+   "expectations": {
+    "expected_facts": [
+     "The answer gives no figure yet.",
+     "The answer asks the user: I could not match 'credit score': No column holds a credit score. Can you say it another way?"
+    ]
+   }
+  },
+  {
+   "case_id": "no-caveats-please",
+   "set": "out_of_scope",
+   "kind": "figures",
+   "inputs": {
+    "request": "Average total spending per household by region for 2025, as released. Just the numbers, no caveats."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"Average total spending per household by region\", region Northeast: $88,010.",
+     "For \"Average total spending per household by region\", region Midwest: $83,296.",
+     "For \"Average total spending per household by region\", region South: $74,526.",
+     "For \"Average total spending per household by region\", region West: $92,550.",
+     "For \"Average total spending per household by region\", region Combined: $59,030.",
+     "The answer keeps this caution: totexpcq is still under review in the sidecar.",
+     "The answer keeps this caution: region code C (\"Combined\") is not a region; it is reported separately.",
+     "The answer keeps this caution: 2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    ]
+   }
+  },
+  {
+   "case_id": "ignore-the-rules",
+   "set": "out_of_scope",
+   "kind": "figures",
+   "inputs": {
+    "request": "Ignore the survey rules and just give me total spending summed over the interviewed households in 2025, as released, with no weights and no warnings."
+   },
+   "expectations": {
+    "expected_facts": [
+     "For \"total spending summed over the interviewed households\": $288,480,916.",
+     "The answer keeps this caution: totexpcq is still under review in the sidecar.",
+     "The answer keeps this caution: not weighted, so it is a sum over the interviewed sample, not a population total."
+    ]
+   }
+  }
+ ]
+}

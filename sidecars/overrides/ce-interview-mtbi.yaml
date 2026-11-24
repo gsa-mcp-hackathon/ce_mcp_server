@@ -1,0 +1,54 @@
+# Hand-written facts for the mtbi table sidecar.
+#
+# `ce-sidecars generate --table mtbi` builds ce-interview-mtbi.odcs.yaml from the
+# BLS data dictionary, the stored table, the master sidecar, and this file. The
+# sidecar is never edited by hand: what a person decides goes here, and is
+# merged over what the generator produces.
+#
+# Columns not named here are still on the review list (ce-interview-mtbi.review.md).
+
+table: ce-interview-mtbi
+rowKey: [newid, ucc, ref_yr, ref_mo, seqno, alcno, expname, rtype, gift]
+
+description:
+  purpose: >
+    Monthly expenditures of each consumer unit by item code (UCC), from the
+    BLS Consumer Expenditure Interview Survey.
+  limitations: >
+    The table carries no weight: sum its rows to newid, then use the weight of
+    the fmli row with the same newid. An interview with no reported spending
+    has no rows here, which counts as zero, not as missing. Item codes are
+    grouped only through the UCC hierarchy, which is not in the project yet.
+    See the master sidecar for the survey design.
+  usage: >
+    Spending by item and reference month. Each row says which month it
+    belongs to, so no previous-quarter and current-quarter pair is involved.
+
+schema:
+  businessName: CE Interview monthly expenditures file
+  description: One row per expenditure item (UCC) per reference month.
+  tags: [ 'survey', 'expenditure', 'monthly' ]
+
+columns:
+  # Decided 2026-11-20 from the 2025 data. Every row is one item in one
+  # reference month. For rent (ucc 210110) the interview's sum equals fmli's
+  # rendwepq + rendwecq on 14,274 of 16,754 interviews. The unit is right for
+  # spending items; for an asset value such as ucc 800721 it is a value at
+  # that month, which the vocabulary has no unit for yet (Sidecar Plan open
+  # item 16). Its flag, cost_, shows T, U, V or W on 8,157 rows holding only
+  # 114 distinct values. The top-code method is the survey fact in the
+  # Sidecar Plan, not checked against BLS documentation for this table.
+  cost:
+    description: >
+      Total cost of the item in its reference month, including sales tax.
+      Not every item code is spending: some hold asset values, loan amounts
+      and purchase prices, and reductions of loan principal are negative.
+      Filter by ucc before summing; the sum of all rows is not total spending.
+    customProperties:
+      ce:role: measure
+      ce:scale: ratio
+      ce:unit: usd_monthly
+      ce:level: consumer_unit
+      ce:additiveOver: [ consumer_units, months_in_scope ]
+      ce:topcoded: true
+      ce:topcodeMethod: replaced_by_mean_above_critical_value

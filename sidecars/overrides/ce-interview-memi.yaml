@@ -1,0 +1,31 @@
+# Hand-written facts for the memi table sidecar.
+#
+# `ce-sidecars generate --table memi` builds ce-interview-memi.odcs.yaml from the
+# BLS data dictionary, the stored table, the master sidecar, and this file. The
+# sidecar is never edited by hand: what a person decides goes here, and is
+# merged over what the generator produces.
+#
+# No column decisions are recorded yet: every open column is on the review list
+# (ce-interview-memi.review.md) until a person settles it here.
+
+table: ce-interview-memi
+rowKey: [newid, membno]
+
+description:
+  purpose: >
+    Characteristics, work and income of each member of a consumer unit, from
+    the BLS Consumer Expenditure Interview Survey.
+  limitations: >
+    Rows are people, not consumer units. A member-level value cannot be
+    weighted directly with the consumer-unit weight: resolve or aggregate it
+    to newid first, then use the weight of the fmli row with the same newid.
+    A member can appear in up to four quarterly interviews. See the master
+    sidecar for the survey design.
+  usage: >
+    Member-level characteristics and income, and filters on who is in a
+    consumer unit.
+
+schema:
+  businessName: CE Interview member file
+  description: One row per member of a consumer unit per quarterly interview.
+  tags: [ 'survey', 'member', 'quarterly' ]

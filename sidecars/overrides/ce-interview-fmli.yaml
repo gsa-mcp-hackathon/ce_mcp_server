@@ -1,0 +1,255 @@
+# Hand-written facts for the fmli table sidecar.
+#
+# `ce-sidecars generate --table fmli` builds ce-interview-fmli.odcs.yaml from the
+# BLS data dictionary, the stored table, the master sidecar, and this file. The
+# sidecar is never edited by hand: what a person decides goes here, and is
+# merged over what the generator produces. A column entry sets only the fields
+# it names; under customProperties, each ce: property replaces the generated
+# value or adds one.
+
+table: ce-interview-fmli
+rowKey: [newid]
+
+description:
+  purpose: >
+    Household-level (consumer unit) characteristics, income, and summary
+    expenditures from the BLS Consumer Expenditure Interview Survey.
+  limitations: >
+    A consumer unit can appear in up to four quarterly interviews. Values are
+    subject to top-coding, imputation, coded missing values, and skip
+    patterns. See the master sidecar for the survey design.
+  usage: >
+    Consumer-unit characteristics, income, and summary expenditures. This is
+    the table that carries the sampling weight and replicate weights.
+
+verifiedStatements:
+  - id: vs-unit
+    question: "What does one row represent?"
+    answer: >
+      One consumer unit in one quarterly interview. The same consumer unit
+      (cuid) can appear in up to four interviews, at most one per quarter.
+  - id: vs-weight
+    question: "Which column is the sampling weight?"
+    answer: "finlwt21. Each quarter's weights sum to all US consumer units."
+  - id: vs-newid
+    question: "How is newid built?"
+    answer: >
+      An 8-digit string. The last digit is the interview number, in a series
+      of four; the seven digits before it are the consumer unit, stored as
+      cuid.
+
+schema:
+  businessName: CE Interview consumer unit file
+  description: One row per consumer unit per quarterly interview.
+  tags: [ 'survey', 'household', 'quarterly' ]
+
+columns:
+  newid:
+    businessName: Consumer unit interview identifier
+    description: >
+      An 8-digit string, left-padded with zeros by the loader. The last
+      digit is the interview number, in a series of four; the digits
+      before it identify the consumer unit (cuid).
+
+  finlwt21:
+    businessName: Final sampling weight
+    description: Number of US consumer units this record represents.
+
+  wtrep01:
+    businessName: Replicate weight 1 of 44
+    description: >
+      First of 44 replicate weights (wtrep01 to wtrep44), used only for
+      variance estimation.
+
+  qintrvyr:
+    businessName: Interview year
+    description: >
+      Calendar year of the interview, not of the spending. Stored as a
+      4-character string.
+
+  qintrvmo:
+    businessName: Interview month
+    description: >
+      Calendar month of the interview, a 2-character string ("01" to "12").
+      Spending covers the three months before it.
+
+  region:
+    businessName: Census region
+    description: >
+      Region of residence. From 2025 Q1, code C ("Combined") replaces the
+      region for some records; it is not a region.
+    enum:
+      - {value: "1", label: Northeast}
+      - {value: "2", label: Midwest}
+      - {value: "3", label: South}
+      - {value: "4", label: West}
+      - {value: "C", label: "Combined (from 2025 Q1; not a region)"}
+    customProperties:
+      ce:geographyLevel: region
+      ce:suppressed: partial
+
+  state:
+    businessName: State of residence
+    description: >
+      State FIPS code. Blank for some records and recoded to a different
+      state for a small share, for disclosure protection.
+    customProperties:
+      ce:geographyLevel: state
+      ce:missingCodes: [ "" ]
+      ce:suppressed: partial
+      ce:recoded: true
+
+  # The 23 named metropolitan areas. Not a supported level (Sidecar Plan
+  # decision 19): the master rates everything below state as unsupported, so
+  # a request grouped by this column is refused. Phase 2 revisits this.
+  psu:
+    customProperties:
+      ce:geographyLevel: belowState
+
+  fam_size:
+    businessName: Consumer unit size
+    description: Number of members in the consumer unit.
+    customProperties:
+      ce:role: dimension
+      ce:scale: ratio
+      ce:unit: count
+      ce:level: consumer_unit
+      ce:topcoded: VERIFY
+
+  fincbtxm:
+    businessName: Income before taxes, imputed
+    description: >
+      Consumer unit income before taxes over the past 12 months. It is the
+      mean of the five imputed versions, fincbtx1 to fincbtx5, which are
+      also on the file. All six are top-coded with one critical value.
+    customProperties:
+      ce:role: measure
+      ce:scale: ratio
+      ce:unit: usd_annual
+      ce:level: consumer_unit
+      ce:topcoded: true
+      ce:topcodeMethod: replaced_by_mean_above_critical_value
+      ce:imputed: {multiple: true, iterations: 5}
+      ce:additiveOver: [ consumer_units ]
+
+  # The collected income total, and the base of the imputation set fincbtx1 to
+  # fincbtx5 and fincbtxm: what is decided here carries to all of them. Its
+  # flag, fincbt_x, shows T in the 2025 data.
+  fincbtax:
+    customProperties:
+      ce:topcoded: true
+      ce:topcodeMethod: replaced_by_mean_above_critical_value
+
+  totexppq:
+    businessName: Total expenditures, previous quarter
+    description: >
+      Total expenditures falling in the calendar quarter before the
+      interview quarter. Pairs with totexpcq for calendar-year estimates.
+    customProperties:
+      ce:role: measure
+      ce:scale: ratio
+      ce:unit: usd_quarterly
+      ce:level: consumer_unit
+      ce:topcoded: VERIFY
+      ce:calendarPair: totexpcq
+      ce:additiveOver: [ consumer_units, months_in_scope ]
+
+  totexpcq:
+    businessName: Total expenditures, current quarter
+    description: >
+      Total expenditures falling in the interview's calendar quarter.
+    customProperties:
+      ce:role: measure
+      ce:scale: ratio
+      ce:unit: usd_quarterly
+      ce:level: consumer_unit
+      ce:topcoded: VERIFY
+      ce:calendarPair: totexppq
+      ce:additiveOver: [ consumer_units, months_in_scope ]
+
+  fincb_xm:
+    businessName: Flag for income before taxes, imputed
+    description: >
+      Data flag for fincbtxm (the dictionary's Flag name for FINCBTXM). The
+      code meanings below are BLS's Interview Survey flag codes; the 2025
+      release uses D and T.
+
+  # INC_HRS1 is on the 2025 file (10,921 of 16,754 rows have a value), but every
+  # dictionary row for it ends by 2006, so the generator finds no entry for it
+  # or for its flag. The text below is the dictionary's own.
+  inc_hrs1:
+    businessName: Hours usually worked per week by the reference person
+    description: >
+      Number of hours usually worked per week by reference person. Not in the
+      2025 data dictionary: its entries there end by 2006, but the 2025 file
+      carries the column.
+    customProperties:
+      ce:role: measure
+      ce:scale: ratio
+      ce:unit: VERIFY   # the vocabulary has no hours value
+      ce:level: VERIFY  # a reference-person value on the consumer-unit row
+
+  inc__rs1:
+    customProperties:
+      ce:flagFor: inc_hrs1
+
+  # ── Columns no general rule covers (ce_sidecars.rules). Proposed 2026-11-19
+  # from each column's dictionary label and its 2025 values; to be confirmed.
+  # VERIFY marks a decision still open: units the vocabulary lacks (ranks,
+  # weeks) and the level of reference-person and spouse values.
+
+  inc_rank:  # "Weighted cumulative percent ranking"; values 0 to 1
+    customProperties: &rank
+      ce:role: measure
+      ce:scale: ordinal
+      ce:unit: VERIFY
+      ce:level: consumer_unit
+  erankh:
+    customProperties: *rank
+  erankhm:
+    customProperties: *rank
+
+  hhid:  # set only for households with more than one consumer unit
+    customProperties:
+      ce:role: identifier
+      ce:scale: nominal
+
+  prinearn:  # member number of the principal earner (01, 02, ...): links to memi
+    customProperties:
+      ce:role: identifier
+      ce:scale: nominal
+
+  age_ref:
+    customProperties: &age
+      ce:role: measure
+      ce:scale: ratio
+      ce:unit: years
+      ce:level: VERIFY
+  age2:
+    customProperties: *age
+
+  interi:  # the interview's place in the series of four (1 to 4)
+    customProperties:
+      ce:role: dimension
+      ce:scale: ordinal
+
+  fs_mthi:  # months of the past 12 with food stamps or EBT
+    customProperties:
+      ce:role: measure
+      ce:scale: ratio
+      ce:unit: months
+      ce:level: consumer_unit
+
+  mlpyqwks:  # weeks the household received meals as pay
+    customProperties:
+      ce:role: measure
+      ce:scale: ratio
+      ce:unit: VERIFY
+      ce:level: consumer_unit
+
+  renteqvx:  # "how much would it rent for": read as a monthly rent, to confirm
+    customProperties:
+      ce:role: measure
+      ce:scale: ratio
+      ce:unit: usd_monthly
+      ce:level: consumer_unit

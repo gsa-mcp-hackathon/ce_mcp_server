@@ -1,0 +1,513 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ce-capture/ResolvedRecord/1.0",
+  "$defs": {
+    "Entry": {
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "title": "Value"
+        },
+        "source": {
+          "enum": [
+            "stated",
+            "defaulted",
+            "derived"
+          ],
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "value",
+        "source"
+      ],
+      "title": "Entry",
+      "type": "object"
+    },
+    "ResolvedCombine": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "combine",
+          "title": "Kind",
+          "type": "string"
+        },
+        "statistic": {
+          "enum": [
+            "ratio",
+            "difference"
+          ],
+          "title": "Statistic",
+          "type": "string"
+        },
+        "inputs": {
+          "additionalProperties": {
+            "$ref": "#/$defs/ResolvedInput"
+          },
+          "title": "Inputs",
+          "type": "object"
+        },
+        "conversion": {
+          "$ref": "#/$defs/Entry"
+        },
+        "standard_error": {
+          "$ref": "#/$defs/Entry"
+        },
+        "unit": {
+          "$ref": "#/$defs/UnitEntry"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "statistic",
+        "inputs",
+        "conversion",
+        "standard_error",
+        "unit"
+      ],
+      "title": "ResolvedCombine",
+      "type": "object"
+    },
+    "ResolvedEstimate": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "estimate",
+          "title": "Kind",
+          "type": "string"
+        },
+        "year_sets": {
+          "items": {
+            "$ref": "#/$defs/YearSet"
+          },
+          "title": "Year Sets",
+          "type": "array"
+        },
+        "measure_kind": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Entry"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "columns": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Entry"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "weight_route": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Entry"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "reference_rows": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Entry"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "interview_filters": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Entry"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "within_year": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Entry"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "weight": {
+          "$ref": "#/$defs/Entry"
+        },
+        "time_basis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Entry"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UnitEntry"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "missing_codes": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Entry"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "imputation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Entry"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "standard_error": {
+          "$ref": "#/$defs/Entry"
+        },
+        "count_unit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Entry"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "count_method": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Entry"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "geography_level": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Entry"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "gap_2025": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Entry"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "year_sets",
+        "weight",
+        "standard_error"
+      ],
+      "title": "ResolvedEstimate",
+      "type": "object"
+    },
+    "ResolvedInput": {
+      "additionalProperties": false,
+      "properties": {
+        "node": {
+          "title": "Node",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        }
+      },
+      "required": [
+        "node",
+        "unit"
+      ],
+      "title": "ResolvedInput",
+      "type": "object"
+    },
+    "SidecarRef": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "version"
+      ],
+      "title": "SidecarRef",
+      "type": "object"
+    },
+    "SidecarVersions": {
+      "additionalProperties": false,
+      "properties": {
+        "master": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SidecarRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tables": {
+          "items": {
+            "$ref": "#/$defs/TableRef"
+          },
+          "title": "Tables",
+          "type": "array"
+        },
+        "vocabulary": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SidecarRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "master",
+        "tables",
+        "vocabulary"
+      ],
+      "title": "SidecarVersions",
+      "type": "object"
+    },
+    "TableRef": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "name"
+      ],
+      "title": "TableRef",
+      "type": "object"
+    },
+    "UnitEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "measure": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Measure"
+        },
+        "result": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Result"
+        },
+        "source": {
+          "enum": [
+            "stated",
+            "defaulted",
+            "derived"
+          ],
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "result",
+        "source"
+      ],
+      "title": "UnitEntry",
+      "type": "object"
+    },
+    "YearSet": {
+      "additionalProperties": false,
+      "properties": {
+        "survey_year": {
+          "title": "Survey Year",
+          "type": "integer"
+        },
+        "files": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "source": {
+          "enum": [
+            "stated",
+            "defaulted",
+            "derived"
+          ],
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "survey_year",
+        "files",
+        "source"
+      ],
+      "title": "YearSet",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "resolved_id": {
+      "title": "Resolved Id",
+      "type": "string"
+    },
+    "request_id": {
+      "title": "Request Id",
+      "type": "string"
+    },
+    "derived_at": {
+      "title": "Derived At",
+      "type": "string"
+    },
+    "defaults_version": {
+      "title": "Defaults Version",
+      "type": "string"
+    },
+    "sidecars": {
+      "$ref": "#/$defs/SidecarVersions"
+    },
+    "nodes": {
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "combine": "#/$defs/ResolvedCombine",
+            "estimate": "#/$defs/ResolvedEstimate"
+          },
+          "propertyName": "kind"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/ResolvedEstimate"
+          },
+          {
+            "$ref": "#/$defs/ResolvedCombine"
+          }
+        ]
+      },
+      "title": "Nodes",
+      "type": "array"
+    },
+    "flags": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Flags",
+      "type": "array"
+    }
+  },
+  "required": [
+    "resolved_id",
+    "request_id",
+    "derived_at",
+    "defaults_version",
+    "sidecars",
+    "nodes",
+    "flags"
+  ],
+  "title": "ResolvedRecord",
+  "type": "object"
+}

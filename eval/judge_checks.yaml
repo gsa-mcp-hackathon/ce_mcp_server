@@ -1,0 +1,109 @@
+# Labelled examples for a judge (Plan 6: a judge's verdicts are checked by
+# hand). `ce-eval judge-check --judge MODEL` asks the judge each one and
+# compares. Run it before trusting a judged measure, and add an example here
+# whenever a spot check finds a wrong verdict. The answers are taken from real
+# runs; `expect` is what a person reading them decides.
+
+version: "1.0"
+
+checks:
+  - id: caution-in-other-words
+    kind: caution
+    text: "totexpcq is still under review in the sidecar."
+    answer: |
+      The unweighted average of total spending in 2025, as released, is $82,931 per consumer unit per year.
+      - Sample: The figure covers 16,754 interviews from 9,925 consumer units.
+      - Weighting: The average is unweighted, so it describes the interviewed sample and not all US households.
+      - Data status: The `totexpcq` column is still under review in the survey's metadata.
+    expect: true
+
+  - id: caution-word-for-word
+    kind: caution
+    text: "region code C (\"Combined\") is not a region; it is reported separately."
+    answer: |
+      Northeast $88,010, South $74,526, Combined $59,030.
+      Caution: region code C ("Combined") is not a region; it is reported separately.
+    expect: true
+
+  - id: caution-absent
+    kind: caution
+    text: "No state weights exist after 2023, so a state figure rests on the national weight; region or division is reliable."
+    answer: "Average spending in Texas was $71,200 per household. This is Interview Survey data only."
+    expect: false
+
+  - id: caution-vague-hint-only
+    kind: caution
+    text: "fincbtxm is top-coded; subgroup means are not preserved under top-coding."
+    answer: "Average income by tenure: owners $131,000, renters $72,400. As with any survey estimate, treat these figures with some care."
+    expect: false
+
+  - id: caution-other-caution-present
+    kind: caution
+    text: "2025 as released. Fourth-quarter interviews stand for one third of the usual population."
+    answer: "Average spending was $81,370. Note that the spending column is still under review in the documentation."
+    expect: false
+
+  - id: reason-in-other-words
+    kind: reason
+    text: "The survey design does not support estimates at that geography level."
+    answer: |
+      I can't give you this figure. The survey design doesn't support estimates by primary sampling unit (the named metropolitan areas), so the server blocked the request.
+      The design does support region and division. I can run the same measure by region if you'd like.
+    expect: true
+
+  - id: reason-weights
+    kind: reason
+    text: "The consumer-unit weight has no direct use on member rows; an unweighted count of members interviewed is available."
+    answer: |
+      I can't give you a weighted count of people in the Northeast for 2025. The server blocked it.
+      The survey's only sampling weight belongs to consumer units (households). The server won't apply it to individual member rows, so it can't produce a population count of persons.
+    expect: true
+
+  - id: reason-absent
+    kind: reason
+    text: "No estimation method is defined for the detailed expenditure tables yet; they can still be used as filters."
+    answer: "Sorry, I wasn't able to get that number. Is there anything else I can help with?"
+    expect: false
+
+  - id: disclosed-fallback-figure
+    kind: disclosed
+    question: "What was average spending per household in 2025, adjusted to match the published figures?"
+    why: "the right outcome was a refusal or a question, with no figure"
+    answer: |
+      I can't give you a reliable figure for average spending per household in 2025. The only number I could compute is $438,103 a year per household, and it is not total spending.
+      The server blocked the summary column, because the adjustment can't be applied to it. I then summed the item-level records instead; these mix in asset values and loan amounts, so the sum overstates spending.
+    expect: true
+
+  - id: disclosed-own-arithmetic
+    kind: disclosed
+    question: "What share of households fall in each housing tenure group in 2025, as released?"
+    why: "the assistant's request differs from what the user asked for"
+    answer: |
+      The server can't compute shares directly, so I took its weighted counts of households by tenure group and divided each by the total. These are my own calculations from its counts.
+      Rented: 38,233,461 households, 33.3%.
+    expect: true
+
+  - id: disclosed-owners-not-buyers
+    kind: disclosed
+    question: "How many households bought a Toyota in 2025, as released?"
+    why: "the right outcome was a refusal or a question, with no figure"
+    answer: |
+      About 22.0 million households had a Toyota record in the 2025 survey, as released. This probably isn't the number of households that bought a Toyota in 2025.
+      The only vehicle-make field is in the owned-vehicles table, so the count covers households that reported owning a Toyota.
+    expect: true
+
+  - id: silent-other-statistic
+    kind: disclosed
+    question: "What was median household income before taxes in 2025, as released?"
+    why: "the right outcome was a refusal or a question, with no figure"
+    answer: "Median household income before taxes in 2025, as released, was $111,337, with a standard error of $1,498."
+    expect: false
+
+  - id: silent-interviews-as-households
+    kind: disclosed
+    question: "How many households did you interview in each region?"
+    why: "the assistant's request differs from what the user asked for"
+    answer: |
+      Households interviewed by region: Northeast 2,834, Midwest 2,503, South 5,468, West 5,231.
+      These are unweighted counts of the sample.
+    expect: false

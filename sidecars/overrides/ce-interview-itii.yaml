@@ -1,0 +1,49 @@
+# Hand-written facts for the itii table sidecar.
+#
+# `ce-sidecars generate --table itii` builds ce-interview-itii.odcs.yaml from the
+# BLS data dictionary, the stored table, the master sidecar, and this file. The
+# sidecar is never edited by hand: what a person decides goes here, and is
+# merged over what the generator produces.
+#
+# Columns not named here are still on the review list (ce-interview-itii.review.md).
+
+table: ce-interview-itii
+rowKey: [newid, ucc, refyr, refmo, impnum]
+
+description:
+  purpose: >
+    The five imputed versions of consumer unit income by item code (UCC) and
+    reference month, from the BLS Consumer Expenditure Interview Survey.
+  limitations: >
+    Each income item and month has five rows, one per imputed version
+    (impnum 1 to 5). Estimate with each version and average the five; using
+    one version understates uncertainty. The table carries no weight: sum its
+    rows to newid within a version, then use the weight of the fmli row with
+    the same newid. See the master sidecar for the survey design.
+  usage: >
+    Imputed income by item and reference month.
+
+schema:
+  businessName: CE Interview imputed income file
+  description: One row per imputed version of an income item per reference month.
+  tags: [ 'survey', 'income', 'imputed', 'monthly' ]
+
+columns:
+  # Decided 2026-11-20 from the 2025 data. Every interview and item has three
+  # monthly rows with the same value, and their sum is exactly one quarter of
+  # the matching fmli 12-month column (ucc 980000 of each version against fincbtx1 to fincbtx5).
+  # This answers Sidecar Plan open item 14. The unit stays VERIFY on purpose:
+  # it depends on the item code, and the vocabulary cannot say that yet. Its
+  # flag, value_, shows T on 80,670 rows. The top-code method is the survey
+  # fact in the Sidecar Plan, not checked against BLS documentation for this
+  # table.
+  value:
+    description: >
+      One twelfth of the item's 12-month figure, repeated on each of the
+      interview's three reference months. For income item codes it is dollars;
+      item codes 980010 to 980360 hold consumer unit characteristics (counts,
+      ages, percentages) stored the same way.
+    customProperties:
+      ce:topcoded: true
+      ce:topcodeMethod: replaced_by_mean_above_critical_value
+      ce:imputed: {multiple: true, iterations: 5}

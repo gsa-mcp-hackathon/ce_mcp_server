@@ -1,0 +1,115 @@
+# Phrase lists that normalize and the capture check compare with the user's words.
+#
+# Matching ignores case, spacing, punctuation and apostrophes, on whole words.
+# Raise the version when a list changes: records name the version they were
+# checked with.
+
+version: "1.0"
+
+# Words that name a statistic, and the statistics each is compatible with. A node
+# whose statistic is none of those its phrase names gets the flag
+# statistic_term_differs. The model's term stands either way.
+statistic_terms:
+  - {phrase: average, statistics: [mean]}
+  - {phrase: mean, statistics: [mean]}
+  - {phrase: on average, statistics: [mean]}
+  - {phrase: per household, statistics: [mean, ratio]}
+  - {phrase: per consumer unit, statistics: [mean, ratio]}
+  - {phrase: how many, statistics: [count, total]}
+  - {phrase: number of, statistics: [count, total]}
+  - {phrase: count, statistics: [count]}
+  - {phrase: total, statistics: [total, mean, count]}
+  - {phrase: in total, statistics: [total]}
+  - {phrase: altogether, statistics: [total]}
+  - {phrase: aggregate, statistics: [total]}
+  - {phrase: share, statistics: [share, ratio]}
+  - {phrase: percent, statistics: [share, ratio]}
+  - {phrase: percentage, statistics: [share, ratio]}
+  - {phrase: proportion, statistics: [share, ratio]}
+  - {phrase: fraction, statistics: [share, ratio]}
+  - {phrase: ratio, statistics: [ratio]}
+  - {phrase: relative to, statistics: [ratio, difference]}
+  - {phrase: compared to, statistics: [ratio, difference]}
+  - {phrase: compared with, statistics: [ratio, difference]}
+  - {phrase: difference, statistics: [difference]}
+  - {phrase: more than, statistics: [difference, ratio]}
+  - {phrase: less than, statistics: [difference, ratio]}
+  - {phrase: change, statistics: [difference, ratio]}
+  - {phrase: increase, statistics: [difference, ratio]}
+  - {phrase: decrease, statistics: [difference, ratio]}
+  - {phrase: gap between, statistics: [difference]}
+
+# Words that state a choice. When the text holds a phrase marked required and no
+# node of the record states that choice, the capture check reports an error:
+# the model missed something the user said. Phrases that only confirm a default
+# are listed with required: false, so they are not errors.
+stated_choices:
+  weighted:
+    - {phrase: unweighted, required: true}
+    - {phrase: not weighted, required: true}
+    - {phrase: skip the weights, required: true}
+    - {phrase: without weights, required: true}
+    - {phrase: without the weights, required: true}
+    - {phrase: no weights, required: true}
+    - {phrase: raw counts, required: true}
+    - {phrase: weighted, required: false}
+    - {phrase: with weights, required: false}
+    - {phrase: with the weights, required: false}
+  time_basis:
+    - {phrase: per quarter, required: true}
+    - {phrase: quarterly, required: true}
+    - {phrase: per month, required: true}
+    - {phrase: monthly, required: true}
+    - {phrase: per year, required: false}
+    - {phrase: annual, required: false}
+    - {phrase: annually, required: false}
+    - {phrase: yearly, required: false}
+  gap_2025:
+    - {phrase: as released, required: true}
+    - {phrase: unadjusted, required: true}
+    - {phrase: adjusted to match, required: true}
+    - {phrase: adjusted to mimic, required: true}
+    - {phrase: adjusted for the gap, required: true}
+    - {phrase: adjusted for the collection gap, required: true}
+    - {phrase: adjusted for the shutdown, required: true}
+    - {phrase: match the published, required: true}
+    - {phrase: mimic the published, required: true}
+  missing_codes:
+    - {phrase: dont know, required: true}
+    - {phrase: dont knows, required: true}
+    - {phrase: missing values, required: true}
+    - {phrase: missing codes, required: true}
+    - {phrase: nonresponse, required: true}
+    - {phrase: the blanks, required: true}
+  imputation:
+    - {phrase: imputed version, required: true}
+    - {phrase: imputation version, required: true}
+    - {phrase: first imputed, required: true}
+    - {phrase: one imputed, required: true}
+    - {phrase: single imputation, required: true}
+  count_unit:
+    - {phrase: how many people, required: true}
+    - {phrase: number of people, required: true}
+    - {phrase: how many persons, required: true}
+    - {phrase: number of persons, required: true}
+    - {phrase: how many members, required: true}
+    - {phrase: number of members, required: true}
+    - {phrase: how many interviews, required: true}
+    - {phrase: number of interviews, required: true}
+    - {phrase: count interviews, required: true}
+    - {phrase: count the interviews, required: true}
+    - {phrase: how many households, required: false}
+    - {phrase: number of households, required: false}
+    - {phrase: how many consumer units, required: false}
+  standard_error:
+    - {phrase: no standard errors, required: true}
+    - {phrase: no standard error, required: true}
+    - {phrase: without standard errors, required: true}
+    - {phrase: no need for standard errors, required: true}
+    - {phrase: no margins of error, required: true}
+    - {phrase: no margin of error, required: true}
+    - {phrase: standard error, required: false}
+    - {phrase: standard errors, required: false}
+    - {phrase: margin of error, required: false}
+    - {phrase: margins of error, required: false}
+    - {phrase: confidence interval, required: false}

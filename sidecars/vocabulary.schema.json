@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "vocabulary.schema.json",
+  "title": "CE Interview Data Vocabulary",
+  "description": "Schema for sidecars/vocabulary.yaml: the ce: custom properties the CE Interview data sidecars use. It checks the file's shape and value forms; what a property means is in the vocabulary itself.",
+  "type": "object",
+  "required": ["id", "version", "title", "status", "properties"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "description": "The vocabulary's identifier, as the master sidecar's ce:vocabulary pointer names it.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+    },
+    "version": {
+      "description": "Semantic version, as the master sidecar's ce:vocabulary pointer names it.",
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "title": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["draft", "released"] },
+    "properties": {
+      "description": "One entry per ce: property, keyed by its name.",
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "pattern": "^ce:[a-z][A-Za-z0-9]*$" },
+      "additionalProperties": { "$ref": "#/$defs/entry" }
+    }
+  },
+  "$defs": {
+    "entry": {
+      "description": "One ce: property: where it sits, what it states, its allowed values, and what follows for anyone using the data.",
+      "type": "object",
+      "required": ["level", "meaning", "values", "implies"],
+      "additionalProperties": false,
+      "properties": {
+        "level": {
+          "description": "survey: set once, in the master sidecar. table: set once per table, at schema level in a table sidecar. column: set on a column, in a table sidecar.",
+          "enum": ["survey", "table", "column"]
+        },
+        "meaning": { "$ref": "#/$defs/text" },
+        "values": { "$ref": "#/$defs/values" },
+        "implies": { "$ref": "#/$defs/text" }
+      }
+    },
+    "text": {
+      "description": "A sentence or more of prose.",
+      "type": "string",
+      "minLength": 10,
+      "pattern": "\\S"
+    },
+    "values": {
+      "description": "The allowed values, in one of three forms.",
+      "oneOf": [
+        { "$ref": "#/$defs/closedList" },
+        { "$ref": "#/$defs/typeDescriptor" },
+        { "$ref": "#/$defs/fieldMap" }
+      ]
+    },
+    "closedList": {
+      "description": "The complete list of allowed values: identifiers in lower camel or snake case, or booleans.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "oneOf": [
+          { "type": "string", "pattern": "^[a-z][A-Za-z0-9_]*$" },
+          { "type": "boolean" }
+        ]
+      }
+    },
+    "typeDescriptor": {
+      "description": "The kind of value, in words: for example 'year', 'text', 'column name', or a structure such as '{id, version}'.",
+      "type": "string",
+      "minLength": 1
+    },
+    "fieldMap": {
+      "description": "A structured value: each field names its type in words, or lists its allowed values.",
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "pattern": "^[a-z][A-Za-z0-9]*$" },
+      "additionalProperties": {
+        "oneOf": [
+          { "type": "string", "minLength": 1 },
+          {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "type": "string", "pattern": "^[a-z][A-Za-z0-9_]*$" }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+[project]
+name = "ce-mcp"
+version = "0.1.0"
+description = "MCP server and loader for BLS Consumer Expenditure Surveys microdata"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastmcp>=2.0.0",
+    "httpx>=0.27.0",
+    "pydantic>=2.0.0",
+    "duckdb>=1.0",
+    "numpy>=1.26",
+    "pyarrow>=15",
+    "pydantic-settings>=2.0.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+# Loader dependencies; the MCP app image doesn't carry them.
+# Install with `uv sync --extra ingest --group dev`.
+ingest = [
+    "pyreadstat>=1.2",
+    "pandas>=2.2",
+    "pyarrow>=15",
+    "openpyxl>=3.1",
+]
+
+[project.scripts]
+ce-mcp-server = "ce_mcp_server.app:main"
+ce-ingest = "ce_ingest.cli:main"
+ce-sidecars = "ce_sidecars.cli:main"
+ce-meta = "ce_meta.build.cli:main"
+ce-capture = "ce_capture.cli:main"
+ce-measures = "ce_measures.cli:main"
+ce-eval = "ce_eval.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ce_mcp_server", "src/ce_meta", "src/ce_capture", "src/ce_measures", "src/ce_eval", "src/ce_ingest", "src/ce_sidecars", "src/ce_store"]
+
+[dependency-groups]
+dev = [
+    "jsonschema>=4.20",
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pyyaml>=6.0",
+    "ruff>=0.6.0",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+exclude = [".venv", ".agents"]
+extend-exclude = ["*.md"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+markers = [
+    "slow: reads sample_data",
+    "databricks: needs a Spark session",
+]

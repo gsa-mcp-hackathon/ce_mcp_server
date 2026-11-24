@@ -1,0 +1,175 @@
+# The data nuances the cases test (Plan 6, "Test cases"). Each case names one or
+# more of these, so results can be read nuance by nuance. `mistake` is what a
+# model is likely to do; `right` is the right outcome.
+
+version: "1.0"
+
+nuances:
+  - id: year_set
+    title: A year is a set of quarter files (1x, 2, 3, 4, next year's 1)
+    mistake: Filtering on qintrvyr or qintrvmo for "interviews in 2025"
+    right: A period of 2025 with no interview-date filter
+  - id: gap_2025
+    title: The 2025 collection gap
+    mistake: Choosing "as released" itself and inventing the evidence
+    right: needs_clarification; the question is asked as written
+  - id: adjusted_pair
+    title: Adjusted 2025 on fmli summary columns
+    mistake: Presenting an adjusted figure anyway
+    right: Block; the model offers the mtbi route
+  - id: period_not_loaded
+    title: Only 2025 is loaded
+    mistake: Answering another year from memory
+    right: Block for the period not loaded, relayed as such
+  - id: part_year
+    title: Part of a year
+    mistake: Returning the full-year figure
+    right: Block
+  - id: period_default
+    title: No period stated
+    mistake: Writing a period the user did not give
+    right: The latest year by default, and the 2025 question is asked
+  - id: annual_value
+    title: Annual income repeats on each interview
+    mistake: Asking for a total, or summing across interviews
+    right: A mean of the annual column, averaged over months in scope
+  - id: calendar_pair
+    title: Previous-quarter and current-quarter columns form one measure
+    mistake: Two nodes for pq and cq, then adding them
+    right: One node on either column
+  - id: interview_value
+    title: A count or an age describes the unit at the interview
+    mistake: Annualizing it, or counting rows
+    right: A months-in-scope mean that keeps the column's unit
+  - id: imputed_versions
+    title: Five imputed versions of income
+    mistake: Using one version silently
+    right: Resolved to the averaged column with a note, or a warning when the user asked for one version
+  - id: item_mix
+    title: mtbi mixes items, including assets and loans
+    mistake: A mean of cost with no item filter, presented as spending
+    right: The warning is relayed
+  - id: item_hierarchy
+    title: No item-code hierarchy, and no single column for some subjects
+    mistake: Guessing codes by prefix, or taking the nearest column
+    right: An unresolved phrase
+  - id: income_items
+    title: Income amounts whose unit is under review
+    mistake: Presenting wages from itbi, or from an unreviewed fmli column
+    right: Block; the model may offer a reviewed income column
+  - id: expn_tables
+    title: Detailed expenditure tables
+    mistake: A mean from an expn table
+    right: Block as a measure; allowed as a filter
+  - id: owned_vehicles
+    title: expn_ovb lists vehicles owned, not vehicles bought
+    mistake: Counting rows of the owned-vehicles file as purchases
+    right: Owners counted as owners; "bought" is asked about
+  - id: household_unit
+    title: A household is a consumer unit, not an interview
+    mistake: Counting interviews as households
+    right: A count of consumer units, stated in the answer
+  - id: people
+    title: '"People" can mean persons or households'
+    mistake: Assuming one reading
+    right: An ambiguity with a question, or a count of members interviewed
+  - id: member_filter
+    title: A filter on members selects households
+    mistake: A count of members
+    right: A count of consumer units with a member filter, with the "at least one row" caution
+  - id: member_level
+    title: Member-level estimates have no method
+    mistake: A mean of a member value with the unit weight, or a weighted count of persons
+    right: Block
+  - id: weights
+    title: Weights are stated only when the user states them
+    mistake: Stating weighted true or false with made-up evidence
+    right: No stated choice unless the user's words give one
+  - id: standard_error
+    title: Standard errors come from the replicate weights
+    mistake: An unweighted error, or an error the user declined
+    right: The weighted method substitutes; a declined error is left out
+  - id: confidence_interval
+    title: Confidence intervals are not computed
+    mistake: Inventing one from the standard error
+    right: The standard error only
+  - id: state
+    title: No state weights after 2023
+    mistake: Presenting state figures plainly
+    right: The caution on state weights is kept
+  - id: below_state
+    title: Geography below the state
+    mistake: Presenting the figures
+    right: Block
+  - id: region_c
+    title: Region code C from 2025
+    mistake: Dropping C or folding it into a region
+    right: C reported separately with its caution
+  - id: median
+    title: Median and quantiles are not available
+    mistake: Substituting a mean silently
+    right: Not captured or unresolved, never a mean
+  - id: share_ratio
+    title: '"Share" can mean a ratio of two measures or a share of units'
+    mistake: Capturing the wrong one
+    right: A ratio for a share of income; a share of units is blocked until built
+  - id: ratio
+    title: Ratios and differences are made from estimates
+    mistake: A mean of per-interview ratios
+    right: A combine node on two estimates
+  - id: unit_conversion
+    title: Mixed time spans
+    mistake: Dividing quarterly spending by annual income as they stand
+    right: The resolved conversion appears in the outcome
+  - id: scale
+    title: Nominal and ordinal columns
+    mistake: A mean of codes
+    right: Block
+  - id: topcoding
+    title: Top-coded income by subgroup
+    mistake: Caution dropped
+    right: Caution kept
+  - id: breaks
+    title: A break between years
+    mistake: Presenting a change as real
+    right: The break caution is kept
+  - id: multi_part
+    title: Several statistics in one message
+    mistake: Answering one, or merging them
+    right: One node and one answer per phrase
+  - id: rewording
+    title: The same request in other words
+    mistake: A different record for a terse, long or misspelled wording
+    right: The same outcome as the plain wording
+  - id: follow_up
+    title: A follow-up changes an earlier request
+    mistake: Starting again, or losing the earlier choices
+    right: A patch linked to the earlier request
+  - id: clarification
+    title: The user answers a question
+    mistake: Treating the answer as a new request
+    right: The whole request again, linked to the one that asked
+  - id: correction
+    title: A submission fails the check
+    mistake: Giving up, or resubmitting without the link
+    right: A corrected record that names the failed one
+  - id: topic_change
+    title: A new request in the same conversation
+    mistake: Linking it to the earlier request
+    right: A new record with no link
+  - id: diary
+    title: Diary Survey items
+    mistake: Approximating from the Interview data
+    right: A plain "not in this survey"
+  - id: published_tables
+    title: BLS published tables
+    mistake: Promising a match, or quoting a published figure as computed
+    right: Says results are Interview-only and will not match
+  - id: not_statistical
+    title: Not a request for a statistic from the data
+    mistake: Forcing a record
+    right: Not captured, answered in plain words
+  - id: caveats
+    title: The user asks for no caveats
+    mistake: Changing or rounding the figures
+    right: The figures unchanged

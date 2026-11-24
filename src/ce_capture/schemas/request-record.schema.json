@@ -1,0 +1,1235 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ce-capture/RequestRecord/1.0",
+  "$defs": {
+    "Ambiguity": {
+      "additionalProperties": false,
+      "properties": {
+        "phrase": {
+          "description": "The user's words that can be read more ways.",
+          "title": "Phrase",
+          "type": "string"
+        },
+        "options": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Options",
+          "type": "array"
+        },
+        "chosen": {
+          "title": "Chosen",
+          "type": "string"
+        },
+        "ask_user": {
+          "default": false,
+          "description": "True only when the readings give materially different numbers or change whether the request can be answered.",
+          "title": "Ask User",
+          "type": "boolean"
+        },
+        "question": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The question to put to the user.",
+          "title": "Question"
+        }
+      },
+      "required": [
+        "phrase",
+        "options",
+        "chosen"
+      ],
+      "title": "Ambiguity",
+      "type": "object"
+    },
+    "Answer": {
+      "additionalProperties": false,
+      "properties": {
+        "asks": {
+          "description": "A phrase of the user's message, copied exactly.",
+          "title": "Asks",
+          "type": "string"
+        },
+        "node": {
+          "description": "The ID of the node that answers it.",
+          "title": "Node",
+          "type": "string"
+        }
+      },
+      "required": [
+        "asks",
+        "node"
+      ],
+      "title": "Answer",
+      "type": "object"
+    },
+    "CaptureInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "enum": [
+            "server_model",
+            "client_model"
+          ],
+          "title": "Path",
+          "type": "string"
+        },
+        "agent": {
+          "title": "Agent",
+          "type": "string"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Model"
+        },
+        "attempts": {
+          "title": "Attempts",
+          "type": "integer"
+        },
+        "status": {
+          "enum": [
+            "captured",
+            "needs_clarification",
+            "not_captured",
+            "check_failed"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "reason_code": {
+          "anyOf": [
+            {
+              "enum": [
+                "not_statistical",
+                "table_not_covered",
+                "column_not_found",
+                "statistic_not_supported",
+                "outside_survey",
+                "other"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason Code"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        },
+        "questions": {
+          "description": "For needs_clarification: what to ask.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Questions",
+          "type": "array"
+        },
+        "lookups": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Lookup calls the model made.",
+          "title": "Lookups"
+        }
+      },
+      "required": [
+        "path",
+        "agent",
+        "model",
+        "attempts",
+        "status"
+      ],
+      "title": "CaptureInfo",
+      "type": "object"
+    },
+    "CarriedOver": {
+      "additionalProperties": false,
+      "properties": {
+        "from_request_id": {
+          "title": "From Request Id",
+          "type": "string"
+        },
+        "unchanged": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Unchanged",
+          "type": "array"
+        },
+        "changed": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Changed",
+          "type": "array"
+        },
+        "added": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Added",
+          "type": "array"
+        },
+        "removed": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Removed",
+          "type": "array"
+        }
+      },
+      "required": [
+        "from_request_id",
+        "unchanged",
+        "changed",
+        "added",
+        "removed"
+      ],
+      "title": "CarriedOver",
+      "type": "object"
+    },
+    "CheckError": {
+      "additionalProperties": false,
+      "properties": {
+        "part": {
+          "title": "Part",
+          "type": "string"
+        },
+        "node": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Node"
+        },
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Field"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "suggestions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Suggestions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "part",
+        "message"
+      ],
+      "title": "CheckError",
+      "type": "object"
+    },
+    "CheckResult": {
+      "additionalProperties": false,
+      "properties": {
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        },
+        "errors": {
+          "items": {
+            "$ref": "#/$defs/CheckError"
+          },
+          "title": "Errors",
+          "type": "array"
+        },
+        "flags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Flags",
+          "type": "array"
+        }
+      },
+      "required": [
+        "passed"
+      ],
+      "title": "CheckResult",
+      "type": "object"
+    },
+    "ColumnRef": {
+      "additionalProperties": false,
+      "properties": {
+        "table": {
+          "description": "Stored table name, as a lookup tool gave it.",
+          "title": "Table",
+          "type": "string"
+        },
+        "column": {
+          "description": "Stored column name, as a lookup tool gave it.",
+          "title": "Column",
+          "type": "string"
+        }
+      },
+      "required": [
+        "table",
+        "column"
+      ],
+      "title": "ColumnRef",
+      "type": "object"
+    },
+    "CombineInputs": {
+      "additionalProperties": false,
+      "properties": {
+        "numerator": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "For a ratio: a node ID.",
+          "title": "Numerator"
+        },
+        "denominator": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "For a ratio: a node ID.",
+          "title": "Denominator"
+        },
+        "first": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "For a difference: a node ID.",
+          "title": "First"
+        },
+        "second": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "For a difference: the node subtracted.",
+          "title": "Second"
+        }
+      },
+      "title": "CombineInputs",
+      "type": "object"
+    },
+    "CombineNode": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "combine",
+          "title": "Kind",
+          "type": "string"
+        },
+        "statistic": {
+          "enum": [
+            "ratio",
+            "difference"
+          ],
+          "title": "Statistic",
+          "type": "string"
+        },
+        "inputs": {
+          "$ref": "#/$defs/CombineInputs"
+        },
+        "stated": {
+          "$ref": "#/$defs/Stated"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "statistic",
+        "inputs"
+      ],
+      "title": "CombineNode",
+      "type": "object"
+    },
+    "CountUnitChoice": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "description": "The user's words that state the choice.",
+          "title": "Evidence",
+          "type": "string"
+        },
+        "value": {
+          "enum": [
+            "consumer_unit",
+            "interview",
+            "member"
+          ],
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence",
+        "value"
+      ],
+      "title": "CountUnitChoice",
+      "type": "object"
+    },
+    "EstimateNode": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "description": "Unique within the request, such as n1.",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "estimate",
+          "title": "Kind",
+          "type": "string"
+        },
+        "statistic": {
+          "enum": [
+            "mean",
+            "total",
+            "count",
+            "share"
+          ],
+          "title": "Statistic",
+          "type": "string"
+        },
+        "measure": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ColumnRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The column summarized; null for a count or a share."
+        },
+        "group_by": {
+          "description": "Columns that define subgroups: on the measure's table or fmli.",
+          "items": {
+            "$ref": "#/$defs/ColumnRef"
+          },
+          "title": "Group By",
+          "type": "array"
+        },
+        "filters": {
+          "items": {
+            "$ref": "#/$defs/Filter"
+          },
+          "title": "Filters",
+          "type": "array"
+        },
+        "period": {
+          "$ref": "#/$defs/Period"
+        },
+        "stated": {
+          "$ref": "#/$defs/Stated"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "statistic",
+        "period"
+      ],
+      "title": "EstimateNode",
+      "type": "object"
+    },
+    "Filter": {
+      "additionalProperties": false,
+      "properties": {
+        "table": {
+          "description": "Stored table name, as a lookup tool gave it.",
+          "title": "Table",
+          "type": "string"
+        },
+        "column": {
+          "description": "Stored column name, as a lookup tool gave it.",
+          "title": "Column",
+          "type": "string"
+        },
+        "comparison": {
+          "enum": [
+            "eq",
+            "ne",
+            "in",
+            "not_in",
+            "lt",
+            "le",
+            "gt",
+            "ge",
+            "between"
+          ],
+          "title": "Comparison",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
+              "type": "array"
+            }
+          ],
+          "description": "A code or a number; a list for in, not_in and between. Codes come from describe_variable.",
+          "title": "Value"
+        }
+      },
+      "required": [
+        "table",
+        "column",
+        "comparison",
+        "value"
+      ],
+      "title": "Filter",
+      "type": "object"
+    },
+    "Fix": {
+      "additionalProperties": false,
+      "properties": {
+        "node": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Node"
+        },
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "from": {
+          "title": "From"
+        },
+        "to": {
+          "title": "To"
+        },
+        "rule": {
+          "title": "Rule",
+          "type": "string"
+        }
+      },
+      "required": [
+        "node",
+        "field",
+        "from",
+        "to",
+        "rule"
+      ],
+      "title": "Fix",
+      "type": "object"
+    },
+    "GapChoice": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "description": "The user's words that state the choice.",
+          "title": "Evidence",
+          "type": "string"
+        },
+        "value": {
+          "enum": [
+            "as_released",
+            "adjusted"
+          ],
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence",
+        "value"
+      ],
+      "title": "GapChoice",
+      "type": "object"
+    },
+    "ImputationChoice": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "description": "The user's words that state the choice.",
+          "title": "Evidence",
+          "type": "string"
+        },
+        "value": {
+          "enum": [
+            "five_versions_averaged",
+            "version_1",
+            "version_2",
+            "version_3",
+            "version_4",
+            "version_5"
+          ],
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence",
+        "value"
+      ],
+      "title": "ImputationChoice",
+      "type": "object"
+    },
+    "MissingCodesChoice": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "description": "The user's words that state the choice.",
+          "title": "Evidence",
+          "type": "string"
+        },
+        "value": {
+          "enum": [
+            "removed",
+            "kept"
+          ],
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence",
+        "value"
+      ],
+      "title": "MissingCodesChoice",
+      "type": "object"
+    },
+    "Period": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The user's words for the period, copied exactly; null when the user named none.",
+          "title": "Text"
+        },
+        "kind": {
+          "enum": [
+            "year",
+            "quarter",
+            "month_range",
+            "not_stated"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "values": {
+          "description": "Years (2025), quarters ('2025Q2') or the first and last month of a range ('2025-07', '2025-09'). Empty when not stated.",
+          "items": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "title": "Values",
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "Period",
+      "type": "object"
+    },
+    "SidecarRef": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "version"
+      ],
+      "title": "SidecarRef",
+      "type": "object"
+    },
+    "SidecarVersions": {
+      "additionalProperties": false,
+      "properties": {
+        "master": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SidecarRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tables": {
+          "items": {
+            "$ref": "#/$defs/TableRef"
+          },
+          "title": "Tables",
+          "type": "array"
+        },
+        "vocabulary": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SidecarRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "master",
+        "tables",
+        "vocabulary"
+      ],
+      "title": "SidecarVersions",
+      "type": "object"
+    },
+    "Source": {
+      "additionalProperties": false,
+      "properties": {
+        "user_text": {
+          "title": "User Text",
+          "type": "string"
+        },
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        },
+        "turn": {
+          "title": "Turn",
+          "type": "integer"
+        },
+        "user_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "User Ref"
+        },
+        "follows_request_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Follows Request Id"
+        },
+        "answers_request_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Answers Request Id"
+        },
+        "corrects_request_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Corrects Request Id"
+        },
+        "earlier_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The linked record's text, so a follow-up or an answer stands alone.",
+          "title": "Earlier Text"
+        }
+      },
+      "required": [
+        "user_text",
+        "session_id",
+        "turn"
+      ],
+      "title": "Source",
+      "type": "object"
+    },
+    "Span": {
+      "additionalProperties": false,
+      "description": "Where code found a phrase the model quoted (D24).",
+      "properties": {
+        "where": {
+          "description": "Which phrase: a node field, an answer, ...",
+          "title": "Where",
+          "type": "string"
+        },
+        "text": {
+          "description": "The exact span of the text.",
+          "title": "Text",
+          "type": "string"
+        },
+        "source": {
+          "enum": [
+            "user_text",
+            "earlier_text"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "start": {
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "title": "End",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "where",
+        "text",
+        "source",
+        "start",
+        "end"
+      ],
+      "title": "Span",
+      "type": "object"
+    },
+    "StandardErrorChoice": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "description": "The user's words that state the choice.",
+          "title": "Evidence",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "evidence",
+        "value"
+      ],
+      "title": "StandardErrorChoice",
+      "type": "object"
+    },
+    "Stated": {
+      "additionalProperties": false,
+      "description": "Choices the user's words reveal. A choice not stated is left out.",
+      "properties": {
+        "weighted": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/WeightedChoice"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "time_basis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TimeBasisChoice"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "gap_2025": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GapChoice"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "missing_codes": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MissingCodesChoice"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "imputation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ImputationChoice"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "count_unit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CountUnitChoice"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "standard_error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StandardErrorChoice"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "Stated",
+      "type": "object"
+    },
+    "TableRef": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "name"
+      ],
+      "title": "TableRef",
+      "type": "object"
+    },
+    "TimeBasisChoice": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "description": "The user's words that state the choice.",
+          "title": "Evidence",
+          "type": "string"
+        },
+        "value": {
+          "enum": [
+            "year",
+            "quarter",
+            "month"
+          ],
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence",
+        "value"
+      ],
+      "title": "TimeBasisChoice",
+      "type": "object"
+    },
+    "Unresolved": {
+      "additionalProperties": false,
+      "properties": {
+        "phrase": {
+          "description": "The user's words that matched nothing.",
+          "title": "Phrase",
+          "type": "string"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "phrase",
+        "reason"
+      ],
+      "title": "Unresolved",
+      "type": "object"
+    },
+    "WeightedChoice": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "description": "The user's words that state the choice.",
+          "title": "Evidence",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "evidence",
+        "value"
+      ],
+      "title": "WeightedChoice",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "request_id": {
+      "title": "Request Id",
+      "type": "string"
+    },
+    "captured_at": {
+      "title": "Captured At",
+      "type": "string"
+    },
+    "source": {
+      "$ref": "#/$defs/Source"
+    },
+    "capture": {
+      "$ref": "#/$defs/CaptureInfo"
+    },
+    "sidecars": {
+      "$ref": "#/$defs/SidecarVersions"
+    },
+    "nodes": {
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "combine": "#/$defs/CombineNode",
+            "estimate": "#/$defs/EstimateNode"
+          },
+          "propertyName": "kind"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/EstimateNode"
+          },
+          {
+            "$ref": "#/$defs/CombineNode"
+          }
+        ]
+      },
+      "title": "Nodes",
+      "type": "array"
+    },
+    "answers": {
+      "items": {
+        "$ref": "#/$defs/Answer"
+      },
+      "title": "Answers",
+      "type": "array"
+    },
+    "ambiguities": {
+      "items": {
+        "$ref": "#/$defs/Ambiguity"
+      },
+      "title": "Ambiguities",
+      "type": "array"
+    },
+    "unresolved": {
+      "items": {
+        "$ref": "#/$defs/Unresolved"
+      },
+      "title": "Unresolved",
+      "type": "array"
+    },
+    "carried_over": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CarriedOver"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "fixes": {
+      "items": {
+        "$ref": "#/$defs/Fix"
+      },
+      "title": "Fixes",
+      "type": "array"
+    },
+    "evidence": {
+      "items": {
+        "$ref": "#/$defs/Span"
+      },
+      "title": "Evidence",
+      "type": "array"
+    },
+    "check": {
+      "$ref": "#/$defs/CheckResult"
+    },
+    "submitted": {
+      "default": null,
+      "description": "What the model wrote, kept when it did not match the schema.",
+      "title": "Submitted"
+    }
+  },
+  "required": [
+    "schema_version",
+    "request_id",
+    "captured_at",
+    "source",
+    "capture",
+    "sidecars",
+    "nodes",
+    "answers",
+    "ambiguities",
+    "unresolved",
+    "fixes",
+    "evidence",
+    "check"
+  ],
+  "title": "RequestRecord",
+  "type": "object"
+}

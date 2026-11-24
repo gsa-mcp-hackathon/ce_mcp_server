@@ -1,0 +1,412 @@
+# Set 3, rewordings (Plan 6). Five core cases, each said three more ways:
+# tersely, at length, and with typing mistakes. `rewords` names the core case;
+# the check fails a rewording whose gold record computes anything else.
+
+version: "1.0"
+set: rewordings
+loaded_years: [2025]
+
+cases:
+  # ── spending, income and the count, by region ─────────────────────────────
+  - id: region-trio-terse
+    rewords: spending-and-income-by-region
+    nuance: [rewording, multi_part]
+    message: "2025 as released: avg spending per household by region; ratio to avg income before taxes; households interviewed per region, unweighted."
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: fmli, column: totexpcq}
+          group_by: [{table: fmli, column: region}]
+          period: {text: "2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+        - id: n2
+          kind: estimate
+          statistic: mean
+          measure: {table: fmli, column: fincbtxm}
+          group_by: [{table: fmli, column: region}]
+          period: {text: "2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+        - id: n3
+          kind: combine
+          statistic: ratio
+          inputs: {numerator: n1, denominator: n2}
+        - id: n4
+          kind: estimate
+          statistic: count
+          group_by: [{table: fmli, column: region}]
+          period: {text: "2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+            weighted: {value: false, evidence: "unweighted"}
+      answers:
+        - {asks: "avg spending per household by region", node: n1}
+        - {asks: "ratio to avg income before taxes", node: n3}
+        - {asks: "households interviewed per region", node: n4}
+    expect:
+      status: captured
+      kind: figures
+
+  - id: region-trio-long
+    rewords: spending-and-income-by-region
+    nuance: [rewording, multi_part]
+    message: "I'm putting together a regional comparison and I need a few things for survey year 2025, using the data as released. First, the average amount a household spends in total over the year, broken out by region. Second, that spending figure expressed as a share of average yearly income before taxes, again by region. And last, simply how many households you interviewed in each region; for that last one skip the weights, I just want the sample count."
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: fmli, column: totexpcq}
+          group_by: [{table: fmli, column: region}]
+          period: {text: "survey year 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+            time_basis: {value: year, evidence: "over the year"}
+        - id: n2
+          kind: estimate
+          statistic: mean
+          measure: {table: fmli, column: fincbtxm}
+          group_by: [{table: fmli, column: region}]
+          period: {text: "survey year 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+        - id: n3
+          kind: combine
+          statistic: ratio
+          inputs: {numerator: n1, denominator: n2}
+        - id: n4
+          kind: estimate
+          statistic: count
+          group_by: [{table: fmli, column: region}]
+          period: {text: "survey year 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+            weighted: {value: false, evidence: "skip the weights"}
+      answers:
+        - {asks: "the average amount a household spends in total over the year, broken out by region", node: n1}
+        - {asks: "that spending figure expressed as a share of average yearly income before taxes", node: n3}
+        - {asks: "how many households you interviewed in each region", node: n4}
+    expect:
+      status: captured
+      kind: figures
+
+  - id: region-trio-typos
+    rewords: spending-and-income-by-region
+    nuance: [rewording, multi_part]
+    message: "for 2025 as relased whats avrage anual spending per houshold by region, and what is that as a share of average anual income befor taxes? also how many housholds did you intervew in each region - skip the wieghts for that count"
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: fmli, column: totexpcq}
+          group_by: [{table: fmli, column: region}]
+          period: {text: "for 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as relased"}
+            time_basis: {value: year, evidence: "avrage anual spending"}
+        - id: n2
+          kind: estimate
+          statistic: mean
+          measure: {table: fmli, column: fincbtxm}
+          group_by: [{table: fmli, column: region}]
+          period: {text: "for 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as relased"}
+        - id: n3
+          kind: combine
+          statistic: ratio
+          inputs: {numerator: n1, denominator: n2}
+        - id: n4
+          kind: estimate
+          statistic: count
+          group_by: [{table: fmli, column: region}]
+          period: {text: "for 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as relased"}
+            weighted: {value: false, evidence: "skip the wieghts for that count"}
+      answers:
+        - {asks: "whats avrage anual spending per houshold by region", node: n1}
+        - {asks: "what is that as a share of average anual income befor taxes", node: n3}
+        - {asks: "how many housholds did you intervew in each region", node: n4}
+    expect:
+      status: captured
+      kind: figures
+
+  # ── rent by region ────────────────────────────────────────────────────────
+  - id: rent-region-terse
+    rewords: rent-by-region
+    nuance: [rewording, item_mix]
+    message: "Mean rent per household by region, 2025 as released (item code 210110)."
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: mtbi, column: cost}
+          group_by: [{table: fmli, column: region}]
+          filters: [{table: mtbi, column: ucc, comparison: eq, value: "210110"}]
+          period: {text: "2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+      answers:
+        - {asks: "Mean rent per household by region", node: n1}
+    expect:
+      status: captured
+      kind: figures
+
+  - id: rent-region-long
+    rewords: rent-by-region
+    nuance: [rewording, item_mix]
+    message: "Could you tell me, for the 2025 survey year and using the data as released, roughly what a household paid in rent on average, split out by census region? I mean rent of the dwelling itself, item code 210110 in the expenditure file."
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: mtbi, column: cost}
+          group_by: [{table: fmli, column: region}]
+          filters: [{table: mtbi, column: ucc, comparison: eq, value: "210110"}]
+          period: {text: "the 2025 survey year", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+      answers:
+        - {asks: "what a household paid in rent on average, split out by census region", node: n1}
+    expect:
+      status: captured
+      kind: figures
+
+  - id: rent-region-typos
+    rewords: rent-by-region
+    nuance: [rewording, item_mix]
+    message: "in 2025 as released what did housholds spend on rent on avarage by regoin?"
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: mtbi, column: cost}
+          group_by: [{table: fmli, column: region}]
+          filters: [{table: mtbi, column: ucc, comparison: in, value: ["210110"]}]
+          period: {text: "in 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+      answers:
+        - {asks: "what did housholds spend on rent on avarage by regoin", node: n1}
+    also:
+      - {node: n1, measure: {table: fmli, column: rendwecq}, filters: []}
+      - {node: n1, measure: {table: fmli, column: rntxrpcq}, filters: []}
+    expect:
+      status: captured
+      kind: figures
+
+  # ── households with an older member ───────────────────────────────────────
+  - id: older-members-terse
+    rewords: households-with-older-members
+    nuance: [rewording, member_filter]
+    message: "Number of households with someone 65 or older, 2025 as released."
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: count
+          filters: [{table: memi, column: age, comparison: ge, value: 65}]
+          period: {text: "2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+      answers:
+        - {asks: "Number of households with someone 65 or older", node: n1}
+    also:
+      - {node: n1, filters: [{table: fmli, column: persot64, comparison: ge, value: 1}]}
+      - {node: n1, filters: [{table: fmli, column: persot64, comparison: gt, value: 0}]}
+    expect:
+      status: captured
+      kind: figures
+
+  - id: older-members-long
+    rewords: households-with-older-members
+    nuance: [rewording, member_filter]
+    message: "I'd like to know how many households in the 2025 survey year, as released, had at least one member who was 65 years old or older at the time of the interview."
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: count
+          filters: [{table: memi, column: age, comparison: ge, value: 65}]
+          period: {text: "the 2025 survey year", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as released"}
+      answers:
+        - {asks: "how many households in the 2025 survey year, as released, had at least one member who was 65 years old or older", node: n1}
+    also:
+      - {node: n1, filters: [{table: fmli, column: persot64, comparison: ge, value: 1}]}
+      - {node: n1, filters: [{table: fmli, column: persot64, comparison: gt, value: 0}]}
+    expect:
+      status: captured
+      kind: figures
+
+  - id: older-members-typos
+    rewords: households-with-older-members
+    nuance: [rewording, member_filter]
+    message: "how many houshold had somone 65 or older in 2025, as relased?"
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: count
+          filters: [{table: memi, column: age, comparison: ge, value: 65}]
+          period: {text: "in 2025", kind: year, values: [2025]}
+          stated:
+            gap_2025: {value: as_released, evidence: "as relased"}
+            count_unit: {value: consumer_unit, evidence: "how many houshold"}
+      answers:
+        - {asks: "how many houshold had somone 65 or older", node: n1}
+    also:
+      - {node: n1, filters: [{table: fmli, column: persot64, comparison: ge, value: 1}]}
+      - {node: n1, filters: [{table: fmli, column: persot64, comparison: gt, value: 0}]}
+    expect:
+      status: captured
+      kind: figures
+
+  # ── people interviewed, by sex ────────────────────────────────────────────
+  - id: people-by-sex-terse
+    rewords: people-counted-by-sex
+    nuance: [rewording, people]
+    message: "People interviewed in 2025 by sex, as released, no weights."
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: count
+          group_by: [{table: memi, column: sex}]
+          period: {text: "in 2025", kind: year, values: [2025]}
+          stated:
+            count_unit: {value: member, evidence: "People interviewed"}
+            weighted: {value: false, evidence: "no weights"}
+            gap_2025: {value: as_released, evidence: "as released"}
+      answers:
+        - {asks: "People interviewed in 2025 by sex", node: n1}
+    expect:
+      status: captured
+      kind: figures
+
+  - id: people-by-sex-long
+    rewords: people-counted-by-sex
+    nuance: [rewording, people]
+    message: "For the 2025 survey year, as released, please count how many people were interviewed in total, separately for men and women; this is just a count of the sample, so skip the weights."
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: count
+          group_by: [{table: memi, column: sex}]
+          period: {text: "the 2025 survey year", kind: year, values: [2025]}
+          stated:
+            count_unit: {value: member, evidence: "how many people"}
+            weighted: {value: false, evidence: "skip the weights"}
+            gap_2025: {value: as_released, evidence: "as released"}
+      answers:
+        - {asks: "count how many people were interviewed in total, separately for men and women", node: n1}
+    expect:
+      status: captured
+      kind: figures
+
+  - id: people-by-sex-typos
+    rewords: people-counted-by-sex
+    nuance: [rewording, people]
+    message: "how many poeple did you interveiw in 2025 by sex? as relased, and skip the wieghts"
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: count
+          group_by: [{table: memi, column: sex}]
+          period: {text: "in 2025", kind: year, values: [2025]}
+          stated:
+            count_unit: {value: member, evidence: "how many poeple"}
+            weighted: {value: false, evidence: "skip the wieghts"}
+            gap_2025: {value: as_released, evidence: "as relased"}
+      answers:
+        - {asks: "how many poeple did you interveiw in 2025 by sex", node: n1}
+    expect:
+      status: captured
+      kind: figures
+
+  # ── rent per quarter, unweighted ──────────────────────────────────────────
+  - id: quarterly-rent-terse
+    rewords: quarterly-rent-unweighted
+    nuance: [rewording, weights]
+    message: "Avg rent per quarter, 2025 as released, unweighted."
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: mtbi, column: cost}
+          filters: [{table: mtbi, column: ucc, comparison: eq, value: "210110"}]
+          period: {text: "2025", kind: year, values: [2025]}
+          stated:
+            time_basis: {value: quarter, evidence: "per quarter"}
+            gap_2025: {value: as_released, evidence: "as released"}
+            weighted: {value: false, evidence: "unweighted"}
+      answers:
+        - {asks: "Avg rent per quarter", node: n1}
+    also:
+      - {node: n1, measure: {table: fmli, column: rendwecq}, filters: []}
+      - {node: n1, measure: {table: fmli, column: rntxrpcq}, filters: []}
+    expect:
+      status: captured
+      kind: figures
+
+  - id: quarterly-rent-long
+    rewords: quarterly-rent-unweighted
+    nuance: [rewording, weights]
+    message: "Using the 2025 data as released and without applying any weights, what does the interviewed sample pay in rent on average in a quarter? I am after the quarterly figure, not the annual one."
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: mtbi, column: cost}
+          filters: [{table: mtbi, column: ucc, comparison: eq, value: "210110"}]
+          period: {text: "the 2025 data", kind: year, values: [2025]}
+          stated:
+            time_basis: {value: quarter, evidence: "the quarterly figure"}
+            gap_2025: {value: as_released, evidence: "as released"}
+            weighted: {value: false, evidence: "without applying any weights"}
+      answers:
+        - {asks: "what does the interviewed sample pay in rent on average in a quarter", node: n1}
+    also:
+      - {node: n1, measure: {table: fmli, column: rendwecq}, filters: []}
+      - {node: n1, measure: {table: fmli, column: rntxrpcq}, filters: []}
+    expect:
+      status: captured
+      kind: figures
+
+  - id: quarterly-rent-typos
+    rewords: quarterly-rent-unweighted
+    nuance: [rewording, weights]
+    message: "what is avrage quartely rent in 2025 as relased, unwieghted?"
+    gold:
+      nodes:
+        - id: n1
+          kind: estimate
+          statistic: mean
+          measure: {table: mtbi, column: cost}
+          filters: [{table: mtbi, column: ucc, comparison: eq, value: "210110"}]
+          period: {text: "in 2025", kind: year, values: [2025]}
+          stated:
+            time_basis: {value: quarter, evidence: "quartely"}
+            gap_2025: {value: as_released, evidence: "as relased"}
+            weighted: {value: false, evidence: "unwieghted"}
+      answers:
+        - {asks: "what is avrage quartely rent", node: n1}
+    also:
+      - {node: n1, measure: {table: fmli, column: rendwecq}, filters: []}
+      - {node: n1, measure: {table: fmli, column: rntxrpcq}, filters: []}
+    expect:
+      status: captured
+      kind: figures

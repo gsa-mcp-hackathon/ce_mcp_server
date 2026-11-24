@@ -1,0 +1,351 @@
+# CE Interview Data Vocabulary: every ce: custom property the CE Interview
+# data sidecars use, what it means, its allowed values, and what follows for
+# anyone using the data.
+#
+# This file is the source. The CE Interview Data Vocabulary document mirrors it:
+# https://claude.ai/artifact/N1bRR1zaSXkW1jQHao3QhJ
+#
+# Each entry has four fields: level, meaning, values, implies.
+# level: survey = set once for the whole survey (in the master sidecar);
+#        table  = set once per table (schema level, in a table sidecar);
+#        column = set on a column (in a table sidecar).
+
+id: ce-vocabulary
+version: 0.1.3
+title: CE Interview Data Vocabulary
+status: draft
+
+properties:
+  # ── Survey level: set once, in the master sidecar.
+
+  "ce:vocabulary":
+    level: survey
+    meaning: >
+      The vocabulary file and version the master sidecar was written against.
+    values: '{id, version}'
+    implies: >
+      Properties are read with the meanings of that version. The validator
+      refuses a master whose vocabulary version does not match.
+
+  "ce:sourceRelease":
+    level: survey
+    meaning: >
+      The BLS annual release the data comes from.
+    values: year
+    implies: >
+      Selects the variance method and the breaks that apply.
+
+  "ce:targetPopulation":
+    level: survey
+    meaning: >
+      The population the weighted sample represents.
+    values: text
+    implies: >
+      Estimates generalize to this population only. External denominators must
+      cover the same population.
+
+  "ce:design":
+    level: survey
+    meaning: >
+      The sample design. For CE Interview, a rotating panel in which a consumer
+      unit is interviewed up to four times, identified by the panel id.
+    values: {maxInterviews: integer, panelId: column name, type: [rotating_panel, cross_section]}
+    implies: >
+      Pooled quarterly rows are not independent households. The data are
+      observational, so associations do not establish causes.
+
+  "ce:weight":
+    level: survey
+    meaning: >
+      The column holding the sampling weight, and the table sidecar that carries
+      it. Each quarter's weights sum to the whole population of consumer units.
+    values: {column: column name, table: sidecar id}
+    implies: >
+      Every population estimate uses it. Weights from several quarters are never
+      added to count population.
+
+  "ce:replicateWeights":
+    level: survey
+    meaning: >
+      The set of replicate weight columns used to estimate variance, and the
+      table sidecar that carries them.
+    values: {count: integer, prefix: text, table: sidecar id}
+    implies: >
+      Standard errors come from re-estimating the statistic with each replicate
+      weight, not from simple-random-sample formulas.
+
+  "ce:variance":
+    level: survey
+    meaning: >
+      The variance formula and its parameters, by release.
+    values: {byRelease: list, formula: text}
+    implies: >
+      Use the parameters for the release in ce:sourceRelease. Standard errors
+      from releases with different methods are not directly comparable.
+
+  "ce:referencePeriod":
+    level: survey
+    meaning: >
+      The span of time a record's expenditures cover, relative to the interview.
+    values: text
+    implies: >
+      Spending belongs to the months before the interview month. External series
+      align on those months.
+
+  "ce:breaks":
+    level: survey
+    meaning: >
+      Points in time where the way the data was produced changed.
+    values: 'list of {id, from, to, kind: [question_or_coding, sample_or_weighting, geography_or_classification, disruption], affects}'
+    implies: >
+      A difference across a break may reflect the method change, not a real
+      change.
+
+  "ce:geographyLevels":
+    level: survey
+    meaning: >
+      How far the design supports estimates at each level of geography.
+    values: '{level: [reliable, limited, unsupported]}'
+    implies: >
+      Reliable levels may be estimated; limited levels need a caveat;
+      unsupported levels may not be estimated.
+
+  "ce:tables":
+    level: survey
+    meaning: >
+      The table sidecars in this set, with what each row is.
+    values: 'list of {sidecar, version, rowRepresents, carriesWeight: boolean}'
+    implies: >
+      A table not listed is outside the set. Exactly one table carries the
+      weight; every other table reaches it through ce:relationships.
+
+  "ce:relationships":
+    level: survey
+    meaning: >
+      How two tables link: parent, child, the key columns on each side, the
+      cardinality, and where the child's weight comes from.
+    values: >-
+      list of {parent, child, keys: {parent: [..], child: [..]},
+      cardinality: [one_to_one, one_to_many, same_unit],
+      childRowsOptional: boolean, weightFrom: [parent, self], note}
+    implies: >
+      With weightFrom parent, child rows take the parent's weight through the
+      keys and are summed to the parent before the weight applies; with
+      childRowsOptional, a parent with no child rows counts as zero, not as
+      missing. A same_unit link groups the rows of one unit (one consumer
+      unit's interviews, or one member's) for panel or household-level
+      analysis; it never routes a weight, and summing weights across it
+      overcounts the population.
+
+  # ── Table level: set once per table, at schema level in each table sidecar.
+
+  "ce:master":
+    level: table
+    meaning: >
+      The master sidecar this table sidecar belongs to.
+    values: '{id, version}'
+    implies: >
+      Survey facts for this table are read from the master, never repeated in
+      the table sidecar.
+
+  "ce:rowRepresents":
+    level: table
+    meaning: >
+      What one row of this table is.
+    values: [consumer_unit_interview, member_interview, expenditure_item_month,
+             income_item_month, imputed_income_item_month, expn_record, tax_unit]
+    implies: >
+      Rows of different kinds are never counted together. Only
+      consumer_unit_interview rows carry the weight; other tables reach it
+      through ce:relationships. An interview is not a household: one consumer
+      unit has up to four interviews (see ce:design).
+
+  "ce:rowKey":
+    level: table
+    meaning: >
+      The columns that together identify one row.
+    values: list of column names
+    implies: >
+      A join or a count of distinct rows uses the full key. A key column on its
+      own (for example newid in mtbi) identifies a group of rows, not one.
+
+  # ── Column level: set on a column, in the table sidecars.
+
+  "ce:sourceName":
+    level: column
+    meaning: >
+      The column's name as BLS spells it in the data files and the data
+      dictionary. The sidecar's own column name is the stored, lowercased form.
+    values: text
+    implies: >
+      Use it to look the column up in BLS documentation. Queries use the
+      stored name.
+
+  "ce:role":
+    level: column
+    meaning: >
+      What the column is for.
+    values: [identifier, weight, replicate_weight, period, dimension, measure, flag, item_code]
+    implies: >
+      Only measures are summarized. Dimensions and periods group. Item codes
+      group spending or income through ce:codeHierarchy. Identifiers, weights,
+      replicate weights, and flags are never analysis variables.
+
+  "ce:codeHierarchy":
+    level: column
+    meaning: >
+      The classification an item-code column belongs to, and where its tree is
+      defined.
+    values: '{scheme: ucc, source: text}'
+    implies: >
+      Item codes are grouped and summed only through the hierarchy, never by
+      code prefix. Codes and groupings change between releases, so a
+      comparison over time maps codes first.
+
+  "ce:scale":
+    level: column
+    meaning: >
+      The measurement scale of the column.
+    values: [nominal, ordinal, interval, ratio]
+    implies: >
+      Means and variances need interval or ratio scale. Ratios and shares need
+      ratio scale. Ordinal columns support medians and quantiles. Nominal
+      columns support counts and shares of categories only.
+
+  "ce:unit":
+    level: column
+    meaning: >
+      The unit of measurement, including the time span it covers.
+    values: [usd_annual, usd_quarterly, usd_monthly, usd_per_occurrence, count, years, months, percent]
+    implies: >
+      Measures with different units are converted before they are added,
+      subtracted, or divided.
+
+  "ce:level":
+    level: column
+    meaning: >
+      The unit a column's value describes.
+    values: [consumer_unit, member]
+    implies: >
+      A consumer-unit value cannot be attributed to a member, and member values
+      must be aggregated before consumer-unit weights apply.
+
+  "ce:missingCodes":
+    level: column
+    meaning: >
+      Values that stand for "no answer", not for a quantity or category.
+    values: list of codes
+    implies: >
+      These are removed before any statistic, and the share removed is reported.
+
+  "ce:flagFor":
+    level: column
+    meaning: >
+      Names the column whose values this flag column qualifies.
+    values: column name
+    implies: >
+      The flag tells, record by record, whether the value is reported,
+      structurally blank, missing, top-coded, or imputed.
+
+  "ce:flagMeanings":
+    level: column
+    meaning: >
+      What each flag code means. A code carries one meaning, or a list when it
+      states several: a value that was allocated, then top-coded, is both.
+    values: >-
+      {code: one of, or a list of, [valid, skip_pattern, nonresponse,
+      parent_record, allocated, imputed, topcoded]}
+    implies: >
+      Read a code by whether a meaning is among its meanings, not by equality.
+      skip_pattern, nonresponse and parent_record are blanks, never values.
+      Skip-pattern blanks are outside the question's universe and are excluded
+      without counting as nonresponse. A parent-record blank is empty on
+      purpose: its amount was allocated to other records, so counting it as
+      zero or as missing double-counts or loses the amount. Allocated values
+      were filled from other answers the same consumer unit gave, not from a
+      model.
+
+  "ce:topcoded":
+    level: column
+    meaning: >
+      Values above a critical value were replaced for disclosure protection.
+    values: [true, false]
+    implies: >
+      Statistics that depend on the upper tail are distorted. See
+      ce:topcodeMethod for what survives.
+
+  "ce:topcodeMethod":
+    level: column
+    meaning: >
+      How top-coded values were replaced.
+    values: [replaced_by_mean_above_critical_value, capped_at_critical_value]
+    implies: >
+      With replacement by the mean above the critical value, the overall mean
+      and total are approximately preserved; subgroup means, maxima, upper
+      quantiles, variances, and inequality measures are not. With capping, means
+      and totals are biased downward as well.
+
+  "ce:imputed":
+    level: column
+    meaning: >
+      Missing values were filled in by a model. "multiple" means several imputed
+      versions exist.
+    values: {iterations: integer, multiple: boolean}
+    implies: >
+      With multiple imputation, estimates are averaged across the versions and
+      the variance adds the between-version component. Using one version
+      understates uncertainty.
+
+  "ce:additiveOver":
+    level: column
+    meaning: >
+      The dimensions across which this measure may be summed.
+    values: [consumer_units, months_in_scope]
+    implies: >
+      Summing across any dimension not listed double-counts or is meaningless.
+
+  "ce:calendarPair":
+    level: column
+    meaning: >
+      Names the companion column that holds the other calendar quarter of the
+      same interview's spending.
+    values: column name
+    implies: >
+      A calendar-year figure takes the previous-quarter and current-quarter
+      columns according to which months fall in the year. Adding quarterly files
+      without this does not give a calendar year.
+
+  "ce:geographyLevel":
+    level: column
+    meaning: >
+      The level of geography a column identifies.
+    values: [region, division, state, belowState]
+    implies: >
+      Grouping by this column makes a request of that geography level.
+
+  "ce:suppressed":
+    level: column
+    meaning: >
+      Whether values are withheld for disclosure protection.
+    values: [none, partial, full]
+    implies: >
+      With partial suppression, groups are incomplete and the suppressed share
+      must be reported.
+
+  "ce:recoded":
+    level: column
+    meaning: >
+      Some values were deliberately replaced with other valid values for
+      disclosure protection.
+    values: [true, false]
+    implies: >
+      A record's value may not be its true value, so group membership is
+      approximate.
+
+  "ce:replicateIndex":
+    level: column
+    meaning: >
+      The position of a replicate weight within its set.
+    values: integer
+    implies: >
+      None for analysis; used to assemble the set.
